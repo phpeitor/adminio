@@ -4,7 +4,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://www.linkedin.com/in/drphp/)
 
 <a href="https://www.instagram.com/amvsoft.tech/">
-  <img src="https://adminio.pe/static/e46c9b3cb9ac59ff2d896292df8c1eeb.png" alt="Instagram" width="400">
+  <img src="https://adminio.pe/static/e46c9b3cb9ac59ff2d896292df8c1eeb.png" alt="Instagram" width="600">
 </a>
 
 `Empresa peruana especializada en brindar soluciones en la administración integral de inmuebles`
