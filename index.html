@@ -17,6 +17,8 @@
     <link href="./css/app.css" rel="stylesheet">
     <link href="./css/index.css" rel="stylesheet">
     <link href="./css/index.d790f8802cd7a090c6be.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#fff">
     <meta name="application-name" content="adminioperu">
@@ -497,7 +499,7 @@
                                 class="block uppercase tracking-wide text-xs font-bold mb-2"
                                 for="form-email">Email</label><input
                                 class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                id="correo" type="email" placeholder="hola@adminio.com" required="required"
+                                id="correo" type="email" placeholder="hola@tudominio.com" required="required"
                                 maxlength=40></div>
 
                         <div class="w-full md:w-1/2">
@@ -506,14 +508,12 @@
                             <div class="relative">
                                 <input
                                     class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    id="edificio" type="text" placeholder="Edificio" required="required" maxlength=30>
+                                    id="edificio" type="text" placeholder="Edificio" required="required" maxlength=50>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="flex flex-wrap mb-6">
-
                         <div class="w-full pr-0 flex-wrap mb-6 lg:pr-2 md:pr-2 sm:pr-0 lg:flex-1 md:flex-1 lg:mb-0 md:mb-0"
                             id="display-form-telefono"><label
                                 class="block uppercase tracking-wide text-xs font-bold mb-2"
@@ -527,21 +527,10 @@
                                 for="form-q2">Distrito</label>
                             <select
                                 class="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white"
-                                id="distrito" required="required">
+                                id="distrito" name="distrito" required="required">
                                 <option value="">Seleccione</option>
-
-                                <div
-                                    class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-grey-darker">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                        viewbox="0 0 20 20">
-                                        <path
-                                            d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z">
-                                        </path>
-                                    </svg>
-                                </div>
                             </select>
                         </div>
-
                     </div>
 
                     <div class="w-full pl-0 mb-6"><label class="block uppercase tracking-wide text-xs font-bold mb-2"
@@ -550,9 +539,10 @@
                             id="mensaje" type="text" placeholder="Describe tu problema" required="required"
                             maxlength=400></textarea></div>
 
-                    <div class="text-center mt-10"><button
-                            class="block rounded-full text-white no-underline text-md font-semibold py-4 px-8 v_gradient_primary m-auto hover:bg-grey-light"
-                            id="btn_registrar" name="btn_registrar">ENVIAR</button>
+                    <div class="text-center mt-10">
+                        <button class="block rounded-full text-white no-underline text-md font-semibold py-4 px-8 v_gradient_primary m-auto hover:bg-grey-light" id="btn_registrar" name="btn_registrar">
+                            ENVIAR
+                        </button>
                     </div>
 
                 </form>
@@ -634,165 +624,8 @@
 
     <script type="text/javascript" src="./js/polyfill.5257152a85e28ab336bb.js"></script>
     <script type="text/javascript" src="./js/app.8bdd6bafb87e234627f6.js?v=4"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-    <script type="text/javascript">
-        $(function () {
-
-            $("#btn_registrar").click(function (e) {
-                e.preventDefault();
-                var nombre = $('#nombre').val();
-                var edificio = $('#edificio').val();
-                var correo = $('#correo').val();
-                var telefono = $('#telefono').val();
-                var distrito = $('#distrito').val();
-                var mensaje = $('#mensaje').val();
-                var isValidado = true;
-
-                $("#form-contacto").find("input[required=required],textarea[required=required],select[required=required]").each(function (i, e) {
-                    var tipo_control = ($(this)[0].tagName).toUpperCase();
-                    console.log(tipo_control);
-                    if (tipo_control == "INPUT") {
-                        if ($.trim($(this).val()).length == 0) {
-                            $(this).addClass("border-red-lighter");
-                            if (isValidado)
-                                $(this).focus();
-                            isValidado = false;
-                        } else
-                            $(this).removeClass("border-red-lighter");
-                    } else if (tipo_control == "TEXTAREA") {
-                        if ($.trim($(this).val()).length == 0) {
-                            $(this).addClass("border-red-lighter");
-                            if (isValidado) {
-                                $(this).focus();
-                                isValidado = false;
-                            }
-                        } else {
-                            $(this).removeClass("border-red-lighter");
-                        }
-                    } else if (tipo_control == "SELECT") {
-                        if ($(this).val() == 0) {
-                            $(this).addClass("border-red-lighter");
-                            if (isValidado)
-                                $(this).focus();
-                            isValidado = false;
-                        } else
-                            $(this).removeClass("border-red-lighter");
-                    }
-                });
-
-                $("#form-contacto").find("select[required=required]").change(function (e) {
-                    if ($(this).val() == 0) {
-                        $(this).addClass("border-red-lighter")
-                    } else {
-                        $(this).removeClass("border-red-lighter");
-                    }
-                });
-
-                $("#form-contacto").find("input[required=required],textarea[required=required]").keyup(function (e) {
-
-                    if ($.trim($(this).val()).length == 0) {
-                        $(this).addClass("border-red-lighter")
-                    } else {
-                        $(this).removeClass("border-red-lighter");
-                    }
-
-                });
-
-                if (!isValidado)
-                    return;
-
-                var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
-                var regex2 = /[^+\d]/g;
-
-
-                if (nombre.trim().replace(/ /g, "").length < 10) {
-                    swal({
-                        text: "Nombre y Apellidos debe tener {10} caracteres",
-                        icon: "error",
-                        showCloseButton: true
-                    })
-
-                } else if (edificio.trim().replace(/ /g, "").length < 8) {
-                    swal({
-                        text: "Edificio debe tener {8} caracteres",
-                        icon: "error",
-                        showCloseButton: true
-                    })
-
-                } else if (mensaje.trim().replace(/ /g, "").length < 15) {
-                    swal({
-                        text: "Mensaje debe tener {15} caracteres",
-                        icon: "error",
-                        showCloseButton: true
-                    })
-
-                } else if (telefono.trim().replace(regex2, "").length < 8) {
-                    $("#telefono").val($("#telefono").val().replace(regex2, ""))
-                    swal({
-                        text: "Teléfono debe tener {8} caracteres",
-                        icon: "error",
-                        showCloseButton: true
-                    })
-
-                } else {
-                    if (regex.test($('#correo').val().trim())) {
-                        swal({
-                            title: "¿Desea enviar el mensaje?",
-                            text: "Adminio Perú",
-                            icon: "warning",
-                            buttons: true,
-                            dangerMode: true,
-                        })
-                            .then((willDelete) => {
-                                if (willDelete) {
-                                    registrar(nombre, edificio, correo, telefono, distrito, mensaje);
-                                } else {
-                                    console.log("nada");
-                                }
-                            });
-
-                    } else {
-                        swal({
-                            text: "Dirección email incorrecta",
-                            icon: "error",
-                            showCloseButton: true
-                        })
-                    }
-
-                }
-
-
-            });
-        });
-
-        function registrar(nombre, edificio, correo, telefono, distrito, mensaje) {
-            $.ajax({
-                data: { nombre: nombre, edificio: edificio, correo: correo, telefono: telefono, distrito: distrito, mensaje: mensaje },
-                dataType: 'json',
-                url: 'ajax_registrar_contacto.php',
-                success: function (response) {
-
-                    console.log(response);
-                    if (response.codigo == 1) {
-                        swal(response.mensaje)
-                            .then((value) => {
-                                location.reload(true);
-                            });
-
-                    } else {
-                        //alert('ERROR');
-                        swal({
-                            text: "ERROR",
-                            icon: "error",
-                            showCloseButton: true
-                        })
-                    }
-
-                }
-            });
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+    <script type="text/javascript" src="./js/adminio.js"></script>
 </body>
 </html>
