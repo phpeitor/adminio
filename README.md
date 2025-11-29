@@ -1,30 +1,22 @@
-# Template Metadata 📊
+# Template Adminio.pe 🏢
 
 [![forthebadge](http://forthebadge.com/images/badges/uses-css.svg)](https://www.linkedin.com/in/drphp/)
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://www.linkedin.com/in/drphp/)
 
 <a href="https://www.instagram.com/amvsoft.tech/">
-  <img src="https://cdn.dribbble.com/userupload/9947953/file/original-0649917fabe02348474b09ed6c5551b6.jpg" alt="Instagram" width="400">
+  <img src="https://adminio.pe/static/e46c9b3cb9ac59ff2d896292df8c1eeb.png" alt="Instagram" width="400">
 </a>
 
-`Distribuidor de los productos IDEA Analytics, IDEA Server, IDEA Smart Analyzer`
+`Empresa peruana especializada en brindar soluciones en la administración integral de inmuebles`
 
 ## 🚀 Quick Start
 
 1. **Clonar este repositorio**
 ```bash
-git clone https://github.com/phpeitor/template-metadata.git
-cd template-metadata
+git clone https://github.com/phpeitor/adminio.git
+cd adminio
 ```
-2. **Crear archivo config.json con tu API key de Google Maps**
-```json
-{
-  "googleMapsApiKey": "TU_API_KEY_DE_GOOGLE_MAPS"
-}
-```
-<sub>⚠️ <strong>Importante:</strong> No compartas este archivo en repositorios públicos. Puedes agregarlo a <code>.gitignore</code> para mantenerlo privado.</sub>
-
-3. **Ejecutar comando**
+2. **Ejecutar comando**
 ```bash
 index.html
 ```
