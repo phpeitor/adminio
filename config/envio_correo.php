@@ -33,23 +33,56 @@ try {
     $mail->addAddress(env("MAIL_TO"));
     $mail->addAddress(env("MAIL_FROM_EMAIL"));
 
+    $headPath = __DIR__ . "/../static/head.png";
     $logoPath = __DIR__ . "/../static/logo.png";
-    if (file_exists($logoPath)) {
-        $mail->addEmbeddedImage($logoPath, "logo_adminio", "logo.png");
-    }
+    $okPath   = __DIR__ . "/../static/ok.png";
+
+    if (file_exists($headPath)) $mail->addEmbeddedImage($headPath, "head_adminio", "head.png");
+    if (file_exists($logoPath)) $mail->addEmbeddedImage($logoPath, "logo_adminio", "logo.png");
+    if (file_exists($okPath))   $mail->addEmbeddedImage($okPath, "ok_adminio", "ok.png");
 
     $mail->isHTML(true);
     $mail->Subject = "Nuevo mensaje de contacto";
-    $mail->Body    = "
-        <h3>Nuevo mensaje recibido</h3>
-        <p><strong>Nombre:</strong> $nombre</p>
-        <p><strong>Correo:</strong> $correo</p>
-        <p><strong>Teléfono:</strong> $telefono</p>
-        <p><strong>Edificio:</strong> $edificio</p>
-        <p><strong>Distrito:</strong> $distrito</p>
-        <p><strong>Mensaje:</strong><br>$mensaje</p>
-        <br><br>
-        <img src='cid:logo_adminio' style='width:150px;' alt='Logo'>
+
+    $mail->Body = "
+    <div style='width:100%; background:#f5f7fa; padding:20px 0;'>
+      <div style='max-width:600px; margin:auto; background:white; border-radius:10px; overflow:hidden;
+                  box-shadow:0 3px 10px rgba(0,0,0,0.1);'>
+
+        <div style='width:100%;text-align:center;background:white;'>
+            <img src='cid:head_adminio'
+                style='display:block;margin:0px auto 0 -353px auto;width:140px;border:0;outline:none;text-decoration:none;'>
+        </div>
+
+        <div style='text-align:center; margin-top:0px;'>
+            <img src='cid:logo_adminio' style='width:180px;'>
+        </div>
+
+        <div style='text-align:center; margin:20px 0;'>
+            <img src='cid:ok_adminio' style='width:90px;'>
+        </div>
+
+        <div style='padding:0 25px 25px; font-family:Arial, sans-serif;'>
+
+          <h2 style='color:#333; text-align:center;'>Nuevo mensaje recibido</h2>
+
+          <table style='width:100%; margin-top:20px; font-size:16px; color:#333;'>
+            <tr><td>👤 <strong>Nombre:</strong></td>   <td>$nombre</td></tr>
+            <tr><td>📧 <strong>Correo:</strong></td>   <td>$correo</td></tr>
+            <tr><td>📱 <strong>Teléfono:</strong></td> <td>$telefono</td></tr>
+            <tr><td>🏢 <strong>Edificio:</strong></td> <td>$edificio</td></tr>
+            <tr><td>📍 <strong>Distrito:</strong></td> <td>$distrito</td></tr>
+            <tr><td>💬 <strong>Mensaje:</strong></td>  <td>$mensaje</td></tr>
+          </table>
+
+        </div>
+
+        <div style='text-align:center; padding:15px; background:#fafafa; color:#777; font-size:12px;'>
+          © Adminio Perú — Sistema de Contacto
+        </div>
+
+      </div>
+    </div>
     ";
 
     $mail->send();
@@ -58,6 +91,7 @@ try {
         "ok" => true,
         "message" => "Correo enviado correctamente"
     ]);
+
 } catch (Exception $e) {
     echo json_encode([
         "ok" => false,
