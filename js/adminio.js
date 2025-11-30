@@ -1,5 +1,41 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    document.querySelectorAll(".nav-link").forEach(link => {
+        link.style.cursor = "pointer";
+
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            const sectionId = link.getAttribute("data-section");
+            const hash = md5(sectionId);
+
+            // Cambia la URL visible por hash MD5
+            window.location.hash = hash;
+
+            // Hace scroll al elemento real
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+            }
+        });
+    });
+
+    // Si el usuario recarga la página con el hash MD5, igual hacer scroll al section real
+    const currentHash = window.location.hash.replace("#", "");
+    if (currentHash.length === 32) { // MD5 siempre 32 chars
+        const sections = ["nosotros", "servicios", "beneficios", "video", "contacto"];
+        sections.forEach(sec => {
+            if (md5(sec) === currentHash) {
+                const el = document.getElementById(sec);
+                if (el) {
+                    setTimeout(() => {
+                        el.scrollIntoView({ behavior: "smooth" });
+                    }, 300);
+                }
+            }
+        });
+    }
+
     // ===============================
     // CARGAR DISTRITOS
     // ===============================
