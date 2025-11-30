@@ -7,6 +7,8 @@ require __DIR__ . "/../vendor/autoload.php";
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+date_default_timezone_set("America/Lima");
+$fechaActual = date("d/m/Y H:i:s");
 $data = json_decode(file_get_contents("php://input"), true);
 
 $nombre = $data["nombre"] ?? "";
@@ -51,7 +53,7 @@ try {
 
         <div style='width:100%;text-align:center;background:white;'>
             <img src='cid:head_adminio'
-                style='display:block;margin:0px auto 0 -353px auto;width:140px;border:0;outline:none;text-decoration:none;'>
+                style='display:block;margin:0px auto -353px auto;width:100%;border:0;outline:none;text-decoration:none;'>
         </div>
 
         <div style='text-align:center; margin-top:0px;'>
@@ -67,18 +69,19 @@ try {
           <h2 style='color:#333; text-align:center;'>Nuevo mensaje recibido</h2>
 
           <table style='width:100%; margin-top:20px; font-size:16px; color:#333;'>
+            <tr><td>📆 <strong>Fecha:</strong></td>    <td>$fechaActual</td></tr>
             <tr><td>👤 <strong>Nombre:</strong></td>   <td>$nombre</td></tr>
             <tr><td>📧 <strong>Correo:</strong></td>   <td>$correo</td></tr>
-            <tr><td>📱 <strong>Teléfono:</strong></td> <td>$telefono</td></tr>
+            <tr><td>📱 <strong>Teléfono:</strong></td>  <td>$telefono</td></tr>
             <tr><td>🏢 <strong>Edificio:</strong></td> <td>$edificio</td></tr>
-            <tr><td>📍 <strong>Distrito:</strong></td> <td>$distrito</td></tr>
+            <tr><td>📍 <strong>Distrito:</strong></td>  <td>$distrito</td></tr>
             <tr><td>💬 <strong>Mensaje:</strong></td>  <td>$mensaje</td></tr>
           </table>
 
         </div>
 
         <div style='text-align:center; padding:15px; background:#fafafa; color:#777; font-size:12px;'>
-          © Adminio Perú — Sistema de Contacto
+          © Adminio Perú - Sistema de Contacto
         </div>
 
       </div>
