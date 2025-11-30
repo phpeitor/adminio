@@ -1672,7 +1672,7 @@
 			c = i.default.firestore.FieldValue.serverTimestamp(),
 			h = s.collection("leads"),
 			l = s.collection("subscribers");
-		e.api = "/api/v1", e.awy_token = "vfeDcziunCoSxs3xouSjFBoSKLDDfjff99DqNLdBsQamajWPic6O93U78A4eGmdsfIQjtmrlHwMy9Dxe2A==", e.db = s, e.auth = u, e.serverTimestamp = c, e.leadsCollection = h, e.subscribersCollection = l, e.config = a, e.arrMapSite = ["index", "auth", "register", "recover-password", "terms", "wizard", "questions"]
+		e.api = "/api/v1", e.awy_token = "vfeDcziunCoSxs3xouSjFBoSKLDDfjff99DqNLdBsQamajWPic6O93U78A4eGmdsfIQjtmrlHwMy9Dxe2A==", e.db = s, e.auth = u, e.serverTimestamp = c, e.leadsCollection = h, e.subscribersCollection = l, e.config = a, e.arrMapSite = ["index",  "index.html",  "index.php", "auth", "register", "recover-password", "terms", "wizard", "questions"]
 	},
 	3: function(t, e) {
 		var n;
@@ -20464,11 +20464,13 @@
 		}, h.prototype.removeAuthCookie = function() {
 			document.cookie = "__session=;path=/;domain=." + r.config.domain + ";"
 		}, h.prototype.redirectConsole = function() {
-			var path = window.location.pathname;
-            var clean = path.replace(/^\//, "");
-            if (clean.startsWith("adminio")) return;
-            if (clean === "" || r.arrMapSite.includes(clean)) return;
-            window.location.href = r.config.domainConsole + (path + window.location.search);
+			const path = window.location.pathname;
+			const clean = path.replace(/^\/+/, "");
+			if (!clean) return; 
+			const first = clean.split("/")[0].replace(/\.(html|php)$/i, "");
+			const safe = ["index", "auth", "register", "recover-password", "terms", "wizard", "questions", "admin", "adminio"];
+			if (safe.includes(first)) return;
+			window.location.href = r.config.domainConsole + (path + window.location.search);
 		}, window.app = new h
 	},
 	8: function(t, e, n) {

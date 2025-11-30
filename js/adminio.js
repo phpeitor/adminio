@@ -46,16 +46,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const regexNum = /[^+\d]/g;
 
-        if (nombre.replace(/ /g, "").length < 10) {
-            return alertify.error("Nombre y Apellidos debe tener mínimo 10 caracteres");
+        if (nombre.replace(/ /g, "").length < 5) {
+            return alertify.error("Nombre y Apellidos debe tener mínimo 5 caracteres");
         }
 
-        if (edificio.replace(/ /g, "").length < 8) {
-            return alertify.error("Edificio debe tener mínimo 8 caracteres");
+        if (edificio.replace(/ /g, "").length < 5) {
+            return alertify.error("Edificio debe tener mínimo 5 caracteres");
         }
 
-        if (mensaje.replace(/ /g, "").length < 15) {
-            return alertify.error("Mensaje debe tener mínimo 15 caracteres");
+        if (mensaje.replace(/ /g, "").length < 5) {
+            return alertify.error("Mensaje debe tener mínimo 5 caracteres");
         }
 
         if (telefono.replace(regexNum, "").length < 8) {
@@ -76,15 +76,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function sendEmail(data) {
-    fetch("enviar_correo.php", {
+    fetch("./config/envio_correo.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     })
     .then(res => res.json())
     .then(resp => {
-        if (resp.codigo === 1) {
-            alertify.success(resp.mensaje);
+        if (resp.ok) {
+            alertify.success(resp.message);
             setTimeout(() => location.reload(), 1500);
         } else {
             alertify.error("Error al enviar el mensaje");
