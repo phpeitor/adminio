@@ -21955,3 +21955,33 @@ html {
       opacity: 0;
   }
 }
+
+.about-image-animated {
+  animation: adminio-float 4.2s ease-in-out infinite;
+  transform-origin: center;
+  filter: drop-shadow(0 10px 24px rgba(31, 83, 199, 0.22));
+  will-change: transform, filter;
+}
+
+.about-image-animated:hover {
+  animation-duration: 2.6s;
+  filter: drop-shadow(0 16px 30px rgba(31, 83, 199, 0.3));
+}
+
+@keyframes adminio-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-12px) scale(1.018);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-image-animated {
+    animation: none;
+    transform: none;
+  }
+}

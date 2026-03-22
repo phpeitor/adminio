@@ -1,3 +1,5 @@
 .env
 .htaccess
 /360pay
+/vendor
+/node_modules
