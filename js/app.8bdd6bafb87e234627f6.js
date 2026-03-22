@@ -1660,18 +1660,60 @@
 				default: t
 			}
 		}
-		n(34), n(36), i.default.initializeApp(r.default.app);
+		var f = !1,
+			d = {
+				onAuthStateChanged: function(t) {
+					"function" == typeof t && t(null)
+				},
+				signOut: function() {
+					return Promise.resolve()
+				},
+				currentUser: {
+					getIdToken: function() {
+						return Promise.resolve("")
+					}
+				}
+			},
+			p = {
+				collection: function() {
+					return {
+						add: function() {
+							return Promise.resolve(null)
+						},
+						doc: function() {
+							return {
+								set: function() {
+									return Promise.resolve(null)
+								},
+								update: function() {
+									return Promise.resolve(null)
+								},
+								delete: function() {
+									return Promise.resolve(null)
+								}
+							}
+						}
+					}
+				}
+			},
+			m = {
+				serverTimestamp: function() {
+					return null
+				}
+			};
+		f && (n(34), n(36), i.default.initializeApp(r.default.app));
 		var a = {
 				domainConsole: r.default.domainConsole,
 				domain: r.default.domain,
 				signInUrl: r.default.domainConsole + "/signin.php",
 				recoverUrl: r.default.domainConsole + "/controller/auth.php"
 			},
-			s = i.default.firestore(),
-			u = i.default.auth(),
-			c = i.default.firestore.FieldValue.serverTimestamp(),
+			s = p,
+			u = d,
+			c = m.serverTimestamp(),
 			h = s.collection("leads"),
 			l = s.collection("subscribers");
+		f && (s = i.default.firestore(), u = i.default.auth(), c = i.default.firestore.FieldValue.serverTimestamp(), h = s.collection("leads"), l = s.collection("subscribers"));
 		e.api = "/api/v1", e.awy_token = "vfeDcziunCoSxs3xouSjFBoSKLDDfjff99DqNLdBsQamajWPic6O93U78A4eGmdsfIQjtmrlHwMy9Dxe2A==", e.db = s, e.auth = u, e.serverTimestamp = c, e.leadsCollection = h, e.subscribersCollection = l, e.config = a, e.arrMapSite = ["index",  "index.html",  "index.php", "auth", "register", "recover-password", "terms", "wizard", "questions"]
 	},
 	3: function(t, e) {
