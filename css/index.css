@@ -21985,3 +21985,46 @@ html {
     transform: none;
   }
 }
+
+.google-play-badge {
+  display: inline-block;
+  overflow: hidden;
+  width: 155px;
+  height: 40px;
+  border-radius: 10px;
+  background:
+    linear-gradient(#ffffff, #ffffff) top left / 16px 2px no-repeat,
+    linear-gradient(#ffffff, #ffffff) top left / 2px 16px no-repeat,
+    linear-gradient(#ffffff, #ffffff) top right / 16px 2px no-repeat,
+    linear-gradient(#ffffff, #ffffff) top right / 2px 16px no-repeat,
+    linear-gradient(#ffffff, #ffffff) bottom left / 16px 2px no-repeat,
+    linear-gradient(#ffffff, #ffffff) bottom left / 2px 16px no-repeat,
+    linear-gradient(#ffffff, #ffffff) bottom right / 16px 2px no-repeat,
+    linear-gradient(#ffffff, #ffffff) bottom right / 2px 16px no-repeat,
+    url("../static/google_play.png") center / cover no-repeat;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+  animation: google-play-float 3.2s ease-in-out infinite;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.google-play-badge:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+}
+
+@keyframes google-play-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .google-play-badge {
+    animation: none;
+  }
+}
