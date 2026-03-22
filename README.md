@@ -7,17 +7,12 @@ Landing page corporativa para Adminio Peru, enfocada en administracion inmobilia
 
 ## Demo visual
 
-<video src="https://adminio.pe/static/main.mp4" width="860" controls muted loop playsinline></video>
+> GitHub sanitiza el HTML del README y no permite reproducir la etiqueta `<video>` embebida.
 
-Si tu visor Markdown no reproduce video, abre directamente:
+[![Ver demo en video](https://adminio.pe/static/e46c9b3cb9ac59ff2d896292df8c1eeb.png)](https://adminio.pe/static/main.mp4)
+
+Haz clic en la imagen para abrir el video:
 https://adminio.pe/static/main.mp4
-
-## Tecnologias
-
-- HTML5, CSS, JavaScript
-- PHP
-- PHPMailer (via Composer)
-- AlertifyJS para notificaciones y confirmaciones
 
 ## Requisitos
 
