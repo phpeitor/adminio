@@ -65,12 +65,14 @@
 
             <div class="pt-24 text-white relative z-10">
                 <div class="container px-3 mx-auto flex flex-wrap flex-col items-center md:flex-row">
-                    <div class="w-full py-6 text-center pb-8 md:w-3/5"><img
-                            class="z-50 lg:w-full md:w-full sm:w-full w-full"
-                            src="./static/e46c9b3cb9ac59ff2d896292df8c1eeb.png">
+                    <div class="w-full py-6 text-center pb-8 md:w-3/5 md:pr-8 lg:pr-10">
+                        <div class="hero-video-frame z-50 lg:w-full md:w-full sm:w-full w-full">
+                            <video class="hero-main-video" autoplay muted loop playsinline preload="metadata" poster="./static/e46c9b3cb9ac59ff2d896292df8c1eeb.png">
+                                <source src="./static/main.mp4" type="video/mp4">
+                            </video>
+                        </div>
                         <div
                             class="flex-wrap justify-center text-center items-center py-4 lg:flex md:flex sm:flex-wrap lg:py-0 md:py-0">
-                            <!--<a href="https://itunes.apple.com/pe/app/vecinos360/id1099383303?mt=8" style="display:inline-block;overflow:hidden;background:url(https://linkmaker.itunes.apple.com/es-es/badge-lrg.svg?releaseDate=2016-07-19&amp;kind=iossoftware&amp;bubble=ios_apps) no-repeat;width:135px;height:40px;"></a>-->
                             <a class="google-play-badge" href="https://play.google.com/store/apps/details?id=com.unasolutions.vecinos360&amp;hl=es" aria-label="Descargar en Google Play"></a>
                         </div>
                     </div>
@@ -488,7 +490,7 @@
                     <div class="mb-6"><label class="block uppercase tracking-wide text-xs font-bold mb-2"
                             for="form-fullname">Nombres y Apellidos</label><input
                             class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                            id="nombre" type="text" placeholder="Nombres y Apellidos" required="required" maxlength=50>
+                            id="nombre" type="text" required="required" maxlength=50>
                     </div>
 
                     <div class="flex flex-wrap mb-6">
@@ -505,7 +507,7 @@
                             <div class="relative">
                                 <input
                                     class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    id="edificio" type="text" placeholder="Edificio" required="required" maxlength=50>
+                                    id="edificio" type="text" placeholder="Las Torres" required="required" maxlength=50>
                             </div>
                         </div>
                     </div>

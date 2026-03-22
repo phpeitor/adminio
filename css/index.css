@@ -22028,3 +22028,48 @@ html {
     animation: none;
   }
 }
+
+.hero-video-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  padding: 6px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.12));
+  box-shadow: 0 20px 50px rgba(9, 18, 59, 0.42);
+}
+
+.hero-video-frame::before {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.35), transparent 55%);
+  pointer-events: none;
+}
+
+.hero-main-video {
+  display: block;
+  width: 100%;
+  border-radius: 18px;
+  object-fit: cover;
+  aspect-ratio: 16 / 10;
+  transform: scale(1.14);
+  transform-origin: center;
+}
+
+@media (max-width: 767px) {
+  .hero-video-frame {
+    border-radius: 16px;
+    padding: 4px;
+  }
+
+  .hero-main-video {
+    border-radius: 12px;
+    aspect-ratio: 16 / 11;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-main-video {
+    transform: scale(1.08);
+  }
+}
