@@ -4983,11 +4983,16 @@ html {
   box-shadow: 0 14px 32px 0 rgba(0, 0, 0, 0.2);
 }
 .list-videos {
-  height: 450px;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  min-height: 220px;
 }
 @media (max-width: 768px) {
   .list-videos {
-    height: 300px;
+    min-height: 180px;
   }
 }
 .tab-content {

@@ -3838,18 +3838,18 @@
 				};
 				var yi, gi = {
 					Yc: {
-						ab: "https://www.googleapis.com/identitytoolkit/v3/relyingparty/",
-						ib: "https://securetoken.googleapis.com/v1/token",
+						ab: "/identitytoolkit/v3/relyingparty/",
+						ib: "/v1/token",
 						id: "p"
 					},
 					$c: {
-						ab: "https://staging-www.sandbox.googleapis.com/identitytoolkit/v3/relyingparty/",
-						ib: "https://staging-securetoken.sandbox.googleapis.com/v1/token",
+						ab: "/staging/identitytoolkit/v3/relyingparty/",
+						ib: "/staging/v1/token",
 						id: "s"
 					},
 					ad: {
-						ab: "https://www-googleapis-test.sandbox.google.com/identitytoolkit/v3/relyingparty/",
-						ib: "https://test-securetoken.sandbox.googleapis.com/v1/token",
+						ab: "/test/identitytoolkit/v3/relyingparty/",
+						ib: "/test/v1/token",
 						id: "t"
 					}
 				};
@@ -4877,7 +4877,7 @@
 				}
 
 				function Ta(t, e, n) {
-					if (this.b = t, t = e || {}, this.i = t.secureTokenEndpoint || "https://securetoken.googleapis.com/v1/token", this.m = t.secureTokenTimeout || Ia, this.f = ct(t.secureTokenHeaders || _a), this.g = t.firebaseEndpoint || "https://www.googleapis.com/identitytoolkit/v3/relyingparty/", this.h = t.firebaseTimeout || Aa, this.a = ct(t.firebaseHeaders || Ca), n && (this.a["X-Client-Version"] = n, this.f["X-Client-Version"] = n), n = "Node" == ur(), !(n = u.XMLHttpRequest || n && r.a.INTERNAL.node && r.a.INTERNAL.node.XMLHttpRequest) && !sr()) throw new Yr("internal-error", "The XMLHttpRequest compatibility library was not found.");
+					if (this.b = t, t = e || {}, this.i = t.secureTokenEndpoint || "/v1/token", this.m = t.secureTokenTimeout || Ia, this.f = ct(t.secureTokenHeaders || _a), this.g = t.firebaseEndpoint || "/identitytoolkit/v3/relyingparty/", this.h = t.firebaseTimeout || Aa, this.a = ct(t.firebaseHeaders || Ca), n && (this.a["X-Client-Version"] = n, this.f["X-Client-Version"] = n), n = "Node" == ur(), !(n = u.XMLHttpRequest || n && r.a.INTERNAL.node && r.a.INTERNAL.node.XMLHttpRequest) && !sr()) throw new Yr("internal-error", "The XMLHttpRequest compatibility library was not found.");
 					this.c = void 0, sr() ? this.c = new Fo(self) : cr() ? this.c = new wa(n) : this.c = new Io
 				}
 				C(ba, D), C(wa, wo), wa.prototype.a = function() {
@@ -17583,7 +17583,7 @@
 			 * See the License for the specific language governing permissions and
 			 * limitations under the License.
 			 */
-			var Eo = "firestore.googleapis.com",
+			var Eo = "firestore.local",
 				So = !0,
 				Io = !0,
 				_o = !1,
