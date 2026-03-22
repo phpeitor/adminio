@@ -22073,3 +22073,35 @@ html {
     transform: scale(1.08);
   }
 }
+
+#btn_registrar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+#btn_registrar:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.btn-loader {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: btn-spin 0.8s linear infinite;
+}
+
+#btn_registrar.is-loading .btn-loader {
+  display: inline-block;
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

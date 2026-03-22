@@ -60,6 +60,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // ===============================
     const form = document.getElementById("form-contacto");
     const btn = document.getElementById("btn_registrar");
+    const btnText = document.getElementById("btn_registrar_text");
+    let isSending = false;
+
+    function setSubmitState(loading) {
+        if (loading) {
+            btn.disabled = true;
+            btn.classList.add("is-loading");
+            if (btnText) btnText.textContent = "ENVIANDO...";
+        } else {
+            btn.disabled = false;
+            btn.classList.remove("is-loading");
+            if (btnText) btnText.textContent = "ENVIAR";
+        }
+    }
 
     const minFields = [
         { id: "nombre",   msg: "Nombre y Apellidos" },
@@ -74,6 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     btn.addEventListener("click", (e) => {
         e.preventDefault();
+
+        if (isSending) return;
 
         const nombre   = document.getElementById("nombre").value.trim();
         const edificio = document.getElementById("edificio").value.trim();
@@ -140,7 +156,20 @@ document.addEventListener("DOMContentLoaded", () => {
         alertify.confirm(
             "Confirmación",
             "¿Desea enviar el mensaje?",
-            () => sendEmail({ nombre, edificio, correo, telefono, distrito, mensaje }),
+            () => {
+                if (isSending) return;
+                isSending = true;
+                setSubmitState(true);
+                sendEmail(
+                    { nombre, edificio, correo, telefono, distrito, mensaje },
+                    {
+                        onError: () => {
+                            isSending = false;
+                            setSubmitState(false);
+                        }
+                    }
+                );
+            },
             () => console.log("Cancelado")
         );
     });
@@ -150,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ===============================
 // FUNCIÓN PARA ENVIAR CORREO
 // ===============================
-function sendEmail(data) {
+function sendEmail(data, { onError } = {}) {
     fetch("./config/envio_correo.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -163,10 +192,12 @@ function sendEmail(data) {
             setTimeout(() => location.reload(), 1500);
         } else {
             alertify.error("Error al enviar el mensaje");
+            if (typeof onError === "function") onError();
         }
     })
     .catch(err => {
         console.error(err);
         alertify.error("Error inesperado");
+        if (typeof onError === "function") onError();
     });
 }
