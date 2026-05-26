@@ -43,18 +43,9 @@ class AsistenciaAdministradoresModel
         ];
     }
 
-    public function countAll(?string $desde = null, ?string $hasta = null): int
+    public function countAll(): int
     {
-        $dateColumn = $this->resolveDateColumn();
-        [$whereSql, $params] = $this->buildDateFilter($dateColumn, $desde, $hasta);
-
-        $stmt = $this->db->prepare("SELECT COUNT(*) AS total FROM {$this->tableName} {$whereSql}");
-
-        foreach ($params as $key => $value) {
-            $stmt->bindValue($key, $value);
-        }
-
-        $stmt->execute();
+        $stmt = $this->db->query("SELECT COUNT(*) AS total FROM {$this->tableName}");
         $row = $stmt->fetch();
 
         return (int) ($row['total'] ?? 0);

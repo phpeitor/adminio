@@ -89,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "edificio",
     "fecha",
     "hora",
+    "tipo_asistencia",
     "lat",
     "lng",
     "maps_url",
@@ -155,6 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
       edificio: "Edificio",
       fecha: "Fecha",
       hora: "Hora",
+      tipo_asistencia: "Tipo asistencia",
       lat: "Latitud",
       lng: "Longitud",
       maps_url: "Mapa",
@@ -185,6 +187,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
           if (column === "estado") {
             return `<td><span class="${badgeClassFor(value)}"><span class="state-dot"></span>${escapeHtml(value || "-")}</span></td>`;
+          }
+
+          if (column === "tipo_asistencia") {
+            return `<td><span class="badge badge-default">${escapeHtml(value || "-")}</span></td>`;
           }
 
           if (value === null || value === undefined || value === "") {

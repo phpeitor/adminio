@@ -31,7 +31,7 @@ try {
     echo json_encode([
         'ok' => true,
         'message' => 'Reporte cargado correctamente',
-        'total' => $model->countAll($desde !== '' ? $desde : null, $hasta !== '' ? $hasta : null),
+        'total' => $model->countAll(),
         'limit' => $limit,
         'offset' => $offset,
         'desde' => $desde !== '' ? $desde : null,
