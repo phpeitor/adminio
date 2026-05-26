@@ -51,6 +51,34 @@ class AsistenciaAdministradoresModel
         return (int) ($row['total'] ?? 0);
     }
 
+    public function countByTipo(?string $desde = null, ?string $hasta = null): array
+    {
+        $dateColumn = $this->resolveDateColumn();
+        [$whereSql, $params] = $this->buildDateFilter($dateColumn, $desde, $hasta);
+
+        $sql = "
+            SELECT
+                SUM(CASE WHEN UPPER(tipo_asistencia) LIKE '%ENTRADA%' THEN 1 ELSE 0 END) AS entradas,
+                SUM(CASE WHEN UPPER(tipo_asistencia) LIKE '%SALIDA%' THEN 1 ELSE 0 END) AS salidas
+            FROM {$this->tableName}
+            {$whereSql}
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+
+        $stmt->execute();
+        $row = $stmt->fetch();
+
+        return [
+            'entradas' => (int) ($row['entradas'] ?? 0),
+            'salidas' => (int) ($row['salidas'] ?? 0),
+        ];
+    }
+
     private function buildDateFilter(string $dateColumn, ?string $desde, ?string $hasta): array
     {
         $clauses = [];

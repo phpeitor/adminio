@@ -46,13 +46,13 @@
         </div>
 
         <div class="summary-grid mb-6">
-          <div class="summary-card"><span class="summary-label">Total registros</span><span class="summary-value" id="total-value">0</span></div>
-          <div class="summary-card"><span class="summary-label">Mostrados</span><span class="summary-value" id="shown-value">0</span></div>
-          <div class="summary-card"><span class="summary-label">Columna fecha</span><span class="summary-value" id="date-column-value">-</span></div>
-          <div class="summary-card"><span class="summary-label">Estado</span><span class="summary-value" id="state-value">Listo</span></div>
+          <div class="summary-card summary-card-total"><span class="summary-label">Total registros</span><span class="summary-value" id="total-value">0</span></div>
+          <div class="summary-card summary-card-mostrados"><span class="summary-label">Mostrados</span><span class="summary-value" id="shown-value">0</span></div>
+          <div class="summary-card summary-card-entradas"><span class="summary-label">Entradas</span><span class="summary-value" id="entradas-value">0</span></div>
+          <div class="summary-card summary-card-salidas"><span class="summary-label">Salidas</span><span class="summary-value" id="salidas-value">0</span></div>
         </div>
 
-        <div class="panel-card contact-panel rounded-2xl p-4 md:p-6 mb-6">
+        <div class="panel-card contact-panel contact-panel-rounded rounded-2xl p-4 md:p-6 mb-6">
           <form id="filtro-asistencias" class="flex flex-col lg:flex-row lg:items-end gap-4">
             <div class="flex-1 min-w-0">
               <label class="filter-label" for="rango-fechas">Rango de fechas</label>
@@ -65,7 +65,7 @@
           </form>
         </div>
 
-        <div class="panel-surface rounded-2xl p-3 md:p-5">
+        <div class="panel-surface panel-surface-rounded rounded-2xl p-3 md:p-5">
           <div class="table-wrap">
             <table class="report-table" aria-describedby="report-caption">
               <thead id="table-head"></thead>

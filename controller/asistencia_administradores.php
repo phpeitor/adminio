@@ -27,11 +27,14 @@ try {
     }
 
     $report = $model->getReport($limit, $offset, $desde !== '' ? $desde : null, $hasta !== '' ? $hasta : null);
+    $tipoCounts = $model->countByTipo($desde !== '' ? $desde : null, $hasta !== '' ? $hasta : null);
 
     echo json_encode([
         'ok' => true,
         'message' => 'Reporte cargado correctamente',
         'total' => $model->countAll(),
+        'entradas' => $tipoCounts['entradas'],
+        'salidas' => $tipoCounts['salidas'],
         'limit' => $limit,
         'offset' => $offset,
         'desde' => $desde !== '' ? $desde : null,

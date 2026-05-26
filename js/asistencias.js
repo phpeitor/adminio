@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const rangeInput = document.getElementById("rango-fechas");
   const totalValue = document.getElementById("total-value");
   const shownValue = document.getElementById("shown-value");
-  const dateColumnValue = document.getElementById("date-column-value");
-  const stateValue = document.getElementById("state-value");
+  const entradasValue = document.getElementById("entradas-value");
+  const salidasValue = document.getElementById("salidas-value");
   const tableHead = document.getElementById("table-head");
   const tableBody = document.getElementById("table-body");
   const emptyState = document.getElementById("empty-state");
@@ -126,7 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const setLoading = loading => {
     applyBtn.disabled = loading;
     applyBtn.textContent = loading ? "CARGANDO..." : "APLICAR";
-    stateValue.textContent = loading ? "Consultando asistencia" : "Listo";
   };
 
   const renderTable = data => {
@@ -144,7 +143,6 @@ document.addEventListener("DOMContentLoaded", () => {
       tableBody.innerHTML = "";
       emptyState.hidden = false;
       shownValue.textContent = "0";
-      dateColumnValue.textContent = data.dateColumn || "-";
       return;
     }
 
@@ -204,7 +202,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     emptyState.hidden = true;
     shownValue.textContent = String(rows.length);
-    dateColumnValue.textContent = data.dateColumn || "-";
 
     if (window.jQuery && $.fn && $.fn.DataTable) {
       dataTableInstance = $(".report-table").DataTable({
@@ -249,6 +246,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       totalValue.textContent = String(data.total ?? 0);
+      entradasValue.textContent = String(data.entradas ?? 0);
+      salidasValue.textContent = String(data.salidas ?? 0);
       renderTable(data);
     } catch (error) {
       tableHead.innerHTML = "";
@@ -257,8 +256,8 @@ document.addEventListener("DOMContentLoaded", () => {
       emptyState.textContent = error.message || "No se pudo cargar la información";
       totalValue.textContent = "0";
       shownValue.textContent = "0";
-      dateColumnValue.textContent = "-";
-      stateValue.textContent = "Error";
+      entradasValue.textContent = "0";
+      salidasValue.textContent = "0";
     } finally {
       setLoading(false);
     }

@@ -26,6 +26,8 @@ body.asistencias-page {
   overflow: hidden;
   background:
     linear-gradient(90deg, rgba(87, 46, 119, 0.96) 0%, rgba(124, 66, 95, 0.92) 34%, rgba(205, 108, 31, 0.94) 100%);
+  border-radius: 0 0 1.5rem 1.5rem;
+  margin: 0.5rem 0.5rem 0;
 }
 
 .asistencias-hero:before,
@@ -76,6 +78,11 @@ body.asistencias-page {
   color: #293042;
 }
 
+.contact-panel-rounded {
+  border-radius: 1.35rem;
+  overflow: hidden;
+}
+
 .contact-panel .filter-label {
   color: #5b6476;
 }
@@ -84,6 +91,11 @@ body.asistencias-page {
   background: rgba(255, 255, 255, 0.96);
   border: 1px solid var(--panel-line);
   box-shadow: 0 12px 28px rgba(41, 48, 66, 0.08);
+}
+
+.panel-surface-rounded {
+  border-radius: 1.35rem;
+  overflow: hidden;
 }
 
 .filter-input {
@@ -260,6 +272,22 @@ body.asistencias-page {
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid rgba(41, 48, 66, 0.08);
   box-shadow: 0 8px 20px rgba(41, 48, 66, 0.08);
+}
+
+.summary-card-total {
+  border-top: 4px solid #293042;
+}
+
+.summary-card-mostrados {
+  border-top: 4px solid #445298;
+}
+
+.summary-card-entradas {
+  border-top: 4px solid #1d2ea7;
+}
+
+.summary-card-salidas {
+  border-top: 4px solid #d96b14;
 }
 
 .summary-value {
