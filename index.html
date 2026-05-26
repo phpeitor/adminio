@@ -15,7 +15,7 @@
     <meta name="twitter:description"
         content="Adminio Perú | Un nuevo estándar en administración inmobiliaria de Condominios y Edificios. Mejora la Transparencia económica y comunicación vecinal.">
     <link href="./css/app.css" rel="stylesheet">
-    <link href="./css/index.css" rel="stylesheet">
+    <link href="./css/index.css?v=3.5" rel="stylesheet">
     <link href="./css/index.d790f8802cd7a090c6be.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
@@ -46,7 +46,7 @@
                     data-section="contacto">Contacto</a></li>
             <li class="block"><a
                     class="block rounded text-white no-underline text-md font-semibold py-2 px-8 v_gradient_primary lg:ml-4 md:lg:ml-4 lg:rounded-none lg:rounded-l-lg md:rounded-l-lg"
-                    id="sign-in-btn" href="https://portal.adminio.pe/">Intranet</a></li>
+                    id="sign-in-btn" href="#">Intranet</a></li>
             <li class="block">
                 <a class="block text-white rounded no-underline text-md font-semibold py-2 px-8 bg-blue lg:rounded-none md:rounded-none lg:mr-0"
                     id="sign-up-btn" href="https://console.vecinos360.com/comunidad.php?codigo=36f6108">Clientes</a>
@@ -485,29 +485,30 @@
                 </h1>
 
                 <form class="w-full z-10 max-w-md m-auto p-8 rounded-lg shadow-lg relative bg-white text-grey-darkest"
-                    id="form-contacto" data-aos="fade-up">
+                    id="form-contacto" data-aos="fade-up" novalidate>
 
-                    <div class="mb-6"><label class="block uppercase tracking-wide text-xs font-bold mb-2"
+                        <div class="mb-6"><label class="block uppercase tracking-wide text-xs font-bold mb-2"
                             for="form-fullname">Nombres y Apellidos</label><input
-                            class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" placeholder="Adminio Perú"
-                            id="nombre" type="text" required="required" maxlength=50>
+                            class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-2 leading-tight focus:outline-none focus:bg-white" placeholder="Adminio Perú"
+                            id="nombre" type="text" required="required" maxlength=50><p class="field-feedback error-message" id="error-nombre" aria-live="polite"></p>
                     </div>
 
                     <div class="flex flex-wrap mb-6">
                         <div class="w-full pr-0 md:w-1/2 md:mb-0 lg:pr-2 md:pr-2 sm:pr-0"><label
-                                class="block uppercase tracking-wide text-xs font-bold mb-2"
-                                for="form-email">Email</label><input
-                                class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                id="correo" type="email" placeholder="hola@tudominio.com" required="required"
-                                maxlength=40></div>
+                            class="block uppercase tracking-wide text-xs font-bold mb-2"
+                            for="form-email">Email</label><input
+                            class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-2 leading-tight focus:outline-none focus:bg-white"
+                            id="correo" type="email" placeholder="hola@tudominio.com" required="required"
+                            maxlength=40><p class="field-feedback error-message" id="error-correo" aria-live="polite"></p></div>
 
                         <div class="w-full md:w-1/2">
                             <label class="block uppercase tracking-wide text-xs font-bold mb-2"
                                 for="form-edificio">Nombre de edificio</label>
                             <div class="relative">
                                 <input
-                                    class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-2 leading-tight focus:outline-none focus:bg-white"
                                     id="edificio" type="text" placeholder="Las Torres" required="required" maxlength=50>
+                                <p class="field-feedback error-message" id="error-edificio" aria-live="polite"></p>
                             </div>
                         </div>
                     </div>
@@ -516,9 +517,10 @@
                         <div class="w-full pr-0 flex-wrap mb-6 lg:pr-2 md:pr-2 sm:pr-0 lg:flex-1 md:flex-1 lg:mb-0 md:mb-0"
                             id="display-form-telefono"><label
                                 class="block uppercase tracking-wide text-xs font-bold mb-2"
-                                for="form-q1">Teléfono</label><input
-                                class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight mb-3 focus:outline-none focus:bg-white"
+                                for="form-q1">Telefono</label><input
+                                class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight mb-2 focus:outline-none focus:bg-white"
                                 id="telefono" type="text" placeholder="Móvil o Fijo" required="required" maxlength=12>
+                            <p class="field-feedback error-message" id="error-telefono" aria-live="polite"></p>
                         </div>
 
                         <div class="w-full pl-0 flex-wrap lg:flex-1 md:flex-1"><label
@@ -529,14 +531,15 @@
                                 id="distrito" name="distrito" required="required">
                                 <option value="">Seleccione</option>
                             </select>
+                            <p class="field-feedback error-message" id="error-distrito" aria-live="polite"></p>
                         </div>
                     </div>
 
                     <div class="w-full pl-0 mb-6"><label class="block uppercase tracking-wide text-xs font-bold mb-2"
-                            for="form-mensaje">¿Quieres preguntarme algo? ¡Déjame un mensaje!</label><textarea
-                            class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight mb-3 focus:outline-none focus:bg-white"
+                            for="form-mensaje">¿Quieres preguntarme algo? ¡Dejame un mensaje!</label><textarea
+                            class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight mb-2 focus:outline-none focus:bg-white"
                             id="mensaje" type="text" placeholder="Describe tu problema" required="required"
-                            maxlength=400></textarea></div>
+                            maxlength=400></textarea><p class="field-feedback error-message" id="error-mensaje" aria-live="polite"></p></div>
 
                     <div class="text-center mt-10">
                         <button class="block rounded-full text-white no-underline text-md font-semibold py-4 px-8 v_gradient_primary m-auto hover:bg-grey-light" id="btn_registrar" name="btn_registrar" type="submit">
@@ -607,7 +610,7 @@
                             <a class="m-2" href="https://www.facebook.com/adminioeirl/" target="_blank">
                                 <img src="./static/551561d7ed5bfbdad946021e505e4478.svg" width="32" height="32">
                             </a>
-                            <a class="m-2" href="https://www.instagram.com/adminioeirl/" target="_blank">
+                            <a class="m-2" href="https://www.instagram.com/adminio2014/" target="_blank">
                                 <img src="./static/63c2a918e5ba68b4fe65b76f1763291d.svg" width="32" height="32">
                             </a>
                         </div>
@@ -626,6 +629,6 @@
     <script type="text/javascript" src="./js/app.8bdd6bafb87e234627f6.js?v=4"></script>
     <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
-    <script type="text/javascript" src="./js/adminio.js?v=3.4"></script>
+    <script type="text/javascript" src="./js/adminio.js?v=3.5"></script>
 </body>
 </html>

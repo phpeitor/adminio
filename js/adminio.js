@@ -62,6 +62,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("btn_registrar");
     const btnText = document.getElementById("btn_registrar_text");
     let isSending = false;
+    const fieldConfig = {
+        nombre: { label: "Nombres y Apellidos", minLength: 5 },
+        edificio: { label: "Nombre de edificio", minLength: 5 },
+        correo: { label: "Correo" },
+        telefono: { label: "Teléfono" },
+        distrito: { label: "Distrito" },
+        mensaje: { label: "Mensaje", minLength: 5 }
+    };
+    const requiredFields = ["nombre", "edificio", "correo", "telefono", "distrito", "mensaje"]
+        .map(id => document.getElementById(id))
+        .filter(Boolean);
 
     function setSubmitState(loading) {
         if (loading) {
@@ -75,21 +86,76 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    const minFields = [
-        { id: "nombre",   msg: "Nombre y Apellidos" },
-        { id: "edificio", msg: "Edificio" },
-        { id: "mensaje",  msg: "Mensaje" }
-    ];
-
-    // Valida si un campo tiene mínimo N caracteres reales
-    function validarMinimo(valor, minimo = 5) {
-        return valor.replace(/\s+/g, "").length >= minimo;
+    function getErrorNode(field) {
+        return document.getElementById(`error-${field.id}`);
     }
 
-    btn.addEventListener("click", (e) => {
-        e.preventDefault();
+    function clearFieldError(field) {
+        field.classList.remove("input-error");
+        field.removeAttribute("aria-invalid");
+        const errorNode = getErrorNode(field);
+        if (errorNode) errorNode.textContent = "";
+    }
 
-        if (isSending) return;
+    function setFieldError(field, message) {
+        field.classList.add("input-error");
+        field.setAttribute("aria-invalid", "true");
+        const errorNode = getErrorNode(field);
+        if (errorNode) errorNode.textContent = message;
+    }
+
+    function attachLiveClear(field) {
+        const eventName = field.tagName === "SELECT" ? "change" : "input";
+        field.addEventListener(eventName, () => {
+            clearFieldError(field);
+        });
+    }
+
+    requiredFields.forEach(attachLiveClear);
+
+    function validateField(field) {
+        const config = fieldConfig[field.id];
+        const value = field.value.trim();
+
+        if (!value || value === "0") {
+            setFieldError(field, field.id === "distrito" ? "Selecciona un distrito" : `Ingresa ${config.label}`);
+            return false;
+        }
+
+        if (field.id === "telefono") {
+            const regexTelefono = /^[0-9+]+$/;
+
+            if (!regexTelefono.test(value)) {
+                setFieldError(field, "El teléfono solo debe contener números");
+                return false;
+            }
+
+            if (value.replace(/\D/g, "").length < 8) {
+                setFieldError(field, "El teléfono debe tener mínimo 8 dígitos");
+                return false;
+            }
+        }
+
+        if (field.id === "correo") {
+            const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!regexEmail.test(value)) {
+                setFieldError(field, "Ingresa una dirección de correo válida");
+                return false;
+            }
+        }
+
+        if (config.minLength && value.replace(/\s+/g, "").length < config.minLength) {
+            setFieldError(field, `${config.label} debe tener mínimo ${config.minLength} caracteres`);
+            return false;
+        }
+
+        clearFieldError(field);
+        return true;
+    }
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
 
         const nombre   = document.getElementById("nombre").value.trim();
         const edificio = document.getElementById("edificio").value.trim();
@@ -98,55 +164,20 @@ document.addEventListener("DOMContentLoaded", () => {
         const distrito = document.getElementById("distrito").value.trim();
         const mensaje  = document.getElementById("mensaje").value.trim();
 
-        // ===============================
-        // VALIDAR CAMPOS VACÍOS
-        // ===============================
+        let firstInvalidField = null;
         let isValidado = true;
-        form.querySelectorAll("input[required],textarea[required],select[required]").forEach(campo => {
-            if (!campo.value.trim() || campo.value === "0") {
-                campo.classList.add("border-red-lighter");
-                if (isValidado) campo.focus();
+
+        requiredFields.forEach(campo => {
+            const isFieldValid = validateField(campo);
+            if (!isFieldValid) {
                 isValidado = false;
-            } else {
-                campo.classList.remove("border-red-lighter");
+                if (!firstInvalidField) firstInvalidField = campo;
             }
         });
 
-        if (!isValidado) return;
-
-
-        // ===============================
-        // VALIDAR CAMPOS MÍNIMOS
-        // ===============================
-        for (let campo of minFields) {
-            const valor = document.getElementById(campo.id).value.trim();
-            if (!validarMinimo(valor, 5)) {
-                return alertify.error(`${campo.msg} debe tener mínimo 5 caracteres`);
-            }
-        }
-
-
-        // ===============================
-        // VALIDAR TELÉFONO (solo números)
-        // ===============================
-        const regexTelefono = /^[0-9+]+$/;
-
-        if (!regexTelefono.test(telefono)) {
-            return alertify.error("El teléfono solo debe contener números");
-        }
-
-        if (telefono.replace(/\D/g, "").length < 8) {
-            return alertify.error("El teléfono debe tener mínimo 8 dígitos");
-        }
-
-
-        // ===============================
-        // VALIDAR EMAIL
-        // ===============================
-        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!regexEmail.test(correo)) {
-            return alertify.error("Dirección de email incorrecta");
+        if (!isValidado) {
+            if (firstInvalidField) firstInvalidField.focus();
+            return;
         }
 
 

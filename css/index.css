@@ -4652,6 +4652,11 @@ body {
 }
 .v_gradient_primary {
   background-image: linear-gradient(90deg, #f99c4c, #445298);
+  background-size: 220% 220%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(43, 52, 97, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  animation: gradient-flow 7.5s ease-in-out infinite;
 }
 .v_gradient_primary_dark {
   background-image: linear-gradient(90deg, #ff5002, #ff8805);
@@ -4661,6 +4666,11 @@ body {
 }
 .v_gradient_primary_opacity {
   background-image: linear-gradient(90deg, #d2821f, #061531);
+  background-size: 220% 220%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(43, 52, 97, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  animation: gradient-flow 9s ease-in-out infinite;
   opacity: 0.9;
 }
 .v_text_gradient_primary {
@@ -4721,6 +4731,22 @@ body {
 .success-message {
   font-size: 0.75rem;
   font-style: italic;
+}
+.field-feedback {
+  min-height: 1rem;
+  margin-top: -0.35rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.1;
+}
+.field-feedback:empty {
+  display: none;
+}
+#error-distrito {
+  margin-top: 0.2rem;
+}
+.input-error {
+  border-color: #e3342f !important;
+  box-shadow: 0 0 0 1px rgba(227, 52, 47, 0.14);
 }
 .success-message {
   color: #1d2ea7;
@@ -4975,6 +5001,24 @@ html {
   transition: box-shadow 0.24s linear;
   transform: translateZ(50px);
   box-shadow: 0 0 10px 0 rgba(255, 166, 0, 0.32);
+}
+.v_gradient_primary:hover,
+.v_gradient_primary:focus-visible,
+.v_gradient_primary_opacity:hover,
+.v_gradient_primary_opacity:focus-visible {
+  filter: saturate(1.12) brightness(1.04);
+  transform: translateY(-1px);
+}
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 .card-price:hover {
   transition-timing-function: ease-out;
