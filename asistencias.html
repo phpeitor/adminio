@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff">
+  <meta name="description" content="Consulta y filtra las asistencias de administradores en Adminio Perú.">
+  <title>Adminio Perú | Asistencias</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🏢</text></svg>" />
+  <link href="./css/app.css" rel="stylesheet">
+  <link href="./css/index.css?v=3.5" rel="stylesheet">
+  <link href="./css/asistencias.css?v=1.0" rel="stylesheet">
+</head>
+<body class="asistencias-page">
+  <div class="fixed w-full z-20 shadow bg-white">
+    <input class="z-30 fixed" type="checkbox" id="toggle"><label class="z-30 fixed" for="toggle" id="toggle-btn"></label>
+    <div class="nav-icon block z-30 fixed lg:hidden md:block sm:block"></div>
+    <nav class="container m-auto flex items-center justify-between flex-wrap px-6 w-full z-20 pin-t nav-customize" id="v360-header">
+      <a class="flex items-center flex-no-shrink text-white mr-6" href="./index.html">
+        <img class="fill-current h-10 mr-2 my-2 hidden lg:block md:block sm:block" src="./static/logo.png" alt="Adminio">
+        <img class="fill-current h-10 mr-2 my-2 block lg:hidden md:hidden sm:hidden" src="./static/logo.png" alt="Adminio">
+      </a>
+      <ul class="block flex-grow flex items-center w-auto justify-end" id="v360-awesome-nav">
+        <li class="item-nav"><a class="nav-link block text-black no-underline text-base font-medium mx-2 p-2 py-4" href="./index.html#nosotros">Nosotros</a></li>
+        <li class="item-nav"><a class="nav-link block text-black no-underline text-base font-medium mx-2 p-2 py-4" href="./index.html#servicios">Servicios</a></li>
+        <li class="item-nav"><a class="nav-link block text-black no-underline text-base font-medium mx-2 p-2 py-4" href="./index.html#beneficios">Beneficios</a></li>
+        <li class="item-nav"><a class="nav-link block text-black no-underline text-base font-medium mx-2 p-2 py-4" href="./index.html#video">Video</a></li>
+        <li class="item-nav"><a class="nav-link block text-black no-underline text-base font-medium mx-2 p-2 py-4" href="./index.html#contacto">Contacto</a></li>
+        <li class="block"><a class="block rounded text-white no-underline text-md font-semibold py-2 px-8 v_gradient_primary lg:ml-4 md:lg:ml-4 lg:rounded-none lg:rounded-l-lg md:rounded-l-lg" href="./asistencias.html">Asistencias</a></li>
+        <li class="block"><a class="block text-white rounded no-underline text-md font-semibold py-2 px-8 bg-blue lg:rounded-none md:rounded-none lg:mr-0" href="https://console.vecinos360.com/comunidad.php?codigo=36f6108">Clientes</a></li>
+        <li class="block"><a class="block text-white no-underline text-md font-semibold py-2 px-8 v_gradient_primary_opacity lg:rounded-none lg:rounded-r-lg md:rounded-r-lg lg:mr-4" href="./360pay">Pagos</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <main class="asistencias-shell">
+    <section class="asistencias-hero">
+      <div class="container mx-auto relative z-10">
+        <div class="text-center mb-8">
+          <h1 class="text-4xl md:text-5xl font-extrabold text-white"><span class="title-section">Asistencias</span></h1>
+          <p class="mt-4 text-lg md:text-xl text-white opacity-90 max-w-3xl mx-auto">Consulta el registro de asistencia de administradores por rango de fechas con la misma línea visual de Adminio.</p>
+        </div>
+
+        <div class="summary-grid mb-6">
+          <div class="summary-card"><span class="summary-label">Total registros</span><span class="summary-value" id="total-value">0</span></div>
+          <div class="summary-card"><span class="summary-label">Mostrados</span><span class="summary-value" id="shown-value">0</span></div>
+          <div class="summary-card"><span class="summary-label">Columna fecha</span><span class="summary-value" id="date-column-value">-</span></div>
+          <div class="summary-card"><span class="summary-label">Estado</span><span class="summary-value" id="state-value">Listo</span></div>
+        </div>
+
+        <div class="panel-card rounded-2xl p-4 md:p-6 mb-6">
+          <form id="filtro-asistencias" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+            <div>
+              <label class="filter-label" for="desde">Desde</label>
+              <input class="filter-input" type="date" id="desde" name="desde">
+            </div>
+            <div>
+              <label class="filter-label" for="hasta">Hasta</label>
+              <input class="filter-input" type="date" id="hasta" name="hasta">
+            </div>
+            <div class="flex gap-3 md:justify-end">
+              <button id="apply-filter" class="block rounded-full text-white no-underline text-md font-semibold py-3 px-8 v_gradient_primary btn_shadow_animation" type="submit">Aplicar</button>
+              <button id="clear-filter" class="block rounded-full text-white no-underline text-md font-semibold py-3 px-8 v_gradient_primary_opacity btn_shadow_animation" type="button">Limpiar</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel-surface rounded-2xl p-3 md:p-5">
+          <div class="table-wrap">
+            <table class="report-table" aria-describedby="report-caption">
+              <caption id="report-caption" class="sr-only">Tabla de asistencias de administradores</caption>
+              <thead id="table-head"></thead>
+              <tbody id="table-body"></tbody>
+            </table>
+          </div>
+          <div id="empty-state" class="asistencias-empty" hidden>No hay resultados para el rango seleccionado.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./js/asistencias.js?v=1.0"></script>
+</body>
+</html>
