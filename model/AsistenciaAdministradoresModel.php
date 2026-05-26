@@ -99,8 +99,23 @@ class AsistenciaAdministradoresModel
             return $this->dateColumn;
         }
 
+        $exactDateColumn = $this->db->prepare(
+            "SELECT COLUMN_NAME
+             FROM INFORMATION_SCHEMA.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE()
+               AND TABLE_NAME = ?
+               AND COLUMN_NAME = 'fecha'
+             LIMIT 1"
+        );
+        $exactDateColumn->execute([$this->tableName]);
+        $exactRow = $exactDateColumn->fetch();
+
+        if (!empty($exactRow['COLUMN_NAME'])) {
+            $this->dateColumn = 'fecha';
+            return $this->dateColumn;
+        }
+
         $preferredNames = [
-            'fecha',
             'created_at',
             'updated_at',
             'fecha_registro',
@@ -115,10 +130,10 @@ class AsistenciaAdministradoresModel
             WHERE TABLE_SCHEMA = DATABASE()
               AND TABLE_NAME = ?
               AND (
-                    COLUMN_NAME IN ({$placeholders})
-                    OR DATA_TYPE IN ('date', 'datetime', 'timestamp')
+                                        COLUMN_NAME IN ({$placeholders})
+                                        OR DATA_TYPE IN ('date', 'datetime', 'timestamp')
                   )
-            ORDER BY FIELD(COLUMN_NAME, 'fecha', 'created_at', 'updated_at', 'fecha_registro', 'fecha_asistencia', 'date') ASC,
+                        ORDER BY FIELD(COLUMN_NAME, 'created_at', 'updated_at', 'fecha_registro', 'fecha_asistencia', 'date') ASC,
                      ORDINAL_POSITION ASC
             LIMIT 1
         ";

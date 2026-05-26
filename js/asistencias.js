@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const endpoint = "./controller/asistencia_administradores.php";
   const form = document.getElementById("filtro-asistencias");
-  const desdeInput = document.getElementById("desde");
-  const hastaInput = document.getElementById("hasta");
+  const rangeInput = document.getElementById("rango-fechas");
   const totalValue = document.getElementById("total-value");
   const shownValue = document.getElementById("shown-value");
   const dateColumnValue = document.getElementById("date-column-value");
@@ -12,17 +11,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const emptyState = document.getElementById("empty-state");
   const applyBtn = document.getElementById("apply-filter");
   const clearBtn = document.getElementById("clear-filter");
+  let dataTableInstance = null;
+  let rangePicker = null;
 
   const today = new Date();
-  const localISO = date => {
-    const offset = date.getTimezoneOffset() * 60000;
-    return new Date(date - offset).toISOString().slice(0, 10);
-  };
-
   const sevenDaysAgo = new Date(today);
   sevenDaysAgo.setDate(today.getDate() - 7);
-  desdeInput.value = localISO(sevenDaysAgo);
-  hastaInput.value = localISO(today);
+
+  const toISODate = date => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const rangeToParams = () => {
+    const dates = rangePicker ? rangePicker.selectedDates : [];
+
+    if (!dates || dates.length < 2) {
+      return { desde: "", hasta: "" };
+    }
+
+    const [startDate, endDate] = dates;
+
+    return {
+      desde: toISODate(startDate),
+      hasta: toISODate(endDate),
+    };
+  };
+
+  if (window.flatpickr) {
+    rangePicker = flatpickr(rangeInput, {
+      mode: "range",
+      dateFormat: "Y-m-d",
+      altInput: true,
+      altFormat: "d/m/Y",
+      allowInput: false,
+      defaultDate: [sevenDaysAgo, today],
+      locale: {
+        rangeSeparator: " al ",
+      },
+    });
+  }
 
   const formatDate = value => {
     if (!value) return "-";
@@ -51,13 +81,45 @@ document.addEventListener("DOMContentLoaded", () => {
     return "badge badge-default";
   };
 
+  const visibleColumns = [
+    "id",
+    "ticket_id",
+    "wa_id",
+    "nombre_admin",
+    "edificio",
+    "fecha",
+    "hora",
+    "lat",
+    "lng",
+    "maps_url",
+    "foto_url",
+    "estado",
+  ];
+
   const buildUrl = () => {
+    const { desde, hasta } = rangeToParams();
     const params = new URLSearchParams();
-    if (desdeInput.value) params.set("desde", desdeInput.value);
-    if (hastaInput.value) params.set("hasta", hastaInput.value);
+    if (desde) params.set("desde", desde);
+    if (hasta) params.set("hasta", hasta);
     params.set("limit", "250");
     params.set("offset", "0");
     return `${endpoint}?${params.toString()}`;
+  };
+
+  const validateDateRange = () => {
+    const dates = rangePicker ? rangePicker.selectedDates : [];
+
+    if (!dates || dates.length < 2) {
+      alertify.error("Debes seleccionar un rango de fechas completo");
+      return false;
+    }
+
+    if (dates[0] > dates[1]) {
+      alertify.error("La fecha inicio no puede ser mayor que la fecha fin");
+      return false;
+    }
+
+    return true;
   };
 
   const setLoading = loading => {
@@ -69,8 +131,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const renderTable = data => {
     const columns = Array.isArray(data.columns) ? data.columns : [];
     const rows = Array.isArray(data.rows) ? data.rows : [];
+    const renderColumns = visibleColumns.filter(column => columns.includes(column));
 
-    if (columns.length === 0 || rows.length === 0) {
+    if (dataTableInstance) {
+      dataTableInstance.destroy();
+      dataTableInstance = null;
+    }
+
+    if (renderColumns.length === 0 || rows.length === 0) {
       tableHead.innerHTML = "";
       tableBody.innerHTML = "";
       emptyState.hidden = false;
@@ -79,25 +147,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const preferredColumns = [
-      "nombre_admin",
-      "edificio",
-      "fecha",
-      "hora",
-      "estado",
-      "tipo_asistencia",
-      "maps_url",
-      "foto_url",
-    ];
-
-    const orderedColumns = [
-      ...preferredColumns.filter(column => columns.includes(column)),
-      ...columns.filter(column => !preferredColumns.includes(column)),
-    ];
-
     const labels = {
+      id: "ID",
       ticket_id: "Ticket",
-      wa_id: "WA",
+      wa_id: "WA ID",
       nombre_admin: "Administrador",
       edificio: "Edificio",
       fecha: "Fecha",
@@ -107,22 +160,15 @@ document.addEventListener("DOMContentLoaded", () => {
       maps_url: "Mapa",
       foto_url: "Foto",
       estado: "Estado",
-      trama: "Trama",
-      registrado_por: "Registrado por",
-      tipo_asistencia: "Tipo",
-      hash_registro: "Hash",
-      fecha_carga: "Fecha carga",
-      fecha_actualizacion: "Actualización",
-      id: "ID",
     };
 
-    tableHead.innerHTML = `<tr>${orderedColumns
+    tableHead.innerHTML = `<tr>${renderColumns
       .map(column => `<th>${escapeHtml(labels[column] || column.replaceAll("_", " "))}</th>`)
       .join("")}</tr>`;
 
     tableBody.innerHTML = rows
       .map(row => {
-        return `<tr>${orderedColumns.map(column => {
+        return `<tr>${renderColumns.map(column => {
           const value = row[column];
 
           if (column === "fecha") {
@@ -141,11 +187,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return `<td><span class="${badgeClassFor(value)}"><span class="state-dot"></span>${escapeHtml(value || "-")}</span></td>`;
           }
 
-          if (column === "trama") {
-            const text = String(value || "-");
-            return `<td title="${escapeHtml(text)}">${escapeHtml(text.slice(0, 110))}${text.length > 110 ? "..." : ""}</td>`;
-          }
-
           if (value === null || value === undefined || value === "") {
             return `<td>-</td>`;
           }
@@ -158,9 +199,38 @@ document.addEventListener("DOMContentLoaded", () => {
     emptyState.hidden = true;
     shownValue.textContent = String(rows.length);
     dateColumnValue.textContent = data.dateColumn || "-";
+
+    if (window.jQuery && $.fn && $.fn.DataTable) {
+      dataTableInstance = $(".report-table").DataTable({
+        destroy: true,
+        pageLength: 10,
+        lengthMenu: [10, 25, 50, 100],
+        order: [[5, "desc"]],
+        responsive: true,
+        autoWidth: false,
+        language: {
+          search: "Buscar:",
+          lengthMenu: "Mostrar _MENU_ registros",
+          info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+          infoEmpty: "Mostrando 0 a 0 de 0 registros",
+          infoFiltered: "(filtrado de _MAX_ registros)",
+          zeroRecords: "No se encontraron coincidencias",
+          paginate: {
+            first: "Primero",
+            last: "Último",
+            next: "Siguiente",
+            previous: "Anterior",
+          },
+        },
+      });
+    }
   };
 
   const loadReport = async () => {
+    if (!validateDateRange()) {
+      return;
+    }
+
     setLoading(true);
     emptyState.hidden = true;
 
@@ -194,8 +264,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   clearBtn.addEventListener("click", () => {
-    desdeInput.value = localISO(sevenDaysAgo);
-    hastaInput.value = localISO(today);
+    if (rangePicker) {
+      rangePicker.clear();
+      rangePicker.setDate([sevenDaysAgo, today], true, "Y-m-d");
+    } else {
+      rangeInput.value = "";
+    }
     loadReport();
   });
 

@@ -10,6 +10,10 @@
   <link href="./css/app.css" rel="stylesheet">
   <link href="./css/index.css?v=3.5" rel="stylesheet">
   <link href="./css/asistencias.css?v=1.0" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
 </head>
 <body class="asistencias-page">
   <div class="fixed w-full z-20 shadow bg-white">
@@ -48,19 +52,15 @@
           <div class="summary-card"><span class="summary-label">Estado</span><span class="summary-value" id="state-value">Listo</span></div>
         </div>
 
-        <div class="panel-card rounded-2xl p-4 md:p-6 mb-6">
-          <form id="filtro-asistencias" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-            <div>
-              <label class="filter-label" for="desde">Desde</label>
-              <input class="filter-input" type="date" id="desde" name="desde">
+        <div class="panel-card contact-panel rounded-2xl p-4 md:p-6 mb-6">
+          <form id="filtro-asistencias" class="flex flex-col lg:flex-row lg:items-end gap-4">
+            <div class="flex-1 min-w-0">
+              <label class="filter-label" for="rango-fechas">Rango de fechas</label>
+              <input class="filter-input" type="text" id="rango-fechas" name="rango-fechas" placeholder="Selecciona un rango" readonly>
             </div>
-            <div>
-              <label class="filter-label" for="hasta">Hasta</label>
-              <input class="filter-input" type="date" id="hasta" name="hasta">
-            </div>
-            <div class="flex gap-3 md:justify-end">
-              <button id="apply-filter" class="block rounded-full text-white no-underline text-md font-semibold py-3 px-8 v_gradient_primary btn_shadow_animation" type="submit">Aplicar</button>
-              <button id="clear-filter" class="block rounded-full text-white no-underline text-md font-semibold py-3 px-8 v_gradient_primary_opacity btn_shadow_animation" type="button">Limpiar</button>
+            <div class="flex gap-3 lg:justify-end flex-nowrap lg:shrink-0">
+              <button id="apply-filter" class="block rounded-full text-white no-underline text-md font-semibold py-3 px-8 v_gradient_primary btn_shadow_animation whitespace-nowrap" type="submit">Aplicar</button>
+              <button id="clear-filter" class="block rounded-full text-white no-underline text-md font-semibold py-3 px-8 v_gradient_primary_opacity btn_shadow_animation whitespace-nowrap" type="button">Limpiar</button>
             </div>
           </form>
         </div>
@@ -68,7 +68,6 @@
         <div class="panel-surface rounded-2xl p-3 md:p-5">
           <div class="table-wrap">
             <table class="report-table" aria-describedby="report-caption">
-              <caption id="report-caption" class="sr-only">Tabla de asistencias de administradores</caption>
               <thead id="table-head"></thead>
               <tbody id="table-body"></tbody>
             </table>
@@ -79,6 +78,10 @@
     </section>
   </main>
 
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
   <script src="./js/asistencias.js?v=1.0"></script>
 </body>
 </html>
