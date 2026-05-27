@@ -9,13 +9,14 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🏢</text></svg>" />
   <link href="./css/app.css" rel="stylesheet">
   <link href="./css/index.css?v=3.5" rel="stylesheet">
-  <link href="./css/asistencias.css?v=1.0" rel="stylesheet">
+  <link href="./css/asistencias.css?v=1.1" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.54.1/dist/apexcharts.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
 </head>
-<body class="asistencias-page">
+<body class="asistencias-page auth-locked">
   <div class="fixed w-full z-20 shadow bg-white">
     <input class="z-30 fixed" type="checkbox" id="toggle"><label class="z-30 fixed" for="toggle" id="toggle-btn"></label>
     <div class="nav-icon block z-30 fixed lg:hidden md:block sm:block"></div>
@@ -31,8 +32,7 @@
         <li class="item-nav"><a class="nav-link block text-black no-underline text-base font-medium mx-2 p-2 py-4" href="./index.html#video">Video</a></li>
         <li class="item-nav"><a class="nav-link block text-black no-underline text-base font-medium mx-2 p-2 py-4" href="./index.html#contacto">Contacto</a></li>
         <li class="block"><a class="block rounded text-white no-underline text-md font-semibold py-2 px-8 v_gradient_primary lg:ml-4 md:lg:ml-4 lg:rounded-none lg:rounded-l-lg md:rounded-l-lg" href="./asistencias.html">Asistencias</a></li>
-        <li class="block"><a class="block text-white rounded no-underline text-md font-semibold py-2 px-8 bg-blue lg:rounded-none md:rounded-none lg:mr-0" href="https://console.vecinos360.com/comunidad.php?codigo=36f6108">Clientes</a></li>
-        <li class="block"><a class="block text-white no-underline text-md font-semibold py-2 px-8 v_gradient_primary_opacity lg:rounded-none lg:rounded-r-lg md:rounded-r-lg lg:mr-4" href="./360pay">Pagos</a></li>
+        <li class="block"><button class="block text-white no-underline text-md font-semibold py-2 px-8 v_gradient_primary_opacity lg:rounded-none lg:rounded-r-lg md:rounded-r-lg lg:mr-4 logout-btn" type="button" id="logout-btn">Cerrar sesión</button></li>
       </ul>
     </nav>
   </div>
@@ -74,14 +74,44 @@
           </div>
           <div id="empty-state" class="asistencias-empty" hidden>No hay resultados para el rango seleccionado.</div>
         </div>
+
+        <div id="charts-section" class="charts-section mt-6" hidden>
+          <div class="charts-grid">
+            <div class="chart-card panel-surface-rounded"><div id="chart-admin"></div></div>
+            <div class="chart-card panel-surface-rounded"><div id="chart-edificio"></div></div>
+            <div class="chart-card panel-surface-rounded"><div id="chart-fecha"></div></div>
+            <div class="chart-card panel-surface-rounded"><div id="chart-tipo"></div></div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
+  <div id="access-overlay" class="access-overlay" role="dialog" aria-modal="true" aria-labelledby="access-title">
+    <div class="access-card">
+      <div class="access-card-header">
+        <div>
+          <span class="access-kicker">Acceso restringido</span>
+        </div>
+      </div>
+      <p class="access-copy">Para ver las asistencias y sus gráficos, ingresa el token configurado en el entorno del proyecto.</p>
+      <form id="access-form" class="access-form">
+        <label class="access-label" for="access-token">Token de acceso</label>
+        <input id="access-token" name="token" class="access-input" type="password" placeholder="Ingresa el token" autocomplete="off" maxlength="30" />
+        <div class="access-actions">
+          <button id="access-submit" type="submit" class="block rounded-full text-white no-underline text-md font-semibold py-3 px-8 v_gradient_primary btn_shadow_animation">Ingresar</button>
+        </div>
+      </form>
+      <p id="access-error" class="access-error" aria-live="polite"></p>
+      <p id="access-countdown" class="access-countdown" aria-live="polite" hidden></p>
+    </div>
+  </div>
+
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.54.1/dist/apexcharts.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./js/asistencias.js?v=1.0"></script>
+  <script src="./js/asistencias.js?v=1.1"></script>
 </body>
 </html>

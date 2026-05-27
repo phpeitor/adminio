@@ -1,5 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const authLockedClass = "auth-locked";
   const endpoint = "./controller/asistencia_administradores.php";
+  const authEndpoint = "./controller/validar_acceso_asistencias.php";
+  const statusEndpoint = "./controller/estado_acceso_asistencias.php";
+  const logoutEndpoint = "./controller/cerrar_sesion_asistencias.php";
+  const tokenStorageKey = "asistencias_access_token";
   const form = document.getElementById("filtro-asistencias");
   const rangeInput = document.getElementById("rango-fechas");
   const totalValue = document.getElementById("total-value");
@@ -11,8 +16,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const emptyState = document.getElementById("empty-state");
   const applyBtn = document.getElementById("apply-filter");
   const clearBtn = document.getElementById("clear-filter");
+  const accessOverlay = document.getElementById("access-overlay");
+  const accessForm = document.getElementById("access-form");
+  const accessToken = document.getElementById("access-token");
+  const accessError = document.getElementById("access-error");
+  const accessCountdown = document.getElementById("access-countdown");
+  const accessSubmit = document.getElementById("access-submit");
+  const logoutBtn = document.getElementById("logout-btn");
   let dataTableInstance = null;
   let rangePicker = null;
+  const chartsSection = document.getElementById("charts-section");
+  const chartAdmin = document.getElementById("chart-admin");
+  const chartEdificio = document.getElementById("chart-edificio");
+  const chartFecha = document.getElementById("chart-fecha");
+  const chartTipo = document.getElementById("chart-tipo");
+  let chartInstances = [];
+  let accessReady = false;
+  let blockCountdownTimer = null;
+  let blockCountdownUntil = 0;
 
   const today = new Date();
   const sevenDaysAgo = new Date(today);
@@ -38,6 +59,18 @@ document.addEventListener("DOMContentLoaded", () => {
       desde: toISODate(startDate),
       hasta: toISODate(endDate),
     };
+  };
+
+  const buildSecureUrl = baseUrl => {
+    const token = getStoredToken();
+
+    if (!token) {
+      return baseUrl;
+    }
+
+    const url = new URL(baseUrl, window.location.href);
+    url.searchParams.set("token", token);
+    return url.toString();
   };
 
   if (window.flatpickr) {
@@ -81,6 +114,178 @@ document.addEventListener("DOMContentLoaded", () => {
     return "badge badge-default";
   };
 
+  const unlockAccess = () => {
+    document.body.classList.remove(authLockedClass);
+    accessOverlay.hidden = true;
+    accessError.textContent = "";
+    accessReady = true;
+  };
+
+  const lockAccess = () => {
+    document.body.classList.add(authLockedClass);
+    accessOverlay.hidden = false;
+    accessReady = false;
+  };
+
+  const showAccessError = message => {
+    accessError.textContent = message;
+  };
+
+  const getStoredToken = () => sessionStorage.getItem(tokenStorageKey) || "";
+
+  const clearBlockCountdown = () => {
+    if (blockCountdownTimer) {
+      window.clearInterval(blockCountdownTimer);
+      blockCountdownTimer = null;
+    }
+
+    blockCountdownUntil = 0;
+    accessCountdown.hidden = true;
+    accessCountdown.textContent = "";
+    accessForm.classList.remove("is-blocked");
+    accessSubmit.disabled = false;
+    accessToken.disabled = false;
+  };
+
+  const formatCountdown = totalSeconds => {
+    const seconds = Math.max(0, Math.floor(totalSeconds));
+    const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
+    const remainingSeconds = String(seconds % 60).padStart(2, "0");
+    return `${minutes}:${remainingSeconds}`;
+  };
+
+  const updateBlockCountdown = () => {
+    if (!blockCountdownUntil) {
+      clearBlockCountdown();
+      return;
+    }
+
+    const remainingSeconds = Math.max(0, Math.ceil((blockCountdownUntil - Date.now()) / 1000));
+
+    if (remainingSeconds <= 0) {
+      clearBlockCountdown();
+      accessError.textContent = "Puedes volver a intentar ingresar el token";
+      return;
+    }
+
+    accessCountdown.hidden = false;
+    accessCountdown.textContent = `Bloqueado por ${formatCountdown(remainingSeconds)}`;
+  };
+
+  const startBlockCountdown = (remainingSeconds, message) => {
+    const safeSeconds = Math.max(1, Number(remainingSeconds) || 0);
+
+    clearBlockCountdown();
+    accessForm.classList.add("is-blocked");
+    accessSubmit.disabled = true;
+    accessToken.disabled = true;
+    showAccessError(message || "Demasiados intentos. Espera para volver a intentar");
+    blockCountdownUntil = Date.now() + (safeSeconds * 1000);
+    updateBlockCountdown();
+    blockCountdownTimer = window.setInterval(updateBlockCountdown, 1000);
+  };
+
+   const destroyCharts = () => {
+     chartInstances.forEach(chart => chart.destroy());
+     chartInstances = [];
+   };
+
+   const groupCounts = (rows, field) => {
+     const map = new Map();
+
+     rows.forEach(row => {
+       const rawValue = row[field];
+       const value = String(rawValue === null || rawValue === undefined || rawValue === "" ? "Sin dato" : rawValue).trim();
+       map.set(value, (map.get(value) || 0) + 1);
+     });
+
+     return [...map.entries()]
+       .sort((a, b) => b[1] - a[1])
+       .slice(0, 8);
+   };
+
+   const groupByDate = rows => {
+     const map = new Map();
+
+     rows.forEach(row => {
+       const value = row.fecha ? String(row.fecha) : "Sin fecha";
+       map.set(value, (map.get(value) || 0) + 1);
+     });
+
+     return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+   };
+
+   const renderCharts = rows => {
+     if (!window.ApexCharts) return;
+
+     destroyCharts();
+
+     const adminData = groupCounts(rows, "nombre_admin");
+     const edificioData = groupCounts(rows, "edificio");
+     const fechaData = groupByDate(rows);
+     const tipoData = groupCounts(rows, "tipo_asistencia");
+
+     const commonOptions = {
+       chart: {
+         toolbar: { show: false },
+         zoom: { enabled: false },
+         fontFamily: "inherit",
+       },
+       dataLabels: { enabled: false },
+       grid: { borderColor: "rgba(41,48,66,0.08)" },
+       stroke: { curve: "smooth", width: 3 },
+       tooltip: { theme: "light" },
+       colors: ["#445298"],
+     };
+
+     const adminChart = new ApexCharts(chartAdmin, {
+       ...commonOptions,
+       series: [{ name: "Asistencias", data: adminData.map(([, count]) => count) }],
+       chart: { ...commonOptions.chart, type: "bar", height: 320 },
+       plotOptions: { bar: { borderRadius: 8, horizontal: true } },
+       xaxis: { categories: adminData.map(([label]) => label), labels: { style: { fontSize: "11px" } } },
+       title: { text: "Por administrador", style: { fontSize: "16px", fontWeight: 700, color: "#293042" } },
+     });
+
+     const edificioChart = new ApexCharts(chartEdificio, {
+       ...commonOptions,
+       series: [{ name: "Asistencias", data: edificioData.map(([, count]) => count) }],
+       chart: { ...commonOptions.chart, type: "bar", height: 320 },
+       plotOptions: { bar: { borderRadius: 8, horizontal: true } },
+       xaxis: { categories: edificioData.map(([label]) => label), labels: { style: { fontSize: "11px" } } },
+       title: { text: "Por edificio", style: { fontSize: "16px", fontWeight: 700, color: "#293042" } },
+       colors: ["#d96b14"],
+     });
+
+     const fechaChart = new ApexCharts(chartFecha, {
+       ...commonOptions,
+       series: [{ name: "Asistencias", data: fechaData.map(([, count]) => count) }],
+       chart: { ...commonOptions.chart, type: "area", height: 320 },
+       xaxis: { categories: fechaData.map(([label]) => label), labels: { style: { fontSize: "11px" } } },
+       title: { text: "Por fecha", style: { fontSize: "16px", fontWeight: 700, color: "#293042" } },
+       colors: ["#1d2ea7"],
+       fill: { type: "gradient", gradient: { shadeIntensity: 0.35, opacityFrom: 0.35, opacityTo: 0.05 } },
+     });
+
+     const tipoChart = new ApexCharts(chartTipo, {
+       series: tipoData.map(([, count]) => count),
+       chart: { type: "donut", height: 320, fontFamily: "inherit" },
+       labels: tipoData.map(([label]) => label),
+       colors: ["#1d2ea7", "#d96b14", "#445298", "#2f315f"],
+       title: { text: "Por tipo de asistencia", style: { fontSize: "16px", fontWeight: 700, color: "#293042" } },
+       legend: { position: "bottom" },
+       dataLabels: { enabled: false },
+       plotOptions: { pie: { donut: { size: "68%" } } },
+     });
+
+     [adminChart, edificioChart, fechaChart, tipoChart].forEach(chart => {
+       chart.render();
+       chartInstances.push(chart);
+     });
+
+     chartsSection.hidden = rows.length === 0;
+   };
+
   const visibleColumns = [
     "id",
     "ticket_id",
@@ -104,7 +309,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hasta) params.set("hasta", hasta);
     params.set("limit", "250");
     params.set("offset", "0");
-    return `${endpoint}?${params.toString()}`;
+    return buildSecureUrl(`${endpoint}?${params.toString()}`);
   };
 
   const validateDateRange = () => {
@@ -143,6 +348,8 @@ document.addEventListener("DOMContentLoaded", () => {
       tableBody.innerHTML = "";
       emptyState.hidden = false;
       shownValue.textContent = "0";
+       destroyCharts();
+       chartsSection.hidden = true;
       return;
     }
 
@@ -202,6 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     emptyState.hidden = true;
     shownValue.textContent = String(rows.length);
+      renderCharts(rows);
 
     if (window.jQuery && $.fn && $.fn.DataTable) {
       dataTableInstance = $(".report-table").DataTable({
@@ -230,6 +438,11 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const loadReport = async () => {
+    if (!accessReady) {
+      lockAccess();
+      return;
+    }
+
     if (!validateDateRange()) {
       return;
     }
@@ -238,10 +451,17 @@ document.addEventListener("DOMContentLoaded", () => {
     emptyState.hidden = true;
 
     try {
-      const response = await fetch(buildUrl());
+      const response = await fetch(buildUrl(), {
+        credentials: "same-origin",
+      });
       const data = await response.json();
 
       if (!response.ok || !data.ok) {
+        if (response.status === 403) {
+          lockAccess();
+          showAccessError("Debes ingresar el token para acceder.");
+          return;
+        }
         throw new Error(data.message || "No se pudo cargar el reporte");
       }
 
@@ -258,6 +478,8 @@ document.addEventListener("DOMContentLoaded", () => {
       shownValue.textContent = "0";
       entradasValue.textContent = "0";
       salidasValue.textContent = "0";
+       destroyCharts();
+       chartsSection.hidden = true;
     } finally {
       setLoading(false);
     }
@@ -266,6 +488,90 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", event => {
     event.preventDefault();
     loadReport();
+  });
+
+  accessForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    accessError.textContent = "";
+
+    const token = accessToken.value.trim();
+
+    if (!token) {
+      showAccessError("Ingresa el token de acceso");
+      accessToken.focus();
+      return;
+    }
+
+    try {
+      const response = await fetch(authEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ token }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        if (response.status === 429 || data.blocked) {
+          startBlockCountdown(data.remaining_seconds || 300, data.message);
+          return;
+        }
+
+        const attemptsLeft = Number.isFinite(Number(data.attempts_left)) ? Number(data.attempts_left) : null;
+        if (attemptsLeft !== null) {
+          showAccessError(`${data.message || "Token inválido"}. Te quedan ${attemptsLeft} intento${attemptsLeft === 1 ? "" : "s"}.`);
+        }
+        throw new Error(data.message || "Token inválido");
+      }
+
+      sessionStorage.setItem("asistencias_access_granted", "1");
+      sessionStorage.setItem(tokenStorageKey, token);
+      clearBlockCountdown();
+      unlockAccess();
+      await loadReport();
+    } catch (error) {
+      showAccessError(error.message || "No se pudo validar el token");
+      accessToken.select();
+    }
+  });
+
+  logoutBtn.addEventListener("click", async () => {
+    try {
+      const response = await fetch(logoutEndpoint, {
+        method: "POST",
+        credentials: "same-origin",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.message || "No se pudo cerrar la sesión");
+      }
+
+      sessionStorage.removeItem("asistencias_access_granted");
+  sessionStorage.removeItem(tokenStorageKey);
+      accessToken.value = "";
+      clearBlockCountdown();
+      destroyCharts();
+
+      if (dataTableInstance) {
+        dataTableInstance.destroy();
+        dataTableInstance = null;
+      }
+
+      totalValue.textContent = "0";
+      shownValue.textContent = "0";
+      entradasValue.textContent = "0";
+      salidasValue.textContent = "0";
+      tableHead.innerHTML = "";
+      tableBody.innerHTML = "";
+      emptyState.hidden = true;
+      lockAccess();
+      alertify.success("Sesión cerrada correctamente");
+    } catch (error) {
+      alertify.error(error.message || "No se pudo cerrar la sesión");
+    }
   });
 
   clearBtn.addEventListener("click", () => {
@@ -278,5 +584,38 @@ document.addEventListener("DOMContentLoaded", () => {
     loadReport();
   });
 
-  loadReport();
+  const syncAccessState = async () => {
+    try {
+      const response = await fetch(buildSecureUrl(statusEndpoint), {
+        credentials: "same-origin",
+      });
+      const data = await response.json();
+
+      if (data.blocked) {
+        lockAccess();
+        startBlockCountdown(data.remaining_seconds || 300, "Demasiados intentos. Espera para volver a intentar");
+        return;
+      }
+
+      if (data.authorized || sessionStorage.getItem("asistencias_access_granted") === "1") {
+        sessionStorage.setItem("asistencias_access_granted", "1");
+        clearBlockCountdown();
+        unlockAccess();
+        loadReport();
+        return;
+      }
+
+      lockAccess();
+    } catch (error) {
+      if (sessionStorage.getItem("asistencias_access_granted") === "1") {
+        unlockAccess();
+        loadReport();
+        return;
+      }
+
+      lockAccess();
+    }
+  };
+
+  syncAccessState();
 });

@@ -1,8 +1,26 @@
 <?php
 
 header("Content-Type: application/json; charset=utf-8");
+session_start();
 
 require_once __DIR__ . "/../model/AsistenciaAdministradoresModel.php";
+require_once __DIR__ . "/../config/env.php";
+
+$requestToken = trim((string) ($_GET['token'] ?? $_SERVER['HTTP_X_ASISTENCIAS_TOKEN'] ?? ''));
+$expectedToken = env('ASISTENCIAS_TOKEN', '');
+$sessionAuthorized = !empty($_SESSION['asistencias_access']);
+$tokenAuthorized = $requestToken !== '' && $expectedToken !== '' && hash_equals($expectedToken, $requestToken);
+
+if (!$sessionAuthorized && !$tokenAuthorized) {
+    http_response_code(403);
+
+    echo json_encode([
+        'ok' => false,
+        'message' => 'Acceso no autorizado',
+    ], JSON_UNESCAPED_UNICODE);
+
+    exit;
+}
 
 try {
     $model = new AsistenciaAdministradoresModel();
@@ -44,10 +62,20 @@ try {
         'dateColumn' => $report['dateColumn'],
     ], JSON_UNESCAPED_UNICODE);
 } catch (Throwable $e) {
+    error_log('[asistencia_administradores] ' . $e->getMessage());
+
     http_response_code(500);
+
+    $message = 'No fue posible cargar el reporte';
+
+    if ($e instanceof PDOException) {
+        $message = 'No se pudo conectar o consultar la base de datos';
+    } elseif ($e instanceof RuntimeException) {
+        $message = $e->getMessage();
+    }
 
     echo json_encode([
         'ok' => false,
-        'message' => 'No fue posible cargar el reporte',
+        'message' => $message,
     ], JSON_UNESCAPED_UNICODE);
 }
