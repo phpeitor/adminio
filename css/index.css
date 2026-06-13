@@ -22080,46 +22080,34 @@ html {
 
 .hero-video-frame {
   position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-  padding: 6px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.12));
-  box-shadow: 0 20px 50px rgba(9, 18, 59, 0.42);
+  overflow: visible;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .hero-video-frame::before {
-  content: "";
-  position: absolute;
-  inset: -25%;
-  background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.35), transparent 55%);
-  pointer-events: none;
+  content: none;
 }
 
-.hero-main-video {
+.hero-main-visual {
   display: block;
   width: 100%;
-  border-radius: 18px;
-  object-fit: cover;
-  aspect-ratio: 16 / 10;
-  transform: scale(1.14);
-  transform-origin: center;
+  height: auto;
+  position: relative;
+  z-index: 1;
+  border-radius: 0;
+  filter: drop-shadow(0 24px 34px rgba(9, 18, 59, 0.28));
 }
 
 @media (max-width: 767px) {
   .hero-video-frame {
-    border-radius: 16px;
     padding: 4px;
   }
 
-  .hero-main-video {
-    border-radius: 12px;
-    aspect-ratio: 16 / 11;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-main-video {
-    transform: scale(1.08);
+  .hero-main-visual {
+    border-radius: 0;
   }
 }
 
@@ -22152,5 +22140,319 @@ html {
 @keyframes btn-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+#home.hero-gradient {
+  isolation: isolate;
+}
+
+#home.hero-gradient:hover,
+#home.hero-gradient:focus-visible {
+  filter: none;
+  transform: none;
+}
+
+.hero-network {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.58;
+}
+
+.hero-network__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-network__lines path {
+  fill: none;
+  stroke: rgba(87, 218, 236, 0.28);
+  stroke-width: 1.5;
+  stroke-dasharray: 8 12;
+  animation: network-flow 18s linear infinite;
+}
+
+.hero-network__lines path:nth-child(2),
+.hero-network__lines path:nth-child(4) {
+  animation-direction: reverse;
+  animation-duration: 22s;
+}
+
+.hero-network__dots circle {
+  fill: #28d6e9;
+  filter: drop-shadow(0 0 10px rgba(40, 214, 233, 0.74));
+  animation: network-pulse 3.4s ease-in-out infinite;
+}
+
+.hero-network__dots circle:nth-child(2n) {
+  animation-delay: -1.3s;
+}
+
+.hero-network__dots circle:nth-child(3n) {
+  animation-delay: -2.1s;
+}
+
+.hero-network-icon {
+  position: absolute;
+  width: clamp(72px, 7vw, 118px);
+  height: clamp(72px, 7vw, 118px);
+  border: 2px solid rgba(87, 218, 236, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.25;
+  animation: network-icon-float 12s ease-in-out infinite;
+}
+
+.hero-network-icon::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+}
+
+.hero-network-icon svg {
+  width: 48%;
+  height: 48%;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.74);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hero-network-icon--analytics {
+  left: 12%;
+  top: 13%;
+}
+
+.hero-network-icon--screen {
+  right: 22%;
+  top: 45%;
+  animation-delay: -4s;
+}
+
+.hero-network-icon--chart {
+  left: 42%;
+  bottom: 18%;
+  animation-delay: -7s;
+}
+
+.hero-chart-icons {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: visible;
+  border-radius: 0;
+}
+
+.hero-chart-icon {
+  position: absolute;
+  width: clamp(58px, 5.8vw, 96px);
+  height: auto;
+  padding: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  border-radius: 19px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.48));
+  fill: none;
+  stroke: #17256d;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 14px 30px rgba(9, 18, 59, 0.2);
+  opacity: 0.88;
+  animation: chart-float 9s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  backdrop-filter: blur(10px);
+}
+
+.hero-chart-icon rect,
+.hero-chart-icon circle {
+  fill: rgba(249, 156, 76, 0.18);
+  stroke: #f37f21;
+}
+
+.hero-chart-icon path {
+  stroke-dasharray: 150;
+  stroke-dashoffset: 150;
+  animation: chart-line-draw 3.8s ease-in-out infinite;
+}
+
+.hero-chart-icon--bar {
+  top: 10%;
+  left: 10%;
+  animation-duration: 9s;
+}
+
+.hero-chart-icon--line {
+  top: 8%;
+  right: 16%;
+  width: clamp(64px, 6.4vw, 106px);
+  animation-delay: -2.5s;
+  animation-duration: 10s;
+}
+
+.hero-chart-icon--pie {
+  right: 22%;
+  bottom: 15%;
+  width: clamp(56px, 5.6vw, 92px);
+  animation-delay: -5s;
+  animation-duration: 10.5s;
+}
+
+.hero-chart-icon--mini {
+  left: 44%;
+  bottom: 30%;
+  width: clamp(64px, 6vw, 104px);
+  animation-delay: -2s;
+  animation-duration: 11s;
+}
+
+.hero-wave {
+  pointer-events: none;
+}
+
+.hero-wave svg {
+  display: block;
+  width: 105%;
+  margin-left: -2.5%;
+}
+
+.hero-wave-layer {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.hero-wave-layer--back {
+  animation: wave-drift-back 9s ease-in-out infinite;
+}
+
+.hero-wave-layer--front {
+  animation: wave-drift-front 7s ease-in-out infinite;
+}
+
+@keyframes chart-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-1.5deg) scale(1);
+  }
+  50% {
+    transform: translate3d(8px, -10px, 0) rotate(2deg) scale(1.025);
+  }
+}
+
+@keyframes chart-line-draw {
+  0% {
+    stroke-dashoffset: 150;
+    opacity: 0.45;
+  }
+  45%,
+  70% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -150;
+    opacity: 0.7;
+  }
+}
+
+@keyframes network-flow {
+  to {
+    stroke-dashoffset: -160;
+  }
+}
+
+@keyframes network-pulse {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: scale(0.82);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes network-icon-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(18px, -16px, 0) scale(1.05);
+  }
+}
+
+@keyframes wave-drift-back {
+  0%,
+  100% {
+    transform: translate(-2px, 44px) translateX(-18px) scaleX(1.03);
+  }
+  50% {
+    transform: translate(-2px, 44px) translateX(22px) scaleX(1.06);
+  }
+}
+
+@keyframes wave-drift-front {
+  0%,
+  100% {
+    transform: translate(-4px, 76px) translateX(24px) scaleX(1.04);
+  }
+  50% {
+    transform: translate(-4px, 76px) translateX(-20px) scaleX(1.07);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-network {
+    opacity: 0.34;
+  }
+
+  .hero-network-icon {
+    display: none;
+  }
+
+  .hero-chart-icon {
+    width: 58px;
+    padding: 8px;
+    border-radius: 15px;
+    opacity: 0.86;
+  }
+
+  .hero-chart-icon--bar {
+    top: 6%;
+    left: 4%;
+  }
+
+  .hero-chart-icon--line {
+    top: 39%;
+    right: 4%;
+  }
+
+  .hero-chart-icon--pie,
+  .hero-chart-icon--mini {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-chart-icon,
+  .hero-chart-icon path,
+  .hero-network__lines path,
+  .hero-network__dots circle,
+  .hero-network-icon,
+  .hero-wave-layer--back,
+  .hero-wave-layer--front {
+    animation: none;
   }
 }

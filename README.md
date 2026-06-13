@@ -3,16 +3,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-javascript.svg)](https://www.linkedin.com/in/drphp/)
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://www.linkedin.com/in/drphp/)
 
-Landing page corporativa para Adminio Peru, enfocada en administracion inmobiliaria, captura de leads y envio de mensajes por correo mediante PHPMailer.
-
-## Demo visual
-
-> GitHub sanitiza el HTML del README y no permite reproducir la etiqueta `<video>` embebida.
-
-[![Ver demo en video](https://adminio.pe/static/e46c9b3cb9ac59ff2d896292df8c1eeb.png)](https://adminio.pe/static/main.mp4)
-
-Haz clic en la imagen para abrir el video:
-https://adminio.pe/static/main.mp4
+Landing page corporativa para Adminio Perú, enfocada en administracion inmobiliaria, captura de leads y envio de mensajes por correo.
 
 ## Requisitos
 
