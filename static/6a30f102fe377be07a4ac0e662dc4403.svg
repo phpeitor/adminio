@@ -7,51 +7,14 @@
         <style>
             .faq-chart-line {
                 filter: drop-shadow(0 0 4px rgba(247, 123, 38, 0.45));
-                animation: faq-line-flow 2.8s ease-in-out infinite;
-                transform-box: fill-box;
-                transform-origin: center;
             }
 
             .faq-chart-dot {
                 filter: drop-shadow(0 0 6px rgba(255, 159, 50, 0.85));
-                animation: faq-dot-move 2.8s ease-in-out infinite;
-                transform-box: fill-box;
-                transform-origin: center;
             }
 
             .faq-chart-bars &gt; rect {
                 filter: drop-shadow(0 0 5px rgba(0, 159, 253, 0.32));
-                animation: faq-bar-pulse 1.6s ease-in-out infinite;
-                transform-box: fill-box;
-                transform-origin: center bottom;
-            }
-
-            .faq-chart-bars &gt; rect:nth-child(2) { animation-delay: -0.3s; }
-            .faq-chart-bars &gt; rect:nth-child(3) { animation-delay: -0.6s; }
-            .faq-chart-bars &gt; rect:nth-child(4) { animation-delay: -0.9s; }
-            .faq-chart-bars &gt; rect:nth-child(5) { animation-delay: -1.2s; }
-
-            @keyframes faq-line-flow {
-                0%, 100% { opacity: 0.58; transform: translateX(-5px) translateY(1px); }
-                50% { opacity: 1; transform: translateX(5px) translateY(-2px); }
-            }
-
-            @keyframes faq-dot-move {
-                0%, 100% { transform: translateY(0) scale(0.82); opacity: 0.72; }
-                50% { transform: translateY(-9px) scale(1.28); opacity: 1; }
-            }
-
-            @keyframes faq-bar-pulse {
-                0%, 100% { transform: scaleY(0.58); opacity: 0.58; }
-                50% { transform: scaleY(1.08); opacity: 1; }
-            }
-
-            @media (prefers-reduced-motion: reduce) {
-                .faq-chart-line,
-                .faq-chart-dot,
-                .faq-chart-bars &gt; rect {
-                    animation: none;
-                }
             }
         </style>
         <linearGradient x1="49.9963627%" y1="100.004109%" x2="49.9963627%" y2="7.92274891e-06%" id="linearGradient-1">
@@ -91,8 +54,15 @@
                         <g id="Group" opacity="0.2" transform="translate(0.000000, 12.000000)" fill="#FAC655">
                             <polygon id="Path" points="246.709734 65.868 0.498381375 65.868 0.498381375 28.193 23.0788914 39.369 46.4480488 42.5535 66.9528825 36.344 91.6912195 17.0775 104.134324 9.8615 113.231153 8.1015 121.933659 8.569 136.244324 15.6695 155.703104 28.116 170.972195 30.085 183.075743 25.894 208.739645 4.7905 221.839956 0.099 235.548182 2.2275 246.709734 8.701"></polygon>
                         </g>
-                        <path class="faq-chart-line" d="M43.0011329,54.9980379 C20.7845211,54.9980379 0.257886085,41.2473866 0,41.0696722 L0.614537053,40.1477787 C0.932779456,40.3643681 32.5265683,61.5179348 59.3741559,50.921714 C69.1628532,47.0342116 76.1312644,41.0474579 82.8747112,35.232865 C89.9144526,29.1628076 96.5591345,23.4315184 105.623556,20.9435168 C116.015817,18.0945329 127.373778,20.6713917 136.004732,27.852164 C143.384663,33.9888642 158.078683,43.840906 173.601231,40.8975113 C181.513395,39.3924925 188.180025,33.5445782 195.241714,27.3523422 C208.77799,15.4787992 222.780656,3.19984514 247,20.8157846 L246.358028,21.7154637 C222.841012,4.61045316 209.178537,16.6006213 195.960503,28.190932 C188.783588,34.4831324 182.00722,40.4087967 173.804247,41.986012 C157.837258,45.0182639 142.835969,34.9662934 135.307891,28.7074145 C126.951284,21.7598923 115.966434,19.2663372 105.908877,22.0153568 C97.0858806,24.4367154 90.5454505,30.0902546 83.5825262,36.0770083 C76.7732362,41.9526906 69.7334948,48.0227479 59.7747023,51.9546789 C54.419981,54.0191062 48.7309207,55.0513166 43.0011329,54.9980379 Z" id="Path" fill="#F77B26"></path>
-                        <circle class="faq-chart-dot" id="Oval" fill="url(#linearGradient-2)" cx="119" cy="20" r="6"></circle>
+                        <path class="faq-chart-line" d="M43.0011329,54.9980379 C20.7845211,54.9980379 0.257886085,41.2473866 0,41.0696722 L0.614537053,40.1477787 C0.932779456,40.3643681 32.5265683,61.5179348 59.3741559,50.921714 C69.1628532,47.0342116 76.1312644,41.0474579 82.8747112,35.232865 C89.9144526,29.1628076 96.5591345,23.4315184 105.623556,20.9435168 C116.015817,18.0945329 127.373778,20.6713917 136.004732,27.852164 C143.384663,33.9888642 158.078683,43.840906 173.601231,40.8975113 C181.513395,39.3924925 188.180025,33.5445782 195.241714,27.3523422 C208.77799,15.4787992 222.780656,3.19984514 247,20.8157846 L246.358028,21.7154637 C222.841012,4.61045316 209.178537,16.6006213 195.960503,28.190932 C188.783588,34.4831324 182.00722,40.4087967 173.804247,41.986012 C157.837258,45.0182639 142.835969,34.9662934 135.307891,28.7074145 C126.951284,21.7598923 115.966434,19.2663372 105.908877,22.0153568 C97.0858806,24.4367154 90.5454505,30.0902546 83.5825262,36.0770083 C76.7732362,41.9526906 69.7334948,48.0227479 59.7747023,51.9546789 C54.419981,54.0191062 48.7309207,55.0513166 43.0011329,54.9980379 Z" id="Path" fill="#F77B26">
+                            <animateTransform attributeName="transform" type="translate" values="-4 1; 5 -2; -4 1" dur="2.8s" repeatCount="indefinite"></animateTransform>
+                            <animate attributeName="opacity" values="0.58;1;0.58" dur="2.8s" repeatCount="indefinite"></animate>
+                        </path>
+                        <circle class="faq-chart-dot" id="Oval" fill="url(#linearGradient-2)" cx="119" cy="20" r="6">
+                            <animate attributeName="cy" values="20;11;20" dur="2.8s" repeatCount="indefinite"></animate>
+                            <animate attributeName="r" values="5;8;5" dur="2.8s" repeatCount="indefinite"></animate>
+                            <animate attributeName="opacity" values="0.72;1;0.72" dur="2.8s" repeatCount="indefinite"></animate>
+                        </circle>
                     </g>
                     <g id="Group-10" transform="translate(147.000000, 74.000000)">
                         <g id="Group" opacity="0.2" fill="#F77B26">
@@ -125,11 +95,26 @@
                             <rect id="Rectangle" x="170.028261" y="0.354545455" width="12.4065217" height="5.45454545"></rect>
                         </g>
                         <g class="faq-chart-bars" id="Group-8" transform="translate(23.000000, 5.000000)" fill="#009FFD">
-                            <rect id="Rectangle" x="0" y="35" width="12" height="34"></rect>
-                            <rect id="Rectangle" x="21" y="19" width="12" height="50"></rect>
-                            <rect id="Rectangle" x="42" y="5" width="12" height="64"></rect>
-                            <rect id="Rectangle" x="64" y="12" width="12" height="57"></rect>
-                            <rect id="Rectangle" x="85" y="0" width="12" height="69"></rect>
+                            <rect id="Rectangle" x="0" y="35" width="12" height="34">
+                                <animate attributeName="y" values="48;35;48" dur="1.6s" repeatCount="indefinite"></animate>
+                                <animate attributeName="height" values="21;34;21" dur="1.6s" repeatCount="indefinite"></animate>
+                            </rect>
+                            <rect id="Rectangle" x="21" y="19" width="12" height="50">
+                                <animate attributeName="y" values="38;19;38" dur="1.6s" begin="-0.3s" repeatCount="indefinite"></animate>
+                                <animate attributeName="height" values="31;50;31" dur="1.6s" begin="-0.3s" repeatCount="indefinite"></animate>
+                            </rect>
+                            <rect id="Rectangle" x="42" y="5" width="12" height="64">
+                                <animate attributeName="y" values="31;5;31" dur="1.6s" begin="-0.6s" repeatCount="indefinite"></animate>
+                                <animate attributeName="height" values="38;64;38" dur="1.6s" begin="-0.6s" repeatCount="indefinite"></animate>
+                            </rect>
+                            <rect id="Rectangle" x="64" y="12" width="12" height="57">
+                                <animate attributeName="y" values="35;12;35" dur="1.6s" begin="-0.9s" repeatCount="indefinite"></animate>
+                                <animate attributeName="height" values="34;57;34" dur="1.6s" begin="-0.9s" repeatCount="indefinite"></animate>
+                            </rect>
+                            <rect id="Rectangle" x="85" y="0" width="12" height="69">
+                                <animate attributeName="y" values="27;0;27" dur="1.6s" begin="-1.2s" repeatCount="indefinite"></animate>
+                                <animate attributeName="height" values="42;69;42" dur="1.6s" begin="-1.2s" repeatCount="indefinite"></animate>
+                            </rect>
                             <g id="Group" opacity="0.2" transform="translate(106.000000, 26.000000)">
                                 <rect id="Rectangle" x="0.0272727273" y="0.176410256" width="11.9727273" height="42.630641"></rect>
                                 <rect id="Rectangle" x="21.4013043" y="0.176410256" width="12.4065217" height="42.630641"></rect>
