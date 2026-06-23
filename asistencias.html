@@ -9,7 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🏢</text></svg>" />
   <link href="./css/app.css" rel="stylesheet">
   <link href="./css/index.css?v=3.5" rel="stylesheet">
-  <link href="./css/asistencias.css?v=1.1" rel="stylesheet">
+  <link href="./css/asistencias.css?v=1.2" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.54.1/dist/apexcharts.css">
@@ -59,8 +59,18 @@
               <input class="filter-input" type="text" id="rango-fechas" name="rango-fechas" placeholder="Selecciona un rango" readonly>
             </div>
             <div class="flex gap-3 lg:justify-end flex-nowrap lg:shrink-0">
-              <button id="apply-filter" class="block rounded-full text-white no-underline text-md font-semibold py-3 px-8 v_gradient_primary btn_shadow_animation whitespace-nowrap" type="submit">Aplicar</button>
-              <button id="clear-filter" class="block rounded-full text-white no-underline text-md font-semibold py-3 px-8 v_gradient_primary_opacity btn_shadow_animation whitespace-nowrap" type="button">Limpiar</button>
+              <button id="apply-filter" class="filter-action-btn filter-action-btn-primary whitespace-nowrap" type="submit" data-tooltip="Aplicar filtro" aria-label="Aplicar filtro de fechas">
+                <svg class="filter-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 5h16l-6.3 7.2v4.9L10.3 19v-6.8L4 5Z"></path>
+                </svg>
+                <span class="btn-label">Aplicar</span>
+              </button>
+              <button id="clear-filter" class="filter-action-btn filter-action-btn-secondary whitespace-nowrap" type="button" data-tooltip="Limpiar filtro" aria-label="Limpiar filtro de fechas">
+                <svg class="filter-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6.2 6.2 17.8 17.8M17.8 6.2 6.2 17.8"></path>
+                </svg>
+                <span class="btn-label">Limpiar</span>
+              </button>
             </div>
           </form>
         </div>
@@ -112,6 +122,6 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.54.1/dist/apexcharts.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./js/asistencias.js?v=1.1"></script>
+  <script src="./js/asistencias.js?v=1.2"></script>
 </body>
 </html>

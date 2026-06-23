@@ -330,7 +330,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const setLoading = loading => {
     applyBtn.disabled = loading;
-    applyBtn.textContent = loading ? "CARGANDO..." : "APLICAR";
+    applyBtn.setAttribute("data-tooltip", loading ? "Cargando reporte" : "Aplicar filtro");
+    applyBtn.setAttribute("aria-label", loading ? "Cargando reporte" : "Aplicar filtro de fechas");
+    applyBtn.setAttribute("title", loading ? "Cargando reporte" : "Aplicar filtro de fechas");
+    const label = applyBtn.querySelector(".btn-label");
+    if (label) {
+      label.textContent = loading ? "Cargando..." : "Aplicar";
+    }
   };
 
   const renderTable = data => {

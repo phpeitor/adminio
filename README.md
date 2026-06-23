@@ -7,7 +7,7 @@
   <img src="https://adminio.pe/static/main.png" alt="Adminio" width="600">
 </a>
 
-Landing page corporativa para Adminio Peru, enfocada en administracion inmobiliaria, captura de leads, envio de mensajes por correo y acceso a modulos internos de asistencia.
+Landing page corporativa para Adminio Perú, enfocada en administracion inmobiliaria, captura de leads, envio de mensajes por correo y acceso a modulos internos de asistencia.
 
 ## Requisitos
 
