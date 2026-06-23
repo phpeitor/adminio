@@ -9,7 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🏢</text></svg>" />
   <link href="./css/app.css" rel="stylesheet">
   <link href="./css/index.css?v=3.5" rel="stylesheet">
-  <link href="./css/asistencias.css?v=1.2" rel="stylesheet">
+  <link href="./css/asistencias.css?v=1.3" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.54.1/dist/apexcharts.css">
@@ -39,9 +39,43 @@
 
   <main class="asistencias-shell">
     <section class="asistencias-hero">
+      <div class="hero-network asistencias-network" aria-hidden="true">
+        <svg class="hero-network__svg" viewBox="0 0 1440 520" preserveAspectRatio="none" role="presentation">
+          <defs>
+            <linearGradient id="asistencias-network-line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#55f3ff" stop-opacity="0"></stop>
+              <stop offset="18%" stop-color="#55f3ff" stop-opacity="0.58"></stop>
+              <stop offset="56%" stop-color="#ffffff" stop-opacity="0.78"></stop>
+              <stop offset="100%" stop-color="#55f3ff" stop-opacity="0.08"></stop>
+            </linearGradient>
+          </defs>
+          <g class="hero-network__lines asistencias-network__lines">
+            <path d="M86 142 H298 C348 142 348 104 398 104 H612 C662 104 662 154 712 154 H922 C972 154 972 116 1022 116 H1338"></path>
+            <path d="M128 282 H286 C336 282 336 230 386 230 H584 C634 230 634 282 684 282 H874 C924 282 924 224 974 224 H1278"></path>
+            <path d="M224 410 H438 C488 410 488 352 538 352 H746 C796 352 796 404 846 404 H1064 C1114 404 1114 346 1164 346 H1382"></path>
+            <path d="M302 68 V180 C302 230 386 230 386 280 V430"></path>
+            <path d="M622 104 V184 C622 234 684 234 684 284 V404"></path>
+            <path d="M1014 116 V174 C1014 224 974 224 974 274 V404"></path>
+          </g>
+          <g class="hero-network__dots">
+            <circle cx="298" cy="142" r="5"></circle>
+            <circle cx="398" cy="104" r="6"></circle>
+            <circle cx="712" cy="154" r="5"></circle>
+            <circle cx="1022" cy="116" r="6"></circle>
+            <circle cx="286" cy="282" r="5"></circle>
+            <circle cx="584" cy="230" r="6"></circle>
+            <circle cx="874" cy="282" r="5"></circle>
+            <circle cx="1278" cy="224" r="6"></circle>
+            <circle cx="438" cy="410" r="5"></circle>
+            <circle cx="746" cy="352" r="6"></circle>
+            <circle cx="1064" cy="404" r="5"></circle>
+            <circle cx="1164" cy="346" r="6"></circle>
+          </g>
+        </svg>
+      </div>
       <div class="container mx-auto relative z-10">
         <div class="text-center mb-8">
-          <h1 class="text-4xl md:text-5xl font-extrabold text-white"><span class="title-section">Asistencias</span></h1>
+          <h1 class="text-4xl md:text-4xl font-extrabold text-white"><span class="title-section">Asistencias</span></h1>
           <p class="mt-4 text-lg md:text-xl text-white opacity-90 max-w-3xl mx-auto">Consulta el registro de asistencia de administradores por rango de fechas.</p>
         </div>
 
@@ -129,6 +163,6 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.54.1/dist/apexcharts.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./js/asistencias.js?v=1.2"></script>
+  <script src="./js/asistencias.js?v=1.3"></script>
 </body>
 </html>

@@ -156,10 +156,23 @@ body.auth-locked .access-overlay {
   position: relative;
   padding: 5.9rem 1rem 2rem;
   overflow: hidden;
+  isolation: isolate;
   background:
     linear-gradient(90deg, rgba(87, 46, 119, 0.96) 0%, rgba(124, 66, 95, 0.92) 34%, rgba(205, 108, 31, 0.94) 100%);
-  border-radius: 0 0 1.25rem 1.25rem;
+  border-radius: 0;
   margin: 0;
+}
+
+.asistencias-network {
+  opacity: 0.46;
+}
+
+.asistencias-network .hero-network__svg {
+  opacity: 0.85;
+}
+
+.asistencias-network__lines path {
+  stroke: url(#asistencias-network-line-gradient);
 }
 
 .asistencias-hero:before,
@@ -307,6 +320,11 @@ body.auth-locked .logout-btn {
   padding-right: 0.65rem;
 }
 
+#filtro-asistencias .filter-input,
+#filtro-asistencias .flatpickr-input.form-control.input {
+  margin-right: 0.75rem;
+}
+
 .filter-action-btn::after {
   content: attr(data-tooltip);
   position: absolute;
@@ -442,17 +460,24 @@ body.auth-locked .logout-btn {
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-  color: #fff !important;
+  color: #293042 !important;
   border-color: #445298 !important;
-  background: #445298 !important;
+  background: #eef1ff !important;
   background-image: none !important;
   box-shadow: none !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-  color: #fff !important;
+  color: #293042 !important;
   border-color: #36427e !important;
-  background: #36427e !important;
+  background: #e2e7ff !important;
+  background-image: none !important;
+}
+
+div.dataTables_wrapper div.dataTables_paginate a.paginate_button.current,
+div.dataTables_wrapper div.dataTables_paginate a.paginate_button.current:hover {
+  color: #293042 !important;
+  background: #eef1ff !important;
   background-image: none !important;
 }
 
@@ -627,6 +652,11 @@ body.auth-locked .logout-btn {
 @media (max-width: 640px) {
   #filtro-asistencias > .flex-1 {
     padding-right: 0;
+  }
+
+  #filtro-asistencias .filter-input,
+  #filtro-asistencias .flatpickr-input.form-control.input {
+    margin-right: 0;
   }
 
   .summary-grid {

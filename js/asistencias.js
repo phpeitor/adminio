@@ -46,6 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return `${year}-${month}-${day}`;
   };
 
+  const formatCount = value => new Intl.NumberFormat("es-PE").format(Number(value) || 0);
+
   const rangeToParams = () => {
     const dates = rangePicker ? rangePicker.selectedDates : [];
 
@@ -353,7 +355,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tableHead.innerHTML = "";
       tableBody.innerHTML = "";
       emptyState.hidden = false;
-      shownValue.textContent = "0";
+      shownValue.textContent = formatCount(0);
        destroyCharts();
        chartsSection.hidden = true;
       return;
@@ -414,7 +416,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
 
     emptyState.hidden = true;
-    shownValue.textContent = String(rows.length);
+    shownValue.textContent = formatCount(rows.length);
       renderCharts(rows);
 
     if (window.jQuery && $.fn && $.fn.DataTable) {
@@ -471,19 +473,19 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(data.message || "No se pudo cargar el reporte");
       }
 
-      totalValue.textContent = String(data.total ?? 0);
-      entradasValue.textContent = String(data.entradas ?? 0);
-      salidasValue.textContent = String(data.salidas ?? 0);
+      totalValue.textContent = formatCount(data.total);
+      entradasValue.textContent = formatCount(data.entradas);
+      salidasValue.textContent = formatCount(data.salidas);
       renderTable(data);
     } catch (error) {
       tableHead.innerHTML = "";
       tableBody.innerHTML = "";
       emptyState.hidden = false;
       emptyState.textContent = error.message || "No se pudo cargar la información";
-      totalValue.textContent = "0";
-      shownValue.textContent = "0";
-      entradasValue.textContent = "0";
-      salidasValue.textContent = "0";
+      totalValue.textContent = formatCount(0);
+      shownValue.textContent = formatCount(0);
+      entradasValue.textContent = formatCount(0);
+      salidasValue.textContent = formatCount(0);
        destroyCharts();
        chartsSection.hidden = true;
     } finally {
@@ -566,10 +568,10 @@ document.addEventListener("DOMContentLoaded", () => {
         dataTableInstance = null;
       }
 
-      totalValue.textContent = "0";
-      shownValue.textContent = "0";
-      entradasValue.textContent = "0";
-      salidasValue.textContent = "0";
+      totalValue.textContent = formatCount(0);
+      shownValue.textContent = formatCount(0);
+      entradasValue.textContent = formatCount(0);
+      salidasValue.textContent = formatCount(0);
       tableHead.innerHTML = "";
       tableBody.innerHTML = "";
       emptyState.hidden = true;
