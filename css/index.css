@@ -22005,16 +22005,88 @@ html {
   }
 }
 
-.about-image-animated {
+.about-image-wrap {
+  position: relative;
+  display: inline-block;
   animation: adminio-float 4.2s ease-in-out infinite;
   transform-origin: center;
   filter: drop-shadow(0 10px 24px rgba(31, 83, 199, 0.22));
   will-change: transform, filter;
 }
 
-.about-image-animated:hover {
+.about-image-wrap:hover {
   animation-duration: 2.6s;
   filter: drop-shadow(0 16px 30px rgba(31, 83, 199, 0.3));
+}
+
+.about-image-animated {
+  display: block;
+}
+
+.shirt-brand-highlight {
+  position: absolute;
+  left: 50.5%;
+  top: 62.4%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 118px;
+  height: 42px;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(1deg);
+}
+
+.shirt-brand-text {
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
+  font-size: clamp(18px, 2.1vw, 28px);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-shadow: 0 2px 0 rgba(196, 76, 24, 0.32), 0 0 10px rgba(255, 255, 255, 0.78), 0 0 18px rgba(255, 216, 112, 0.72);
+  animation: shirt-brand-pop 2.8s ease-in-out infinite;
+}
+
+.shirt-brand-spark {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(90deg, transparent 42%, #ffffff 42%, #ffffff 58%, transparent 58%),
+    linear-gradient(0deg, transparent 42%, #ffffff 42%, #ffffff 58%, transparent 58%);
+  filter: drop-shadow(0 0 7px rgba(255, 224, 105, 0.92));
+  animation: shirt-spark 1.8s ease-in-out infinite;
+}
+
+.shirt-brand-spark::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  background: #ffd96c;
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(255, 217, 108, 0.9);
+}
+
+.shirt-brand-spark--one {
+  left: -12px;
+  top: -4px;
+}
+
+.shirt-brand-spark--two {
+  right: -8px;
+  top: 2px;
+  width: 14px;
+  height: 14px;
+  animation-delay: -0.65s;
+}
+
+.shirt-brand-spark--three {
+  right: 16px;
+  bottom: -8px;
+  width: 12px;
+  height: 12px;
+  animation-delay: -1.1s;
 }
 
 @keyframes adminio-float {
@@ -22028,8 +22100,34 @@ html {
   }
 }
 
+@keyframes shirt-brand-pop {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes shirt-spark {
+  0%,
+  100% {
+    opacity: 0.38;
+    transform: scale(0.65) rotate(0deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.18) rotate(45deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .about-image-animated {
+  .about-image-wrap,
+  .shirt-brand-text,
+  .shirt-brand-spark {
     animation: none;
     transform: none;
   }
