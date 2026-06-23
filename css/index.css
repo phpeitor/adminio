@@ -4700,24 +4700,166 @@ body {
   background-color: var(--mdc-theme-primary-light);
 }
 .v_img_miembros {
-  -webkit-filter: grayscale(100%);
-  -moz-filter: grayscale(100%);
-  -ms-filter: grayscale(100%);
-  -o-filter: grayscale(100%);
+  display: inline-block;
+  padding: 12px 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
   filter: grayscale(100%);
-  -webkit-filter: Gray();
-  filter: Gray();
   opacity: 0.35;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
 }
 .v_img_miembros:hover {
-  -webkit-filter: grayscale(0);
-  -moz-filter: grayscale(0);
-  -ms-filter: grayscale(0);
-  -o-filter: grayscale(0);
   filter: grayscale(0);
-  -webkit-filter: Gray();
-  filter: Gray();
-  opacity: inherit;
+  opacity: 1;
+  transform: translateY(-4px);
+  box-shadow: 0 16px 34px rgba(17, 24, 39, 0.12);
+}
+
+.faq-tablet-visual {
+  position: relative;
+  display: inline-block;
+  max-width: 428px;
+  width: 100%;
+}
+
+.faq-tablet-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.faq-chart-overlay {
+  position: absolute;
+  left: 21%;
+  top: 35%;
+  width: 58%;
+  height: 46%;
+  pointer-events: none;
+}
+
+.faq-chart-overlay__line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 40%;
+  overflow: visible;
+}
+
+.faq-chart-overlay__line path {
+  fill: none;
+  stroke: #f77b26;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 340;
+  stroke-dashoffset: 340;
+  filter: drop-shadow(0 0 5px rgba(247, 123, 38, 0.55));
+  animation: faq-overlay-line 3.8s ease-in-out infinite;
+}
+
+.faq-chart-overlay__line circle {
+  fill: #ff9f32;
+  filter: drop-shadow(0 0 7px rgba(255, 159, 50, 0.8));
+  animation: faq-overlay-dot 3.8s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.faq-chart-overlay__bars {
+  position: absolute;
+  left: 18%;
+  right: 28%;
+  bottom: 2%;
+  display: flex;
+  align-items: flex-end;
+  gap: 9%;
+  height: 38%;
+}
+
+.faq-chart-overlay__bars span {
+  width: 12%;
+  border-radius: 7px 7px 2px 2px;
+  background: linear-gradient(180deg, #19b6ff, #009ffd);
+  box-shadow: 0 0 10px rgba(0, 159, 253, 0.28);
+  animation: faq-overlay-bar 1.8s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.faq-chart-overlay__bars span:nth-child(1) {
+  height: 48%;
+}
+
+.faq-chart-overlay__bars span:nth-child(2) {
+  height: 70%;
+  animation-delay: -0.2s;
+}
+
+.faq-chart-overlay__bars span:nth-child(3) {
+  height: 92%;
+  animation-delay: -0.4s;
+}
+
+.faq-chart-overlay__bars span:nth-child(4) {
+  height: 78%;
+  animation-delay: -0.6s;
+}
+
+.faq-chart-overlay__bars span:nth-child(5) {
+  height: 100%;
+  animation-delay: -0.8s;
+}
+
+@keyframes faq-overlay-line {
+  0% {
+    stroke-dashoffset: 340;
+    opacity: 0.35;
+  }
+
+  45%,
+  72% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: -340;
+    opacity: 0.45;
+  }
+}
+
+@keyframes faq-overlay-dot {
+  0%,
+  100% {
+    transform: translateY(0) scale(0.85);
+    opacity: 0.65;
+  }
+
+  50% {
+    transform: translateY(-8px) scale(1.25);
+    opacity: 1;
+  }
+}
+
+@keyframes faq-overlay-bar {
+  0%,
+  100% {
+    transform: scaleY(0.58);
+    opacity: 0.62;
+  }
+
+  50% {
+    transform: scaleY(1.08);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-chart-overlay__line path,
+  .faq-chart-overlay__line circle,
+  .faq-chart-overlay__bars span {
+    animation: none;
+  }
 }
 .appearance-none {
   -webkit-appearance: none;
