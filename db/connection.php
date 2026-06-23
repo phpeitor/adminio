@@ -12,11 +12,11 @@ class DatabaseConnection
             return $pdo;
         }
 
-        $host = env("DB_HOST", "161.132.4.164");
+        $host = env("DB_HOST", "127.0.0.1");
         $port = env("DB_PORT", "3306");
-        $name = env("DB_NAME", "bd_cruces");
-        $user = env("DB_USERNAME", "usr_cruces");
-        $pass = env("DB_PASSWORD", "NuevaClaveSegura_2026*");
+        $name = env("DB_NAME", "bd");
+        $user = env("DB_USERNAME", "user");
+        $pass = env("DB_PASSWORD", "password");
         $charset = env("DB_CHARSET", "utf8mb4");
 
         $dsn = "mysql:host={$host};port={$port};dbname={$name};charset={$charset}";
