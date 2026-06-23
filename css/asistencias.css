@@ -303,6 +303,10 @@ body.auth-locked .logout-btn {
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
+#filtro-asistencias > .flex-1 {
+  padding-right: 0.65rem;
+}
+
 .filter-action-btn::after {
   content: attr(data-tooltip);
   position: absolute;
@@ -439,8 +443,17 @@ body.auth-locked .logout-btn {
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
   color: #fff !important;
-  border-color: #293042 !important;
-  background: #293042 !important;
+  border-color: #445298 !important;
+  background: #445298 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  color: #fff !important;
+  border-color: #36427e !important;
+  background: #36427e !important;
+  background-image: none !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
@@ -612,6 +625,10 @@ body.auth-locked .logout-btn {
 }
 
 @media (max-width: 640px) {
+  #filtro-asistencias > .flex-1 {
+    padding-right: 0;
+  }
+
   .summary-grid {
     grid-template-columns: 1fr;
   }
