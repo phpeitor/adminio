@@ -6,19 +6,22 @@
     <defs>
         <style>
             .faq-chart-line {
-                animation: faq-line-flow 4.2s ease-in-out infinite;
+                filter: drop-shadow(0 0 4px rgba(247, 123, 38, 0.45));
+                animation: faq-line-flow 2.8s ease-in-out infinite;
                 transform-box: fill-box;
                 transform-origin: center;
             }
 
             .faq-chart-dot {
-                animation: faq-dot-move 4.2s ease-in-out infinite;
+                filter: drop-shadow(0 0 6px rgba(255, 159, 50, 0.85));
+                animation: faq-dot-move 2.8s ease-in-out infinite;
                 transform-box: fill-box;
                 transform-origin: center;
             }
 
             .faq-chart-bars &gt; rect {
-                animation: faq-bar-pulse 2.6s ease-in-out infinite;
+                filter: drop-shadow(0 0 5px rgba(0, 159, 253, 0.32));
+                animation: faq-bar-pulse 1.6s ease-in-out infinite;
                 transform-box: fill-box;
                 transform-origin: center bottom;
             }
@@ -29,18 +32,18 @@
             .faq-chart-bars &gt; rect:nth-child(5) { animation-delay: -1.2s; }
 
             @keyframes faq-line-flow {
-                0%, 100% { opacity: 0.65; transform: translateX(-3px); }
-                50% { opacity: 1; transform: translateX(4px); }
+                0%, 100% { opacity: 0.58; transform: translateX(-5px) translateY(1px); }
+                50% { opacity: 1; transform: translateX(5px) translateY(-2px); }
             }
 
             @keyframes faq-dot-move {
-                0%, 100% { transform: translateY(0) scale(0.92); }
-                50% { transform: translateY(-5px) scale(1.12); }
+                0%, 100% { transform: translateY(0) scale(0.82); opacity: 0.72; }
+                50% { transform: translateY(-9px) scale(1.28); opacity: 1; }
             }
 
             @keyframes faq-bar-pulse {
-                0%, 100% { transform: scaleY(0.72); opacity: 0.72; }
-                50% { transform: scaleY(1); opacity: 1; }
+                0%, 100% { transform: scaleY(0.58); opacity: 0.58; }
+                50% { transform: scaleY(1.08); opacity: 1; }
             }
 
             @media (prefers-reduced-motion: reduce) {
