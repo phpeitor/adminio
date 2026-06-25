@@ -9,7 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🏢</text></svg>" />
   <link href="./css/app.css" rel="stylesheet">
   <link href="./css/index.css?v=3.5" rel="stylesheet">
-  <link href="./css/asistencias.css?v=1.3" rel="stylesheet">
+  <link href="./css/asistencias.css?v=1.4" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.54.1/dist/apexcharts.css">
@@ -161,6 +161,11 @@
         <label class="access-label" for="access-token">Token de acceso</label>
         <input id="access-token" name="token" class="access-input" type="password" placeholder="Ingresa el token" autocomplete="off" maxlength="30" />
         <div class="access-actions">
+          <a id="access-cancel" href="./index.html" class="access-back-btn btn_shadow_animation" aria-label="Volver al inicio">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M15.5 5 8.5 12l7 7" />
+            </svg>
+          </a>
           <button id="access-submit" type="submit" class="block rounded-full text-white no-underline text-md font-semibold py-3 px-8 v_gradient_primary btn_shadow_animation">Ingresar</button>
         </div>
       </form>
