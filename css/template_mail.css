@@ -1,0 +1,55 @@
+.mail-wrapper {
+  width: 100%;
+  background: #f5f7fa;
+  padding: 20px 0;
+}
+
+.mail-card {
+  max-width: 600px;
+  margin: auto;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mail-header {
+  width: 100%;
+  text-align: center;
+  background: #fff;
+  position: relative;
+}
+
+.mail-header-img {
+  display: block;
+  width: 100%;
+  border: 0;
+  outline: none;
+  text-decoration: none;
+  margin: 0;
+}
+
+.mail-content {
+  padding: 0 25px 25px;
+  font-family: Arial, sans-serif;
+}
+
+.mail-title {
+  color: #333;
+  text-align: center;
+}
+
+.mail-table {
+  width: 100%;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #333;
+}
+
+.mail-footer {
+  text-align: center;
+  padding: 15px;
+  background: #fafafa;
+  color: #777;
+  font-size: 12px;
+}

@@ -18,6 +18,30 @@ $telefono = $data["telefono"] ?? "";
 $distrito = $data["distrito"] ?? "";
 $mensaje = $data["mensaje"] ?? "";
 
+function escapeMailValue($value) {
+    return htmlspecialchars((string) $value, ENT_QUOTES, "UTF-8");
+}
+
+function renderMailTemplate($templatePath, $values) {
+    if (!file_exists($templatePath)) {
+        throw new Exception("No se encontro la plantilla de correo");
+    }
+
+    $template = file_get_contents($templatePath);
+    $replacements = [];
+
+    foreach ($values as $key => $value) {
+        $replacements["{{" . $key . "}}"] = $value;
+        $replacements["<!-- " . strtoupper($key) . " -->"] = $value;
+    }
+
+    return strtr($template, $replacements);
+}
+
+function getMailStyles($cssPath) {
+    return file_exists($cssPath) ? file_get_contents($cssPath) : "";
+}
+
 try {
     $mail = new PHPMailer(true);
     $mail->CharSet = "UTF-8";
@@ -35,43 +59,28 @@ try {
     $mail->addAddress(env("MAIL_TO"));
     $mail->addAddress(env("MAIL_FROM_EMAIL"));
     
-    $headPath = __DIR__ . "/../static/head_adminio.png";
+    $headWebpPath = __DIR__ . "/../static/head_adminio.webp";
+    $headPngPath = __DIR__ . "/../static/head_adminio.png";
 
-    if (file_exists($headPath)) $mail->addEmbeddedImage($headPath, "head_adminio", "head_adminio.png");
+    if (file_exists($headWebpPath)) {
+        $mail->addEmbeddedImage($headWebpPath, "head_adminio", "head_adminio.webp", "base64", "image/webp");
+    } elseif (file_exists($headPngPath)) {
+        $mail->addEmbeddedImage($headPngPath, "head_adminio", "head_adminio.png", "base64", "image/png");
+    }
 
     $mail->isHTML(true);
     $mail->Subject = "Nuevo mensaje de contacto";
 
-    $mail->Body = "
-    <div style='width:100%; background:#f5f7fa; padding:20px 0;'>
-      <div style='max-width:600px; margin:auto; background:white; border-radius:10px; overflow:hidden;
-                  box-shadow:0 3px 10px rgba(0,0,0,0.1);'>
-
-        <div style='width:100%; text-align:center; background:white; position:relative;'>
-            <img src='cid:head_adminio'
-                style='display:block; width:100%; border:0; outline:none; text-decoration:none; margin:0;'>
-        </div>
-
-        <div style='padding:0 25px 25px; font-family:Arial, sans-serif;'>
-          <h2 style='color:#333; text-align:center;'>Nuevo mensaje recibido</h2>
-          <table style='width:100%; margin-top:20px; font-size:16px; color:#333;'>
-            <tr><td>📆 <strong>Fecha:</strong></td>    <td>$fechaActual</td></tr>
-            <tr><td>👤 <strong>Nombre:</strong></td>   <td>$nombre</td></tr>
-            <tr><td>📧 <strong>Correo:</strong></td>   <td>$correo</td></tr>
-            <tr><td>📱 <strong>Teléfono:</strong></td>  <td>$telefono</td></tr>
-            <tr><td>🏢 <strong>Edificio:</strong></td> <td>$edificio</td></tr>
-            <tr><td>📍 <strong>Distrito:</strong></td>  <td>$distrito</td></tr>
-            <tr><td>💬 <strong>Mensaje:</strong></td>  <td>$mensaje</td></tr>
-          </table>
-        </div>
-
-        <div style='text-align:center; padding:15px; background:#fafafa; color:#777; font-size:12px;'>
-          © Adminio Perú - Sistema de Contacto
-        </div>
-
-      </div>
-    </div>
-    ";
+    $mail->Body = renderMailTemplate(__DIR__ . "/template_mail.html", [
+        "mail_styles" => "<style>" . getMailStyles(__DIR__ . "/../css/template_mail.css") . "</style>",
+        "fecha" => escapeMailValue($fechaActual),
+        "nombre" => escapeMailValue($nombre),
+        "correo" => escapeMailValue($correo),
+        "telefono" => escapeMailValue($telefono),
+        "edificio" => escapeMailValue($edificio),
+        "distrito" => escapeMailValue($distrito),
+        "mensaje" => nl2br(escapeMailValue($mensaje)),
+    ]);
 
     $mail->send();
 
