@@ -284,8 +284,63 @@ body.auth-locked .access-overlay {
 }
 
 .logout-btn {
-  border: 0;
+  position: absolute;
+  top: 1rem;
+  right: clamp(1rem, 4vw, 3rem);
+  z-index: 70;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgba(68, 82, 152, 0.2);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: #445298;
+  box-shadow: 0 8px 22px rgba(41, 48, 66, 0.16);
   cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.logout-btn:hover,
+.logout-btn:focus-visible {
+  background: #445298;
+  color: #fff;
+  transform: scale(1.06);
+  outline: none;
+}
+
+.logout-btn::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  padding: 0.45rem 0.65rem;
+  border-radius: 0.45rem;
+  background: #293042;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-0.25rem);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.logout-btn:hover::after,
+.logout-btn:focus-visible::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.logout-btn svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
 }
 
 body.auth-locked .logout-btn {

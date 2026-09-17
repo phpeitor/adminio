@@ -56,6 +56,7 @@ if ($token !== '' && hash_equals($expectedToken, $token)) {
     exit;
 }
 
+unset($_SESSION['asistencias_access']);
 $failedAttempts++;
 $_SESSION['asistencias_failed_attempts'] = $failedAttempts;
 

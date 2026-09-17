@@ -18,13 +18,35 @@ function loadSiteFragment(fileName, containerId) {
 
 function addLogoutButton() {
   const navigation = document.getElementById("v360-awesome-nav");
+  const header = document.getElementById("site-header");
 
-  if (!navigation || document.getElementById("logout-btn")) return;
+  if (!navigation || !header) return;
 
-  const item = document.createElement("li");
-  item.className = "block";
-  item.innerHTML = `<button class="block text-white no-underline text-md font-semibold py-2 px-8 v_gradient_primary_opacity lg:rounded-none lg:rounded-r-lg md:rounded-r-lg lg:mr-4 logout-btn" type="button" id="logout-btn">Cerrar sesión</button>`;
-  navigation.appendChild(item);
+  const intranetLink = document.getElementById("sign-in-btn");
+  const intranetItem = intranetLink ? intranetLink.closest("li") : null;
+
+  if (intranetItem) intranetItem.remove();
+
+  const logoLink = document.querySelector("#v360-header > a");
+  if (logoLink) logoLink.href = "./index.html";
+
+  document.querySelectorAll("#v360-awesome-nav .nav-link").forEach(link => {
+    const sectionId = link.getAttribute("data-section");
+    if (!sectionId) return;
+    link.href = `./index.html#${sectionId}`;
+    link.removeAttribute("data-section");
+  });
+
+  if (document.getElementById("logout-btn")) return;
+
+  const button = document.createElement("button");
+  button.className = "logout-btn";
+  button.type = "button";
+  button.id = "logout-btn";
+  button.setAttribute("data-tooltip", "Cerrar sesión");
+  button.setAttribute("aria-label", "Cerrar sesión");
+  button.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"></path></svg>`;
+  header.appendChild(button);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -374,6 +396,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const setAccessLoading = loading => {
+    accessSubmit.disabled = loading;
+    accessToken.disabled = loading;
+    accessSubmit.textContent = loading ? "Validando..." : "Ingresar";
+  };
+
   const renderTable = data => {
     const columns = Array.isArray(data.columns) ? data.columns : [];
     const rows = Array.isArray(data.rows) ? data.rows : [];
@@ -543,6 +571,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    setAccessLoading(true);
+
     try {
       const response = await fetch(authEndpoint, {
         method: "POST",
@@ -560,10 +590,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const attemptsLeft = Number.isFinite(Number(data.attempts_left)) ? Number(data.attempts_left) : null;
+        const message = data.message || "Token inválido";
+
         if (attemptsLeft !== null) {
-          showAccessError(`${data.message || "Token inválido"}. Te quedan ${attemptsLeft} intento${attemptsLeft === 1 ? "" : "s"}.`);
+          showAccessError(`${message}. Te quedan ${attemptsLeft} intento${attemptsLeft === 1 ? "" : "s"}.`);
+        } else {
+          showAccessError(message);
         }
-        throw new Error(data.message || "Token inválido");
+
+        return;
       }
 
       sessionStorage.setItem("asistencias_access_granted", "1");
@@ -574,6 +609,10 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       showAccessError(error.message || "No se pudo validar el token");
       accessToken.select();
+    } finally {
+      if (!accessForm.classList.contains("is-blocked")) {
+        setAccessLoading(false);
+      }
     }
   });
 
@@ -640,7 +679,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      if (data.authorized || sessionStorage.getItem("asistencias_access_granted") === "1") {
+      if (data.authorized) {
         sessionStorage.setItem("asistencias_access_granted", "1");
         clearBlockCountdown();
         unlockAccess();
@@ -650,12 +689,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       lockAccess();
     } catch (error) {
-      if (sessionStorage.getItem("asistencias_access_granted") === "1") {
-        unlockAccess();
-        loadReport();
-        return;
-      }
-
       lockAccess();
     }
   };
