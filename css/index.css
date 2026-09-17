@@ -22198,12 +22198,72 @@ html {
   }
 }
 
+footer {
+  background: #22292f;
+}
+
+.footer-main {
+  background: #22292f;
+}
+
+.footer-main > .container,
+.footer-main > .container > .flex {
+  background: transparent;
+}
+
+.contact-backdrop {
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(115deg, #252d38, #3a3448, #263946, #252d38);
+  background-size: 260% 260%;
+  animation: contact-gradient-shift 16s ease-in-out infinite;
+}
+
+.contact-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: -70%;
+  z-index: -1;
+  background: radial-gradient(circle, rgba(120, 177, 197, 0.18) 0, rgba(120, 177, 197, 0) 32%);
+  transform: translate3d(-18%, -12%, 0);
+  animation: contact-glow-drift 12s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes contact-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes contact-glow-drift {
+  0% {
+    transform: translate3d(-18%, -12%, 0) scale(0.9);
+    opacity: 0.45;
+  }
+
+  100% {
+    transform: translate3d(18%, 12%, 0) scale(1.1);
+    opacity: 0.8;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .about-image-wrap,
   .shirt-brand-highlight::before,
   .shirt-brand-spark {
     animation: none;
     transform: none;
+  }
+
+  .contact-backdrop,
+  .contact-backdrop::before {
+    animation: none;
   }
 }
 
