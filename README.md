@@ -143,9 +143,10 @@ adminio/
 │   ├── google_play.png                # Badge de Google Play
 │   ├── data/distritos.json            # Catalogo de distritos para formulario
 │   └── *                              # Imagenes, SVGs y recursos visuales
-├── docs/
-│   ├── backend-rules.md               # Reglas y lineamientos backend
-│   └── frontend-rules.md              # Reglas y lineamientos frontend
+├── .ia-context/
+│   ├── AGENTS_ROLES.md                # Roles y contexto del proyecto
+│   ├── BACKEND_RULES.md               # Reglas de backend
+│   └── FRONTEND_RULES.md              # Reglas de frontend
 └── vendor/                            # Dependencias instaladas por Composer
 ```
 

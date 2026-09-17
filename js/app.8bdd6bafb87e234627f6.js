@@ -20506,6 +20506,7 @@
 		}, h.prototype.removeAuthCookie = function() {
 			document.cookie = "__session=;path=/;domain=." + r.config.domain + ";"
 		}, h.prototype.redirectConsole = function() {
+			if (r.config.domainConsole === window.location.origin) return;
 			const path = window.location.pathname;
 			const clean = path.replace(/^\/+/, "");
 			if (!clean) return; 
