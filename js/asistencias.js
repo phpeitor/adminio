@@ -170,6 +170,11 @@ document.addEventListener("DOMContentLoaded", () => {
     return "badge badge-default";
   };
 
+  const badgeClassForTipo = tipo => {
+    const normalized = String(tipo || "").trim().toUpperCase();
+    return normalized.includes("SALIDA") ? "badge badge-salida" : "badge badge-default";
+  };
+
   const unlockAccess = () => {
     document.body.classList.remove(authLockedClass);
     accessOverlay.hidden = true;
@@ -274,6 +279,10 @@ document.addEventListener("DOMContentLoaded", () => {
    const renderCharts = rows => {
      if (!window.ApexCharts) return;
 
+     document.querySelectorAll(".chart-loading").forEach(loader => {
+       loader.hidden = false;
+     });
+
      destroyCharts();
 
      const adminData = groupCounts(rows, "nombre_admin");
@@ -334,10 +343,16 @@ document.addEventListener("DOMContentLoaded", () => {
        plotOptions: { pie: { donut: { size: "68%" } } },
      });
 
-     [adminChart, edificioChart, fechaChart, tipoChart].forEach(chart => {
-       chart.render();
-       chartInstances.push(chart);
-     });
+     const charts = [adminChart, edificioChart, fechaChart, tipoChart];
+     charts.forEach(chart => chartInstances.push(chart));
+
+     Promise.all(charts.map(chart => chart.render()))
+       .catch(error => console.error("Error renderizando gráficos:", error))
+       .finally(() => {
+         document.querySelectorAll(".chart-loading").forEach(loader => {
+           loader.hidden = true;
+         });
+       });
 
      chartsSection.hidden = rows.length === 0;
    };
@@ -464,7 +479,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           if (column === "tipo_asistencia") {
-            return `<td><span class="badge badge-default">${escapeHtml(value || "-")}</span></td>`;
+            return `<td><span class="${badgeClassForTipo(value)}">${escapeHtml(value || "-")}</span></td>`;
           }
 
           if (value === null || value === undefined || value === "") {

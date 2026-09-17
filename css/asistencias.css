@@ -388,6 +388,29 @@ body.auth-locked .logout-btn {
   animation: report-spinner 0.8s linear infinite;
 }
 
+.chart-loading {
+  min-height: 20rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  color: #5b6476;
+  font-weight: 700;
+}
+
+.chart-loading[hidden] {
+  display: none;
+}
+
+.chart-spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 3px solid rgba(68, 82, 152, 0.2);
+  border-top-color: #445298;
+  border-radius: 50%;
+  animation: report-spinner 0.8s linear infinite;
+}
+
 @keyframes report-spinner {
   to {
     transform: rotate(360deg);
@@ -727,6 +750,11 @@ div.dataTables_wrapper div.dataTables_paginate a.paginate_button.current:hover {
 .badge-default {
   background: rgba(41, 48, 66, 0.08);
   color: var(--panel-ink);
+}
+
+.badge-salida {
+  background: #fee2e2;
+  color: #b42318;
 }
 
 .mini-link {
