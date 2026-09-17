@@ -178,7 +178,7 @@ body.auth-locked .access-overlay {
 }
 
 .asistencias-shell {
-  min-height: 100vh;
+  min-height: 0;
 }
 
 .asistencias-hero {
@@ -778,6 +778,48 @@ div.dataTables_wrapper div.dataTables_paginate a.paginate_button.current:hover {
 
 .mini-link.secondary {
   background: #293042;
+}
+
+.map-link {
+  position: relative;
+  width: 2.45rem;
+  height: 2.15rem;
+  padding: 0;
+}
+
+.map-link::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.45rem);
+  z-index: 10;
+  padding: 0.4rem 0.55rem;
+  border-radius: 0.35rem;
+  background: #293042;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 0.25rem);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.map-link:hover::after,
+.map-link:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.map-link-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .summary-grid {

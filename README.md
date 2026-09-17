@@ -7,186 +7,136 @@
   <img src="https://adminio.pe/static/main.png" alt="Adminio" width="600">
 </a>
 
-Landing page corporativa para Adminio Perú, enfocada en administración inmobiliaria, captura de leads, envio de mensajes por correo y acceso a modulos internos de asistencia.
+## Descripción
 
-## Descripcion
-
-Adminio es una landing corporativa con funcionalidades de contacto y un modulo interno de asistencias. El proyecto combina frontend estatico, endpoints PHP para envio de correos y consultas de base de datos para las secciones privadas.
+Adminio es una landing corporativa para administración inmobiliaria con formulario de contacto y un módulo privado de reportes de asistencia. El frontend es HTML, CSS y JavaScript; el backend PHP gestiona correo SMTP, autenticación por token, sesiones y consultas MySQL.
 
 ## Requisitos
 
-- PHP 8.x o superior
-- Composer
-- Servidor web compatible con PHP, por ejemplo Nginx, Caddy, PHP built-in server u otro elegido por el usuario
-- Acceso SMTP valido para envio de correos
-- Base de datos configurada si se usara el modulo de asistencias
+- PHP 8.x o superior con extensiones PDO y OpenSSL.
+- Composer 2.x.
+- Apache, el servidor integrado de PHP u otro servidor web que ejecute PHP.
+- SMTP funcional para el formulario de contacto.
+- MySQL/MariaDB con la tabla `asistencia_administradores` para el módulo privado.
 
-## Instalacion local
+## Instalación local
 
-1. Clonar el repositorio
-
-```bash
-git clone https://github.com/phpeitor/adminio.git
-cd adminio
-```
-
-2. Instalar dependencias PHP
+1. Instalar dependencias:
 
 ```bash
 composer install
 ```
 
-3. Crear el archivo `.env` en la raiz del proyecto con las credenciales SMTP
+2. Crear la configuración local a partir del ejemplo:
 
-Ejemplo:
-
-```env
-MAIL_HOST=smtp.tudominio.com
-MAIL_PORT=587
-MAIL_USERNAME=usuario@tudominio.com
-MAIL_PASSWORD=tu_password
-MAIL_SECURE=tls
-MAIL_FROM_EMAIL=usuario@tudominio.com
-MAIL_FROM_NAME=Adminio Web
-MAIL_TO=ventas@tudominio.com
+```bash
+copy .env.example .env
 ```
 
-4. Configurar la conexion a base de datos si usaras asistencias
+En macOS/Linux, usar `cp .env.example .env`. Después completar `.env` con valores del entorno. Nunca usar credenciales reales en `.env.example`.
 
-- Revisar `db/connection.php`.
-- Validar host, puerto, usuario, contrasena y nombre de base de datos segun el entorno.
-- Confirmar que el usuario de base de datos tenga permisos de lectura sobre las tablas requeridas.
-
-5. Publicar o servir el proyecto
-
-- Colocar el proyecto en el directorio publico configurado por el servidor web elegido.
-- Configurar el document root o raiz publica apuntando a la carpeta del proyecto.
-- Asegurar que el servidor procese archivos `.php` y permita servir archivos estaticos de `css/`, `js/` y `static/`.
-- Abrir la URL local o de despliegue definida para el proyecto.
-
-Para pruebas rapidas en local tambien se puede usar el servidor integrado de PHP desde la raiz del proyecto:
+3. Servir el proyecto desde su raíz. Con PHP:
 
 ```bash
 php -S 127.0.0.1:8000
 ```
 
-Luego abrir `http://127.0.0.1:8000/` en el navegador.
+Abrir `http://127.0.0.1:8000/`. En Apache, la URL puede ser `http://127.0.0.1/adminio/` si la carpeta está dentro del document root.
 
-## Flujo de contacto
+4. Verificar la conexión de base de datos en `db/connection.php` y que el usuario tenga permisos de lectura sobre `asistencia_administradores`.
 
-- El formulario valida campos en frontend.
-- Al enviar, la web llama a `config/envio_correo.php`.
-- PHPMailer toma credenciales desde `.env` usando `config/env.php`.
-- Si el correo se envia correctamente, se muestra confirmacion y se recarga la pagina.
-- Si falla el envio, revisar respuesta del endpoint, credenciales SMTP, puerto, cifrado y reglas del proveedor de correo.
+## Configuración de entorno
 
-## Flujo de asistencias
+`.env` es local y está excluido del control de versiones. `.env.example` documenta todas las variables necesarias:
 
-- `asistencias.html` muestra la interfaz del modulo de asistencias.
-- `js/asistencias.js` controla login, filtros, consulta de registros y cierre de sesion.
-- Los endpoints en `controller/` validan el acceso, consultan estado de sesion, devuelven asistencias y cierran la sesion.
-- `model/AsistenciaAdministradoresModel.php` contiene la logica de consulta de datos.
-- `db/connection.php` centraliza la conexion a la base de datos.
-
-## Variables de entorno
-
-El archivo `.env` debe crearse localmente y no debe versionarse. Variables esperadas para el envio de correos:
-
-| Variable | Descripcion |
+| Variable | Uso |
 | --- | --- |
-| `MAIL_HOST` | Servidor SMTP |
-| `MAIL_PORT` | Puerto SMTP, por ejemplo `587` o `465` |
-| `MAIL_USERNAME` | Usuario de autenticacion SMTP |
-| `MAIL_PASSWORD` | Contrasena o token de aplicacion SMTP |
-| `MAIL_SECURE` | Cifrado SMTP, por ejemplo `tls` o `ssl` |
-| `MAIL_FROM_EMAIL` | Correo remitente |
-| `MAIL_FROM_NAME` | Nombre visible del remitente |
-| `MAIL_TO` | Correo destino para los leads |
+| `MAIL_HOST` | Host del servidor SMTP. |
+| `MAIL_PORT` | Puerto SMTP, normalmente `587` o `465`. |
+| `MAIL_SECURE` | Cifrado SMTP: `tls` o `ssl`. |
+| `MAIL_USERNAME` | Usuario SMTP. |
+| `MAIL_PASSWORD` | Contraseña o token SMTP. |
+| `MAIL_FROM_EMAIL` | Dirección remitente. |
+| `MAIL_FROM_NAME` | Nombre visible del remitente. |
+| `MAIL_TO` | Dirección que recibe los leads. |
+| `DB_HOST` | Host de MySQL/MariaDB. |
+| `DB_PORT` | Puerto de base de datos. |
+| `DB_NAME` | Nombre de la base de datos. |
+| `DB_USERNAME` | Usuario de base de datos. |
+| `DB_PASSWORD` | Contraseña de base de datos. |
+| `DB_CHARSET` | Codificación, normalmente `utf8mb4`. |
+| `ASISTENCIAS_TOKEN` | Token requerido para acceder a asistencias. |
 
-## Estructura del proyecto
+## Flujos de la aplicación
+
+### Landing y contacto
+
+- `index.html` carga `head.html` y `footer.html` mediante `js/adminio.js`.
+- `static/data/distritos.json` alimenta el selector de distritos.
+- El formulario envía JSON a `config/envio_correo.php`.
+- `config/env.php` lee `.env` y PHPMailer envía el correo mediante SMTP.
+
+### Asistencias
+
+- `asistencias.html` carga el header y footer compartidos.
+- `js/asistencias.js` valida el token, mantiene la sesión, filtra fechas, renderiza la tabla y genera gráficos.
+- `controller/validar_acceso_asistencias.php` compara el token con `hash_equals`, limita intentos y aplica bloqueo temporal.
+- `controller/estado_acceso_asistencias.php` informa el estado de la sesión.
+- `controller/asistencia_administradores.php` devuelve el reporte filtrado.
+- `controller/cerrar_sesion_asistencias.php` destruye la sesión.
+- `model/AsistenciaAdministradoresModel.php` consulta la tabla y `db/connection.php` centraliza PDO.
+
+## Estructura relevante
 
 ```text
 adminio/
-├── index.html                         # Landing principal
-├── asistencias.html                   # Modulo web de asistencias
-├── composer.json                      # Dependencias PHP
-├── composer.lock                      # Versiones bloqueadas de dependencias
-├── README.md                          # Documentacion del proyecto
-├── .env                               # Variables locales, no versionar
-├── config/
-│   ├── env.php                        # Helper para leer variables de entorno
-│   └── envio_correo.php               # Endpoint de envio SMTP con PHPMailer
-├── controller/
-│   ├── asistencia_administradores.php # Consulta de asistencias
-│   ├── cerrar_sesion_asistencias.php  # Cierre de sesion del modulo asistencias
-│   ├── estado_acceso_asistencias.php  # Estado de acceso/sesion
-│   ├── validar_acceso_asistencias.php # Validacion de acceso
-│   └── index.php                      # Proteccion de listado/directorio
-├── db/
-│   ├── connection.php                 # Conexion a base de datos
-│   └── index.php                      # Proteccion de listado/directorio
-├── model/
-│   ├── AsistenciaAdministradoresModel.php # Modelo de asistencias
-│   └── index.php                          # Proteccion de listado/directorio
-├── css/
-│   ├── app.css                        # Estilos base/compilados
-│   ├── asistencias.css                # Estilos del modulo asistencias
-│   ├── index.css                      # Estilos principales editables
-│   └── *.css                          # Assets CSS compilados/versionados
-├── js/
-│   ├── adminio.js                     # Navegacion, validaciones y formulario
-│   ├── asistencias.js                 # Interaccion del modulo asistencias
-│   └── *.js                           # Librerias y bundles compilados
-├── static/
-│   ├── main.png                       # Imagen principal del hero
-│   ├── logo.png                       # Logo del sitio
-│   ├── google_play.png                # Badge de Google Play
-│   ├── data/distritos.json            # Catalogo de distritos para formulario
-│   └── *                              # Imagenes, SVGs y recursos visuales
-├── .ia-context/
-│   ├── AGENTS_ROLES.md                # Roles y contexto del proyecto
-│   ├── BACKEND_RULES.md               # Reglas de backend
-│   └── FRONTEND_RULES.md              # Reglas de frontend
-└── vendor/                            # Dependencias instaladas por Composer
+├── index.html                  # Landing pública
+├── asistencias.html            # Reporte privado de asistencias
+├── head.html                   # Header compartido
+├── footer.html                 # Footer compartido
+├── .env.example                # Plantilla segura de configuración
+├── config/                     # Entorno, correo y plantilla HTML
+├── controller/                 # Endpoints de autenticación y reportes
+├── db/                         # Conexión PDO
+├── model/                      # Acceso a datos de asistencias
+├── css/                        # Estilos fuente y assets compilados
+├── js/                         # Lógica fuente y bundles
+├── static/                     # Imágenes, SVG y datos públicos
+└── .ia-context/                # Reglas y contexto para agentes
 ```
 
-## Archivos principales
+## Validación y mantenimiento
 
-- `index.html`: landing principal con hero, secciones comerciales, video embebido, contacto y recursos visuales.
-- `css/index.css`: estilos editables de la landing, animaciones del hero, responsive y estados de UI.
-- `js/adminio.js`: navegacion, validacion del formulario, carga de distritos y envio de contacto.
-- `asistencias.html`: pantalla del modulo interno de asistencias.
-- `css/asistencias.css`: estilos especificos del modulo de asistencias.
-- `js/asistencias.js`: logica frontend de acceso, filtros, listado y cierre de sesion.
-- `config/envio_correo.php`: envio SMTP usando PHPMailer.
-- `config/env.php`: lectura de variables desde `.env`.
-- `db/connection.php`: conexion a base de datos para backend.
-- `model/AsistenciaAdministradoresModel.php`: acceso a datos del modulo de asistencias.
+Después de modificar PHP:
 
-## Despliegue
+```bash
+php -l config/env.php
+php -l config/envio_correo.php
+php -l controller/validar_acceso_asistencias.php
+php -l controller/asistencia_administradores.php
+php -l controller/estado_acceso_asistencias.php
+php -l controller/cerrar_sesion_asistencias.php
+```
 
-- Instalar dependencias con `composer install --no-dev --optimize-autoloader` si el entorno es productivo.
-- Configurar el servidor web elegido para servir la carpeta del proyecto y ejecutar PHP.
-- Crear `.env` en el servidor con credenciales reales de SMTP.
-- Configurar `db/connection.php` con credenciales seguras si se habilita asistencias.
-- Verificar permisos de lectura sobre archivos estaticos y permisos de ejecucion para scripts PHP.
-- Probar el formulario de contacto y el acceso al modulo de asistencias despues de publicar.
+Después de modificar JavaScript:
 
-## Seguridad
+```bash
+node --check js/adminio.js
+node --check js/asistencias.js
+```
 
-- No subir `.env`, credenciales SMTP, credenciales de base de datos ni respaldos con informacion sensible.
-- Usar HTTPS en entornos publicos.
-- Mantener Composer y dependencias actualizadas.
-- Restringir acceso a modulos internos segun las reglas del servidor y la logica de autenticacion del proyecto.
-- Revisar logs del servidor y del proveedor SMTP ante errores de envio.
+Probar manualmente el formulario de contacto, el acceso con token válido e inválido, el bloqueo tras intentos fallidos, los filtros, la tabla, los gráficos y el cierre de sesión.
 
-## Notas
+## Despliegue y seguridad
 
-- Si abres solo `index.html` sin servidor web, el formulario no podra enviar correos porque requiere ejecutar PHP.
-- Verifica firewall, puerto SMTP y credenciales si aparece error de envio.
-- No versionar `.env`, credenciales SMTP ni credenciales de base de datos.
-- `vendor/` se genera con `composer install`; no editar dependencias directamente.
+- Usar `composer install --no-dev --optimize-autoloader` en producción.
+- Mantener `.env` fuera del repositorio y protegerlo de servirlo públicamente.
+- Usar HTTPS y un token largo, aleatorio y exclusivo para asistencias.
+- Rotar inmediatamente cualquier credencial que haya sido expuesta.
+- No devolver secretos, trazas ni credenciales en respuestas JSON.
+- Mantener Composer y PHPMailer actualizados.
+- No editar `vendor/` manualmente ni modificar bundles compilados sin actualizar su fuente.
 
 ## Licencia
 
-Proyecto de uso privado/comercial segun politicas del propietario del repositorio.
+Proyecto de uso privado/comercial según las políticas del propietario del repositorio.

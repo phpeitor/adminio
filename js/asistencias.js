@@ -467,7 +467,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           if (column === "maps_url" && value) {
-            return `<td><a class="mini-link secondary" href="${escapeHtml(value)}" target="_blank" rel="noopener">Ver mapa</a></td>`;
+            return `<td><a class="mini-link secondary map-link" href="${escapeHtml(value)}" target="_blank" rel="noopener" data-tooltip="Abrir mapa" aria-label="Abrir ubicación en el mapa"><svg class="map-link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.25"></circle></svg></a></td>`;
           }
 
           if (column === "foto_url" && value) {
