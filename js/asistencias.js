@@ -1,4 +1,36 @@
+function loadSiteFragment(fileName, containerId) {
+  const container = document.getElementById(containerId);
+
+  if (!container) return Promise.resolve();
+
+  return fetch(`./${fileName}`)
+    .then(response => {
+      if (!response.ok) throw new Error(`No se pudo cargar ${fileName}: ${response.status}`);
+      return response.text();
+    })
+    .then(html => {
+      container.innerHTML = html;
+    })
+    .catch(error => {
+      console.error(`Error cargando ${fileName}:`, error);
+    });
+}
+
+function addLogoutButton() {
+  const navigation = document.getElementById("v360-awesome-nav");
+
+  if (!navigation || document.getElementById("logout-btn")) return;
+
+  const item = document.createElement("li");
+  item.className = "block";
+  item.innerHTML = `<button class="block text-white no-underline text-md font-semibold py-2 px-8 v_gradient_primary_opacity lg:rounded-none lg:rounded-r-lg md:rounded-r-lg lg:mr-4 logout-btn" type="button" id="logout-btn">Cerrar sesión</button>`;
+  navigation.appendChild(item);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  loadSiteFragment("head.html", "site-header").then(addLogoutButton);
+  loadSiteFragment("footer.html", "site-footer");
+
   const authLockedClass = "auth-locked";
   const endpoint = "./controller/asistencia_administradores.php";
   const authEndpoint = "./controller/validar_acceso_asistencias.php";
@@ -14,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const tableHead = document.getElementById("table-head");
   const tableBody = document.getElementById("table-body");
   const emptyState = document.getElementById("empty-state");
+  const reportLoading = document.getElementById("report-loading");
   const applyBtn = document.getElementById("apply-filter");
   const clearBtn = document.getElementById("clear-filter");
   const accessOverlay = document.getElementById("access-overlay");
@@ -22,7 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const accessError = document.getElementById("access-error");
   const accessCountdown = document.getElementById("access-countdown");
   const accessSubmit = document.getElementById("access-submit");
-  const logoutBtn = document.getElementById("logout-btn");
   let dataTableInstance = null;
   let rangePicker = null;
   const chartsSection = document.getElementById("charts-section");
@@ -331,6 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const setLoading = loading => {
+    if (reportLoading) reportLoading.hidden = !loading;
     applyBtn.disabled = loading;
     applyBtn.setAttribute("data-tooltip", loading ? "Cargando reporte" : "Aplicar filtro");
     applyBtn.setAttribute("aria-label", loading ? "Cargando reporte" : "Aplicar filtro de fechas");
@@ -544,7 +577,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  logoutBtn.addEventListener("click", async () => {
+  document.addEventListener("click", async event => {
+    if (!event.target.closest("#logout-btn")) return;
+
     try {
       const response = await fetch(logoutEndpoint, {
         method: "POST",

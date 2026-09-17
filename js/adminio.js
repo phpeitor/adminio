@@ -1,5 +1,22 @@
-document.addEventListener("DOMContentLoaded", () => {
+function loadSiteFragment(fileName, containerId) {
+    const container = document.getElementById(containerId);
 
+    if (!container) return Promise.resolve();
+
+    return fetch(`./${fileName}`)
+        .then(response => {
+            if (!response.ok) throw new Error(`No se pudo cargar ${fileName}: ${response.status}`);
+            return response.text();
+        })
+        .then(html => {
+            container.innerHTML = html;
+        })
+        .catch(error => {
+            console.error(`Error cargando ${fileName}:`, error);
+        });
+}
+
+function initializeNavigation() {
     document.querySelectorAll(".nav-link").forEach(link => {
         link.style.cursor = "pointer";
 
@@ -9,16 +26,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const sectionId = link.getAttribute("data-section");
             const hash = md5(sectionId);
 
-            // Cambia la URL visible por hash MD5
             window.location.hash = hash;
 
-            // Hace scroll al elemento real
             const element = document.getElementById(sectionId);
             if (element) {
                 element.scrollIntoView({ behavior: "smooth" });
             }
         });
     });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadSiteFragment("head.html", "site-header").then(initializeNavigation);
+    loadSiteFragment("footer.html", "site-footer");
 
     // Si el usuario recarga la página con el hash MD5, igual hacer scroll al section real
     const currentHash = window.location.hash.replace("#", "");

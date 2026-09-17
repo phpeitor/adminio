@@ -17,25 +17,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
 </head>
 <body class="asistencias-page auth-locked">
-  <div class="fixed w-full z-20 shadow bg-white">
-    <input class="z-30 fixed" type="checkbox" id="toggle"><label class="z-30 fixed" for="toggle" id="toggle-btn"></label>
-    <div class="nav-icon block z-30 fixed lg:hidden md:block sm:block"></div>
-    <nav class="container m-auto flex items-center justify-between flex-wrap px-6 w-full z-20 pin-t nav-customize" id="v360-header">
-      <a class="flex items-center flex-no-shrink text-white mr-6" href="./index.html">
-        <img class="fill-current h-10 mr-2 my-2 hidden lg:block md:block sm:block" src="./static/logo.png" alt="Adminio">
-        <img class="fill-current h-10 mr-2 my-2 block lg:hidden md:hidden sm:hidden" src="./static/logo.png" alt="Adminio">
-      </a>
-      <ul class="block flex-grow flex items-center w-auto justify-end" id="v360-awesome-nav">
-        <li class="item-nav"><a class="nav-link block text-black no-underline text-base font-medium mx-2 p-2 py-4" href="./index.html#nosotros">Nosotros</a></li>
-        <li class="item-nav"><a class="nav-link block text-black no-underline text-base font-medium mx-2 p-2 py-4" href="./index.html#servicios">Servicios</a></li>
-        <li class="item-nav"><a class="nav-link block text-black no-underline text-base font-medium mx-2 p-2 py-4" href="./index.html#beneficios">Beneficios</a></li>
-        <li class="item-nav"><a class="nav-link block text-black no-underline text-base font-medium mx-2 p-2 py-4" href="./index.html#video">Video</a></li>
-        <li class="item-nav"><a class="nav-link block text-black no-underline text-base font-medium mx-2 p-2 py-4" href="./index.html#contacto">Contacto</a></li>
-        <li class="block"><a class="block rounded text-white no-underline text-md font-semibold py-2 px-8 v_gradient_primary lg:ml-4 md:lg:ml-4 lg:rounded-none lg:rounded-l-lg md:rounded-l-lg" href="./asistencias.html">Asistencias</a></li>
-        <li class="block"><button class="block text-white no-underline text-md font-semibold py-2 px-8 v_gradient_primary_opacity lg:rounded-none lg:rounded-r-lg md:rounded-r-lg lg:mr-4 logout-btn" type="button" id="logout-btn">Cerrar sesión</button></li>
-      </ul>
-    </nav>
-  </div>
+  <div id="site-header"></div>
 
   <main class="asistencias-shell">
     <section class="asistencias-hero">
@@ -128,6 +110,10 @@
         </div>
 
         <div class="panel-surface panel-surface-rounded rounded-2xl p-3 md:p-5">
+          <div id="report-loading" class="report-loading" role="status" aria-live="polite" hidden>
+            <span class="report-spinner" aria-hidden="true"></span>
+            <span>Cargando asistencias...</span>
+          </div>
           <div class="table-wrap">
             <table class="report-table" aria-describedby="report-caption">
               <thead id="table-head"></thead>
@@ -173,13 +159,7 @@
       <p id="access-countdown" class="access-countdown" aria-live="polite" hidden></p>
     </div>
   </div>
-
-  <footer>
-    <div class="bg-black flex justify-center p-2 text-white text-sm font-light"> Powered by: <a
-            class="font-bold text-white" href="https://www.instagram.com/amvsoft.tech" target="_blank"
-            style="text-decoration: none;"> @amvsoft.tech</a>
-    </div>
-  </footer>
+  <div id="site-footer" aria-label="Pie de página"></div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>

@@ -292,6 +292,53 @@ body.auth-locked .logout-btn {
   display: none;
 }
 
+#site-header {
+  position: relative;
+  z-index: 50;
+  min-height: 5rem;
+}
+
+#site-header > .fixed {
+  top: 0;
+  left: 0;
+  right: 0;
+  min-height: 5rem;
+}
+
+#site-header .nav-customize {
+  opacity: 1;
+  transform: none;
+}
+
+.report-loading {
+  min-height: 8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: #5b6476;
+  font-weight: 700;
+}
+
+.report-loading[hidden] {
+  display: none;
+}
+
+.report-spinner {
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 3px solid rgba(68, 82, 152, 0.2);
+  border-top-color: #445298;
+  border-radius: 50%;
+  animation: report-spinner 0.8s linear infinite;
+}
+
+@keyframes report-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .panel-card {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.7);
