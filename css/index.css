@@ -22199,19 +22199,62 @@ html {
 }
 
 footer {
+  position: relative;
+  overflow: hidden;
   background: #22292f;
 }
 
 .footer-main {
-  background: #22292f;
+  position: relative;
+  z-index: 1;
+  padding-top: 4.5rem !important;
+  background: transparent;
 }
 
 .footer-main > .container,
 .footer-main > .container > .flex {
+  position: relative;
+  z-index: 2;
   background: transparent;
 }
 
-.contact-backdrop {
+.footer-main::before,
+.footer-main::after {
+  content: "";
+  position: absolute;
+  top: -4.5rem;
+  left: -6%;
+  width: 112%;
+  height: 8rem;
+  border-radius: 0 0 50% 50%;
+  pointer-events: none;
+}
+
+.footer-main::before {
+  z-index: 0;
+  background: #3a3448;
+  transform: translateX(-2%) rotate(-1.5deg);
+}
+
+.footer-main::after {
+  z-index: 1;
+  background: rgba(120, 177, 197, 0.18);
+  transform: translate(4%, -0.7rem) rotate(1.2deg);
+  animation: footer-wave-drift 12s ease-in-out infinite alternate;
+}
+
+@keyframes footer-wave-drift {
+  from {
+    transform: translate(4%, -0.7rem) rotate(1.2deg);
+  }
+
+  to {
+    transform: translate(-2%, 0.15rem) rotate(-1.2deg);
+  }
+}
+
+.contact-section {
+  position: relative;
   overflow: hidden;
   isolation: isolate;
   background: linear-gradient(115deg, #252d38, #3a3448, #263946, #252d38);
@@ -22219,7 +22262,13 @@ footer {
   animation: contact-gradient-shift 16s ease-in-out infinite;
 }
 
-.contact-backdrop::before {
+.contact-section > .p-32 {
+  position: relative;
+  z-index: 1;
+  padding-bottom: 4rem;
+}
+
+.contact-section::before {
   content: "";
   position: absolute;
   inset: -70%;
@@ -22261,8 +22310,9 @@ footer {
     transform: none;
   }
 
-  .contact-backdrop,
-  .contact-backdrop::before {
+  .contact-section,
+  .contact-section::before,
+  .footer-main::after {
     animation: none;
   }
 }
