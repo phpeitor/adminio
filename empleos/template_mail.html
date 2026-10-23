@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nueva postulación a ADMINIO</title>
+  <!-- MAIL_STYLES -->
+</head>
+<body>
+  <div class="mail-wrapper">
+    <div class="mail-card">
+      <div class="mail-header"><img src="cid:head_empleo" class="mail-header-img" alt="Adminio Perú"></div>
+      <div class="mail-content">
+        <h2 class="mail-title">Nueva postulación recibida</h2>
+        <table class="mail-table">
+          <tr><td>📅 <strong>Fecha:</strong></td><td>{{fecha}}</td></tr>
+        </table>
+        <h3 style="margin:24px 0 8px;padding-bottom:8px;border-bottom:2px solid #ff9828;color:#142f60;font-size:18px;text-align:left">Datos de contacto</h3>
+        <table class="mail-table">
+          <tr><td>👤 <strong>Nombre:</strong></td><td>{{nombre}}</td></tr>
+          <tr><td>✉️ <strong>Correo:</strong></td><td>{{correo}}</td></tr>
+          <tr><td>📱 <strong>Teléfono:</strong></td><td>{{telefono}}</td></tr>
+        </table>
+        <h3 style="margin:24px 0 8px;padding-bottom:8px;border-bottom:2px solid #ff9828;color:#142f60;font-size:18px;text-align:left">Datos de la postulación</h3>
+        <table class="mail-table">
+          <tr><td>💼 <strong>Área de interés:</strong></td><td>{{puesto}}</td></tr>
+          <tr><td>📝 <strong>Experiencia:</strong></td><td>{{mensaje}}</td></tr>
+          <tr><td>📎 <strong>CV:</strong></td><td>Adjunto en formato PDF</td></tr>
+          <tr><td>✅ <strong>Consentimiento:</strong></td><td>Autorizó el uso de sus datos y CV para evaluar y gestionar esta postulación.</td></tr>
+        </table>
+      </div>
+      <div class="mail-footer">&copy; Adminio Perú - Sistema de Postulaciones</div>
+    </div>
+  </div>
+</body>
+</html>

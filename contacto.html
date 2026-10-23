@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js" defer></script>
-  <script src="./js/contacto.js?v=7" defer></script>
+  <script src="./js/contacto.js?v=8" defer></script>
   <link rel="stylesheet" href="./css/site-theme.css?v=3">
 </head>
 <body class="quote-page">
@@ -113,7 +113,7 @@
           <div class="quote-grid">
             <div class="quote-field"><label for="nombre">Nombre y apellidos</label><input id="nombre" name="nombre" autocomplete="name" maxlength="120" required placeholder="Escribe tu nombre"></div>
             <div class="quote-field"><label for="cargo">Cargo</label><select id="cargo" name="cargo" required><option value="">Selecciona una opción</option><option>Presidente de la junta de propietarios</option><option>Miembro de la junta de propietarios</option><option>Propietario</option><option>Administrador</option><option>Representante de la empresa</option><option>Otro</option></select></div>
-            <div class="quote-field"><label for="telefono">Teléfono</label><input id="telefono" name="telefono" type="tel" autocomplete="tel" maxlength="20" pattern="[+0-9() .-]{7,20}" required placeholder="Escribe tu celular"></div>
+            <div class="quote-field"><label for="telefono">Teléfono</label><input id="telefono" name="telefono" type="tel" autocomplete="tel" inputmode="numeric" minlength="9" maxlength="9" pattern="9[0-9]{8}" title="Ingresa un celular peruano de 9 dígitos que empiece con 9" required placeholder="Ejemplo: 987654321"></div>
             <div class="quote-field"><label for="correo">Correo</label><input id="correo" name="correo" type="email" autocomplete="email" maxlength="254" required placeholder="Escribe tu correo"></div>
           </div>
           <p class="quote-note">Usaremos estos datos para atender tu solicitud de cotización.</p>

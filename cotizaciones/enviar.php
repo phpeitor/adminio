@@ -47,8 +47,8 @@ foreach ($limits as $field => $limit) {
     }
     $data[$field] = $value;
 }
-if (!filter_var($data['correo'], FILTER_VALIDATE_EMAIL) || !preg_match('/^[+0-9() .\-]{7,20}$/', $data['telefono']) || !ctype_digit($data['unidades']) || !ctype_digit($data['pisos']) || !ctype_digit($data['sotanos'])) {
-    respond(422, 'invalid_fields', 'Revisa el correo y el teléfono.');
+if (!filter_var($data['correo'], FILTER_VALIDATE_EMAIL) || !preg_match('/^9[0-9]{8}$/', $data['telefono']) || !ctype_digit($data['unidades']) || !ctype_digit($data['pisos']) || !ctype_digit($data['sotanos'])) {
+    respond(422, 'invalid_fields', 'Revisa el correo, el teléfono y las cantidades ingresadas.');
 }
 $services = $input['servicios'] ?? null;
 if (!is_array($services) || !$services || count($services) > 6) respond(422, 'invalid_fields', 'Selecciona al menos un servicio.');

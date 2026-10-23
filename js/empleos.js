@@ -16,17 +16,53 @@ const jobsForm = document.getElementById('jobs-form');
 const cvInput = document.getElementById('cv');
 const jobsStatus = document.getElementById('quote-status');
 let jobsSending = false;
-function validateCV() {
+async function validateCV() {
   const file = cvInput.files[0];
-  cvInput.setCustomValidity(file && (!/\.pdf$/i.test(file.name) || file.size === 0 || file.size > 5 * 1024 * 1024) ? 'Adjunta un PDF válido de hasta 5 MB.' : '');
+  if (!file) {
+    cvInput.setCustomValidity('Adjunta tu CV en formato PDF.');
+    return false;
+  }
+  let isPdf = false;
+  try {
+    const signature = new TextDecoder().decode(await file.slice(0, 5).arrayBuffer());
+    isPdf = signature === '%PDF-';
+  } catch (_) { isPdf = false; }
+  const valid = /\.pdf$/i.test(file.name)
+    && (!file.type || file.type === 'application/pdf')
+    && isPdf
+    && file.size > 0
+    && file.size <= 5 * 1024 * 1024;
+  cvInput.setCustomValidity(valid ? '' : 'Adjunta un archivo PDF válido de hasta 5 MB.');
+  return valid;
 }
-cvInput.addEventListener('change', validateCV);
+cvInput.addEventListener('change', async () => {
+  if (!await validateCV()) window.alertify?.error(cvInput.validationMessage);
+});
+const jobPhoneInput = jobsForm.elements.telefono;
+jobPhoneInput.addEventListener('input', () => jobPhoneInput.setCustomValidity(''));
+function confirmJobSend() {
+  return new Promise(resolve => {
+    if (!window.alertify) { resolve(false); return; }
+    window.alertify.confirm('Confirmación', '¿Deseas enviar tu postulación con el CV adjunto?',
+      () => resolve(true), () => resolve(false));
+  });
+}
 jobsForm.addEventListener('submit', async event => {
   event.preventDefault();
   if (jobsSending) return;
-  validateCV();
-  if (!jobsForm.reportValidity()) return;
-  if (!window.confirm('¿Deseas enviar tu postulación con el CV adjunto?')) return;
+  if (!await validateCV()) {
+    window.alertify?.error(cvInput.validationMessage);
+    cvInput.focus();
+    return;
+  }
+  jobPhoneInput.setCustomValidity(/^9[0-9]{8}$/.test(jobPhoneInput.value) ? '' : 'Ingresa un celular peruano de 9 dígitos que empiece con 9.');
+  if (!jobsForm.checkValidity()) {
+    const invalid = jobsForm.querySelector(':invalid');
+    window.alertify?.error(invalid.validationMessage || 'Revisa los campos obligatorios del formulario.');
+    invalid.focus();
+    return;
+  }
+  if (!await confirmJobSend()) return;
   const payload = new FormData(jobsForm);
   const fields = document.getElementById('jobs-fields');
   const button = document.getElementById('jobs-submit');
@@ -43,12 +79,14 @@ jobsForm.addEventListener('submit', async event => {
     if (!response.ok || result.ok !== true) throw new Error(result.message || 'No pudimos confirmar el envío.');
     jobsStatus.className = '';
     jobsStatus.textContent = '¡Gracias! Tu postulación y tu CV se enviaron correctamente.';
+    window.alertify?.success('Postulación enviada correctamente.');
     jobsForm.reset();
   } catch (error) {
     jobsStatus.className = 'error';
     jobsStatus.textContent = error.name === 'AbortError' || error instanceof TypeError
       ? 'No pudimos confirmar el envío por un problema de conexión. Conservamos tus datos. Antes de reenviar, verifica con ADMINIO si recibió tu postulación.'
       : error.message;
+    window.alertify?.error(jobsStatus.textContent);
   } finally {
     clearTimeout(timer);
     jobsSending = false;

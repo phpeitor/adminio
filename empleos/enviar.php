@@ -28,7 +28,7 @@ foreach (['nombre' => 480, 'correo' => 254, 'telefono' => 20, 'puesto' => 200, '
     if (($field !== 'mensaje' && $value === '') || strlen($value) > $limit || strpos($value, "\0") !== false || !preg_match('//u', $value) || ($field !== 'mensaje' && preg_match('/[\r\n]/', $value))) reply(422, 'Revisa los campos del formulario.');
     $data[$field] = $value;
 }
-if (!filter_var($data['correo'], FILTER_VALIDATE_EMAIL) || !preg_match('/^[+0-9() .\-]{7,20}$/', $data['telefono'])) reply(422, 'Revisa tu correo electrónico y teléfono.');
+if (!filter_var($data['correo'], FILTER_VALIDATE_EMAIL) || !preg_match('/^9[0-9]{8}$/', $data['telefono'])) reply(422, 'Revisa tu correo electrónico y el teléfono: debe tener 9 dígitos y empezar con 9.');
 if (!in_array($data['puesto'], ['Administración de inmuebles', 'Conserjería', 'Limpieza', 'Mantenimiento', 'Administración y contabilidad', 'Otra área'], true)) reply(422, 'Selecciona un área de interés válida.');
 if (($_POST['consentimiento'] ?? '') !== '1') reply(422, 'Debes autorizar el uso de tus datos para esta postulación.');
 $cv = $_FILES['cv'] ?? null;
@@ -79,10 +79,31 @@ try {
     $mail->CharSet = 'UTF-8';
     $mail->setFrom($from, $config['from_name']);
     $mail->addAddress($to);
+    if (strcasecmp($from, $to) !== 0) $mail->addAddress($from);
     $mail->addReplyTo($data['correo'], $data['nombre']);
     $mail->Subject = 'Nueva postulación — ' . $data['puesto'];
-    $mail->isHTML(false);
-    $mail->Body = "POSTULACIÓN A ADMINIO\n\nNombre: {$data['nombre']}\nCorreo: {$data['correo']}\nTeléfono: {$data['telefono']}\nÁrea: {$data['puesto']}\n\nExperiencia:\n{$data['mensaje']}\n\nEl postulante autorizó el uso de sus datos y CV para evaluar esta postulación y contactarlo sobre este proceso.\nFecha UTC: " . gmdate('c');
+    date_default_timezone_set('America/Lima');
+    $headImage = dirname(__DIR__) . '/static/head_empleo.webp';
+    if (is_readable($headImage)) $mail->addEmbeddedImage($headImage, 'head_empleo', 'head_empleo.webp', 'base64', 'image/webp');
+    $templatePath = __DIR__ . '/template_mail.html';
+    if (!is_readable($templatePath)) throw new RuntimeException('mail_template_unavailable');
+    $template = file_get_contents($templatePath);
+    if ($template === false) throw new RuntimeException('mail_template_unavailable');
+    $stylesPath = dirname(__DIR__) . '/css/template_mail.css';
+    $styles = is_readable($stylesPath) ? file_get_contents($stylesPath) : '';
+    if ($styles === false) $styles = '';
+    $escape = static fn(string $value): string => htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $mail->isHTML(true);
+    $mail->Body = strtr($template, [
+        '<!-- MAIL_STYLES -->' => '<style>' . $styles . '</style>',
+        '{{fecha}}' => date('d/m/Y H:i:s'),
+        '{{nombre}}' => $escape($data['nombre']),
+        '{{correo}}' => $escape($data['correo']),
+        '{{telefono}}' => $escape($data['telefono']),
+        '{{puesto}}' => $escape($data['puesto']),
+        '{{mensaje}}' => $data['mensaje'] === '' ? 'No indicó experiencia.' : nl2br($escape($data['mensaje']), false),
+    ]);
+    $mail->AltBody = "POSTULACIÓN A ADMINIO\n\nNombre: {$data['nombre']}\nCorreo: {$data['correo']}\nTeléfono: {$data['telefono']}\nÁrea: {$data['puesto']}\n\nExperiencia:\n" . ($data['mensaje'] === '' ? 'No indicó experiencia.' : $data['mensaje']) . "\n\nCV adjunto en PDF. El postulante autorizó el uso de sus datos y CV para evaluar esta postulación y contactarlo sobre este proceso.\nFecha: " . date('d/m/Y H:i:s');
     $mail->addAttachment($cv['tmp_name'], 'CV.pdf', 'base64', 'application/pdf');
     $mail->send();
     reply(200, 'Postulación enviada correctamente.');
