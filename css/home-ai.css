@@ -1,0 +1,21 @@
+.home-ai{background:#fff;padding:80px 24px;color:#536175;border-top:1px solid #edf1f5;scroll-margin-top:80px}
+.home-ai-inner{max-width:1180px;margin:auto;display:grid;grid-template-columns:1fr 1.15fr;gap:70px;align-items:center}
+.home-ai-label{font-size:11px;letter-spacing:.14em;color:#b95008;font-weight:700;margin:0 0 12px}
+.home-ai-logo{display:block;width:260px;max-width:75%;height:auto;margin:0 0 14px}
+.home-ai h2{font-size:clamp(30px,3.5vw,42px);font-weight:700;line-height:1.2;letter-spacing:-.03em;color:#062650;margin:0 0 22px}
+.home-ai-intro{font-size:17px;line-height:1.75;margin:0 0 26px}
+.home-ai-benefits{display:grid;gap:18px;margin-bottom:28px}
+.home-ai-benefits article{border-left:3px solid #ed7909;padding-left:18px}
+.home-ai h3{font-size:16px;font-weight:700;color:#062650;margin:0 0 6px}
+.home-ai-benefits p{font-size:14px;line-height:1.7;margin:0}
+.home-ai-button{display:inline-flex;align-items:center;gap:24px;background:linear-gradient(125deg,#061a38,#123b66);color:#fff;padding:15px 26px;border:1px solid #4273a8;border-radius:999px;font-weight:700;text-decoration:none;font-size:15px;box-shadow:0 6px 20px #06265012}
+.home-ai-button:hover{border-color:#ed7909}.home-ai a:focus-visible{outline:3px solid #ed7909;outline-offset:5px}
+.home-ai-note{font-size:12px;line-height:1.6;color:#68788b;margin-top:16px}
+.home-ai-visual{position:relative;isolation:isolate;padding:20px 40px 75px 0;background:radial-gradient(ellipse,#fff2e1,#f2f7fc 40%,transparent 70%)}
+.home-ai-phone{display:block;width:100%;max-width:340px;height:auto;margin:auto;filter:drop-shadow(0 16px 20px #06265016)}
+.home-ai-robot{position:absolute;bottom:0;right:0;width:230px;max-width:60%;display:block;filter:drop-shadow(0 8px 14px #0626501c);animation:home-ai-float 6s ease-in-out infinite}
+.home-ai-robot img{display:block;width:100%;height:auto}
+@keyframes home-ai-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media(max-width:900px){.home-ai-inner{gap:32px}.home-ai-robot{width:190px}.home-ai-visual{padding-right:20px}}
+@media(max-width:700px){.home-ai{padding:52px 20px}.home-ai-inner{grid-template-columns:1fr;gap:30px}.home-ai-copy{grid-row:1}.home-ai-visual{width:100%;max-width:400px;margin:auto;padding-bottom:65px}.home-ai-phone{max-width:250px}.home-ai-robot{width:180px}.home-ai-intro{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.home-ai-robot{animation:none}}

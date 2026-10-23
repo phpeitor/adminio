@@ -1,0 +1,154 @@
+[
+  {
+    "name": "Irene",
+    "src": "./static/clientes/cliente-01.png"
+  },
+  {
+    "name": "Alonso Briceño",
+    "src": "./static/clientes/cliente-02.png"
+  },
+  {
+    "name": "Solaria",
+    "src": "./static/clientes/cliente-03.png"
+  },
+  {
+    "name": "Las Gardenias",
+    "src": "./static/clientes/cliente-04.png"
+  },
+  {
+    "name": "Mint",
+    "src": "./static/clientes/cliente-05.png"
+  },
+  {
+    "name": "Esmeralda",
+    "src": "./static/clientes/cliente-06.png"
+  },
+  {
+    "name": "Edificio Médico",
+    "src": "./static/clientes/cliente-07.png"
+  },
+  {
+    "name": "Château",
+    "src": "./static/clientes/cliente-08.png"
+  },
+  {
+    "name": "Paname",
+    "src": "./static/clientes/cliente-09.png"
+  },
+  {
+    "name": "Los Huertos",
+    "src": "./static/clientes/cliente-10.png"
+  },
+  {
+    "name": "Villa Bertia",
+    "src": "./static/clientes/cliente-11.png"
+  },
+  {
+    "name": "Abedul",
+    "src": "./static/clientes/cliente-12.png"
+  },
+  {
+    "name": "Neocity",
+    "src": "./static/clientes/cliente-13.png"
+  },
+  {
+    "name": "Lúmina",
+    "src": "./static/clientes/cliente-14.png"
+  },
+  {
+    "name": "Sáenz",
+    "src": "./static/clientes/cliente-15.png"
+  },
+  {
+    "name": "El Roble",
+    "src": "./static/clientes/cliente-16.png"
+  },
+  {
+    "name": "Bellagio",
+    "src": "./static/clientes/cliente-17.png"
+  },
+  {
+    "name": "Paseo del Parque",
+    "src": "./static/clientes/cliente-18.png"
+  },
+  {
+    "name": "Magic Ocean",
+    "src": "./static/clientes/cliente-19.png"
+  },
+  {
+    "name": "Harmony",
+    "src": "./static/clientes/cliente-20.png"
+  },
+  {
+    "name": "Panoramic",
+    "src": "./static/clientes/cliente-21.png"
+  },
+  {
+    "name": "Ocean Line",
+    "src": "./static/clientes/cliente-22.png"
+  },
+  {
+    "name": "Allegro",
+    "src": "./static/clientes/cliente-23.png"
+  },
+  {
+    "name": "Gallese",
+    "src": "./static/clientes/cliente-24.png"
+  },
+  {
+    "name": "Aliaga II",
+    "src": "./static/clientes/cliente-25.png"
+  },
+  {
+    "name": "El Mirador II",
+    "src": "./static/clientes/cliente-26.png"
+  },
+  {
+    "name": "La Paz 526",
+    "src": "./static/clientes/cliente-27.png"
+  },
+  {
+    "name": "Amarelo",
+    "src": "./static/clientes/cliente-28.png"
+  },
+  {
+    "name": "Residencial Vigil",
+    "src": "./static/clientes/cliente-29.png"
+  },
+  {
+    "name": "Liberi",
+    "src": "./static/clientes/cliente-30.png"
+  },
+  {
+    "name": "Villa Dulanto",
+    "src": "./static/clientes/cliente-31.png"
+  },
+  {
+    "name": "Mirador",
+    "src": "./static/clientes/cliente-32.png"
+  },
+  {
+    "name": "Piazza",
+    "src": "./static/clientes/cliente-33.png"
+  },
+  {
+    "name": "Piura 1155",
+    "src": "./static/clientes/cliente-34.png"
+  },
+  {
+    "name": "Llano Zapata 464",
+    "src": "./static/clientes/cliente-35.png"
+  },
+  {
+    "name": "Sente",
+    "src": "./static/clientes/cliente-36.png"
+  },
+  {
+    "name": "Nou",
+    "src": "./static/clientes/cliente-37.png"
+  },
+  {
+    "name": "Jacarandá Life",
+    "src": "./static/clientes/cliente-38.png"
+  }
+]

@@ -1,0 +1,93 @@
+/* Shared navigation stays visible independently of animation scripts. */
+#site-header > .fixed { top: 0; left: 0; }
+#v360-header { opacity: 1; transform: none; min-height: 62px; }
+#v360-header > a { flex-shrink: 0; }
+#v360-header > a img { display: block; width: auto; height: 40px; }
+@media (min-width: 993px) {
+  #v360-header { flex-wrap: nowrap; width: 100%; max-width: 1280px; }
+  #v360-header > a { margin-right: 16px; }
+  #v360-header > ul { display: flex; flex-wrap: nowrap; width: auto; min-width: 0; }
+  #v360-header > ul > li { flex-shrink: 0; }
+  #v360-header > ul > li > a { white-space: nowrap; }
+  #v360-header > ul > li:not(.item-nav) > a { padding-left: 20px; padding-right: 20px; }
+  #v360-header #sign-up-btn { margin-right: 0; }
+}
+@media (min-width: 993px) and (max-width: 1199px) {
+  #v360-header { padding-left: 16px; padding-right: 16px; }
+  #v360-header > a { margin-right: 12px; }
+  #v360-header > ul > li > a { font-size: 14px; }
+  #v360-header > ul > li.item-nav > a { margin-left: 2px; margin-right: 2px; padding-left: 8px; padding-right: 8px; }
+  #v360-header > ul > li:not(.item-nav) > a { padding-left: 16px; padding-right: 16px; }
+}
+@media (max-width: 992px) {
+  #v360-header { padding-right: 54px; }
+  #v360-header > ul { display: none; }
+  #toggle:checked ~ #v360-header > ul { display: block; height: auto; }
+}
+/* Compact AI access button: stays in the existing navigation slot. */
+#v360-header>ul>li.item-nav>a.adminia-nav-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;position:relative;isolation:isolate;overflow:hidden;padding:9px 12px;margin:0 8px;border:1px solid #4273a8;border-radius:10px;background:linear-gradient(125deg,#061a38,#123b66);color:#fff;font-size:13px;font-weight:700;line-height:20px;letter-spacing:.02em;box-shadow:inset 0 1px 0 #ffffff25,0 0 12px #235ca326;white-space:nowrap;transition:box-shadow .2s,border-color .2s}
+#v360-header>ul>li.item-nav>a.adminia-nav-button:after{content:none}
+.adminia-nav-accent{color:#ffb45b}
+.adminia-nav-light{width:5px;height:5px;flex-shrink:0;background:#79e9ff;border-radius:50%;box-shadow:0 0 7px #79e9ff}
+#v360-header .adminia-nav-button:before{content:'';position:absolute;z-index:-1;inset:-80% auto -80% -60%;width:25%;background:linear-gradient(90deg,transparent,#ffffff14,transparent);transform:rotate(25deg);animation:adminia-nav-scan 7s ease-in-out infinite;pointer-events:none}
+#v360-header>ul>li.item-nav>a.adminia-nav-button:hover,#v360-header>ul>li.item-nav>a.adminia-nav-button[aria-current=page]{color:#fff;border-color:#ee9a3b;box-shadow:inset 0 1px 0 #ffffff25,0 0 16px #ee9a3b26}
+#v360-header>ul>li.item-nav>a.adminia-nav-button:focus-visible{outline:3px solid #ed7909;outline-offset:3px}
+@keyframes adminia-nav-scan{0%,65%{left:-60%}100%{left:150%}}
+@media(max-width:992px){#v360-header>ul>li.item-nav>a.adminia-nav-button{margin:8px auto;min-height:44px;padding:10px 20px}}
+@media(prefers-reduced-motion:reduce){#v360-header .adminia-nav-button:before{animation:none;content:none}}
+/* Separate quotation and customer access actions. */
+#v360-header{max-width:1440px}
+@media(min-width:993px) and (max-width:1279px){#v360-header{padding-left:12px;padding-right:12px}#v360-header>a img{height:32px}#v360-header>ul>li>a{font-size:12px!important;margin-left:2px!important;margin-right:2px!important;padding-left:6px!important;padding-right:6px!important}#v360-header>a{margin-right:6px}}
+#v360-header>ul>li>a.header-action{border-radius:10px;margin-left:12px}
+@media(max-width:992px){#v360-header>ul>li>a.header-action{margin:6px 12px}}
+
+/* Consistent active-page color and weight for standard navigation links. */
+#v360-header > ul > li > a[aria-current='page'] { font-weight: 700; }
+#v360-header > ul > li.item-nav > a[aria-current='page']:not(.adminia-nav-button) { color: #ad4b09; font-weight: 700; }
+
+/* Water-drop ripple shared by every menu link, including both action buttons. */
+#v360-header #v360-awesome-nav > li > a {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+#v360-header #v360-awesome-nav > li > a::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 240px;
+  height: 240px;
+  margin: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ff98182b 0 14%, transparent 15% 28%, #102b5426 29% 30%, transparent 31% 43%, #ff981836 44% 45%, transparent 46%);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  transition: none;
+}
+#v360-header #v360-awesome-nav > li > a.header-action::after,
+#v360-header #v360-awesome-nav > li > a.adminia-nav-button::after {
+  background: radial-gradient(circle, #ffffff40 0 14%, transparent 15% 28%, #ffffff70 29% 30%, transparent 31% 43%, #ffb45b70 44% 45%, transparent 46%);
+}
+@media (hover: hover) and (pointer: fine) {
+  #v360-header #v360-awesome-nav > li > a:hover::after {
+    animation: adminio-water-drop 850ms ease-out both;
+  }
+}
+#v360-header #v360-awesome-nav > li > a:focus-visible::after {
+  animation: adminio-water-drop 850ms ease-out both;
+}
+#v360-header #v360-awesome-nav > li > a:focus-visible {
+  outline: 3px solid #ed7909;
+  outline-offset: 3px;
+}
+@keyframes adminio-water-drop {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.04); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.25); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #v360-header #v360-awesome-nav > li > a::after { animation: none; }
+}

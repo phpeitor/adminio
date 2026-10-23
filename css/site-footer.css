@@ -1,0 +1,26 @@
+.adminio-footer{background:#172b3f;color:#fff;font-family:inherit}
+.adminio-footer .footer-blog-strip{padding:20px 24px;text-align:center;background:#f2f5f8;color:#092b51;font-size:14px;font-weight:600}
+.adminio-footer .footer-blog-strip a{color:inherit;text-decoration:none}
+.adminio-footer .adminio-footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:64px;padding:52px 28px 44px}
+.adminio-footer h2{margin:0 0 22px;color:#fff;font-size:16px;font-weight:700;line-height:1.5;text-align:left}
+.adminio-footer .footer-contact h2{font-size:25px;letter-spacing:.08em}
+.adminio-footer .footer-brand-logo{display:block;width:168px;max-width:100%;height:auto}
+.adminio-footer .footer-contact h2 span{display:block;font-size:12px;font-weight:400;letter-spacing:0;color:#b8c8d8;margin-top:6px}
+.adminio-footer address{font-style:normal;display:grid;gap:12px}
+.adminio-footer .footer-label{display:block;font-size:10px;letter-spacing:.12em;color:#efb079;font-weight:700;margin-bottom:4px}
+.adminio-footer .footer-address-label{font-size:14px;letter-spacing:.02em}
+.adminio-footer .adminio-footer-grid a{color:#e2eaf2;text-decoration:none;font-size:14px;line-height:1.7;overflow-wrap:anywhere;transition:color .2s}
+.adminio-footer .adminio-footer-grid a:hover{color:#ffc18c}
+.adminio-footer .footer-links{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.adminio-footer .footer-links h2{margin-bottom:10px}
+.adminio-footer .footer-community p{color:#b8c8d8;line-height:1.8;font-size:14px;margin:0 0 20px}
+.adminio-footer .footer-socials{display:flex;flex-wrap:wrap;gap:10px}
+.adminio-footer .footer-socials a{display:grid;place-items:center;width:44px;height:44px;border:1px solid #ffffff26;border-radius:12px;background:#ffffff08;transition:background .2s,transform .2s}
+.adminio-footer .footer-socials a:hover{background:#ffffff20;transform:translateY(-3px)}
+.adminio-footer .footer-socials img{display:block;width:28px;height:28px}
+.adminio-footer .footer-bottom{max-width:1144px;margin:0 auto;padding:20px 0 24px;border-top:1px solid #ffffff20;display:flex;justify-content:space-between;gap:16px;color:#b8c8d8;font-size:12px;line-height:1.6}
+.adminio-footer .footer-bottom a{color:#fff;text-decoration:none;font-weight:600}
+.adminio-footer a:focus-visible{outline:2px solid #efb079;outline-offset:5px;border-radius:4px}
+@media(max-width:800px){.adminio-footer .adminio-footer-grid{grid-template-columns:1fr 1fr;gap:36px;padding:36px 24px}.adminio-footer .footer-contact{grid-column:1/-1}.adminio-footer .footer-bottom{margin:0 24px}}
+@media(max-width:480px){.adminio-footer .adminio-footer-grid{grid-template-columns:1fr;gap:30px}.adminio-footer .footer-contact{grid-column:auto}.adminio-footer .footer-bottom{flex-direction:column;padding-bottom:30px}}
+@media(prefers-reduced-motion:reduce){.adminio-footer .footer-socials a{transition:none}.adminio-footer .footer-socials a:hover{transform:none}}

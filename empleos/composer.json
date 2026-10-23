@@ -1,0 +1,13 @@
+{
+  "name": "adminio/empleos",
+  "require": {
+    "php": ">=8.0",
+    "ext-fileinfo": "*",
+    "ext-openssl": "*",
+    "phpmailer/phpmailer": "^7.0"
+  },
+  "config": {
+    "allow-plugins": false,
+    "sort-packages": true
+  }
+}

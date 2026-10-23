@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return true;
     }
 
-    form.addEventListener("submit", (e) => {
+    form?.addEventListener("submit", (e) => {
         e.preventDefault();
 
         const nombre   = document.getElementById("nombre").value.trim();
@@ -230,6 +230,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // ===============================
 // FUNCIÓN PARA ENVIAR CORREO
 // ===============================
+// Integración existente confirmada por el propietario: conservar esta ruta
+// aunque config/envio_correo.php y el .env no estén en la copia local.
 function sendEmail(data, { onError } = {}) {
     fetch("./config/envio_correo.php", {
         method: "POST",

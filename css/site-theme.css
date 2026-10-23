@@ -1,0 +1,31 @@
+/* Shared page canvas, matching the home page. */
+html,body,body.quote-page,body.why-page,body.asistencias-page{background:#fff}
+.quote-page .quote-intro{color:#536175}
+.quote-page .quote-intro h1,.quote-page .quote-intro h2{color:#062650}
+.quote-page .quote-intro p{color:#667386}
+.quote-page .quote-card{border:1px solid #e7ebf0;box-shadow:0 6px 24px #06265006}
+.about-page .about-hero,.about-page .about-leadership,.about-page .why-purpose,.about-page .why-final{background:#fff}
+.about-page .about-leadership,.about-page .why-purpose{border-top:1px solid #edf0f4;border-bottom:1px solid #edf0f4}
+.about-page .why-purpose h2,.about-page .why-purpose h3{color:#062650}
+.about-page .why-purpose p{color:#536175}
+.about-page .why-purpose .why-eyebrow{color:#b95008}
+.about-page .about-values article{border-color:#e7ebf0}
+.about-page .why-final{border:1px solid #e7ebf0}
+/* Shared animated cover used by the home page and inner pages. */
+#home.hero-gradient,.site-dynamic-surface.site-dynamic-surface{background-image:linear-gradient(110deg,#cc6509,#934b3b,#512268);background-color:#934b3b;background-size:220% 220%;animation:gradient-flow 7.5s ease-in-out infinite;position:relative;isolation:isolate;overflow:hidden}
+.site-dynamic-surface>.hero-network{z-index:-1;pointer-events:none}
+.site-dynamic-surface>.why-shell,.site-dynamic-surface>.quote-intro,.site-dynamic-surface>.quote-card{position:relative;z-index:1}
+.why-brand-page .site-dynamic-surface h1,.why-brand-page .site-dynamic-surface h1 em,.about-page .site-dynamic-surface h1,.about-page .site-dynamic-surface h1 em,.quote-page .site-dynamic-surface .quote-intro h1,.quote-page .site-dynamic-surface .quote-intro h2{color:#fff}
+.why-brand-page .site-dynamic-surface p,.about-page .site-dynamic-surface p,.quote-page .site-dynamic-surface .quote-intro p{color:#fff}
+.site-dynamic-surface .why-text-link,.site-dynamic-surface .why-hero-art figcaption{color:#fff}
+.site-dynamic-surface .why-button{background:#fff;color:#062650;box-shadow:0 6px 20px #06265014}
+.site-dynamic-surface .why-button:hover{background:#f0f4fa}
+.about-page .site-dynamic-surface .about-brand-panel p{color:#062650}
+.quote-page .quote-layout.site-dynamic-surface{max-width:none;padding-left:max(24px,calc((100vw - 1216px)/2));padding-right:max(24px,calc((100vw - 1216px)/2))}
+.site-dynamic-surface .quote-card{background:#fff}
+@media(prefers-reduced-motion:reduce){#home.hero-gradient,.site-dynamic-surface.site-dynamic-surface{animation:none}.site-dynamic-surface .hero-network *{animation:none!important}}
+@media(max-width:700px){.quote-page .quote-layout.site-dynamic-surface{padding-left:18px;padding-right:18px}}
+/* Consistent, subtle separation between main content sections. */
+main>section+section{border-top:1px solid #e7edf3!important}
+/* The introduction and form are side by side on larger screens. */
+@media(min-width:701px){main.quote-layout>section+section{border-top-color:#e7ebf0!important}}

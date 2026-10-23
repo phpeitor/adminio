@@ -1,0 +1,42 @@
+/* Match the white, navy and orange identity of the home page. */
+.why-brand-page{--brand-navy:#062650;--brand-orange:#ed7909;--brand-text:#536175;--brand-border:#e7ebf0;background:#fff;color:var(--brand-text)}
+.why-brand-page h1,.why-brand-page h2,.why-brand-page h3{color:var(--brand-navy)}
+.why-brand-page .why-hero{background:#fff;border-bottom:1px solid #f0f2f5}
+.why-brand-page h1{font-size:clamp(36px,4vw,52px)}
+.why-brand-page h1 em{color:var(--brand-navy)}
+.why-brand-page .why-eyebrow{color:#b95008}
+.why-brand-page .why-hero-art img{border-radius:16px}
+.why-brand-page .why-button{background:var(--brand-navy);color:#fff;border-radius:999px;box-shadow:none;padding:15px 28px}
+.why-brand-page .why-button:hover{background:#103b6e}
+.why-brand-page .why-text-link{color:var(--brand-navy)}
+.why-brand-page .why-reasons{gap:24px}
+.why-brand-page .why-reasons article{padding:28px;border:1px solid var(--brand-border);border-radius:16px;box-shadow:0 6px 24px #06265004;background:white}
+.why-brand-page .why-number{color:#b95008}
+.why-brand-page .why-reasons .why-outcome{color:var(--brand-navy);padding-top:16px;border-top:1px solid #f0f2f5}
+.why-brand-page .management-section{background:#fff;color:var(--brand-text);border-top:1px solid #f0f2f5;border-bottom:1px solid #f0f2f5}
+.why-brand-page .management-section h2{color:var(--brand-navy);font-size:clamp(30px,3.5vw,42px)}
+.why-brand-page .management-section .why-heading>p:last-child{color:var(--brand-text)}
+.why-brand-page .management-banner{border-color:var(--brand-border)}
+.why-brand-page .management-banner h3{color:var(--brand-navy)}
+.why-brand-page .management-banner>span{color:var(--brand-navy);border-color:var(--brand-border);background:#f7f9fc}
+.why-brand-page .management-model{background:none}
+.why-brand-page .management-connections path{stroke:#ed7909;stroke-opacity:.45}
+.why-brand-page .management-pillar{border:1px solid var(--brand-border);border-radius:16px;box-shadow:0 6px 24px #06265006}
+.why-brand-page .management-icon{color:#b95008;background:#fff5eb}
+.why-brand-page .management-coordinator{background:#f7f9fc;border:1px solid #cdd9e7;border-radius:20px;box-shadow:0 8px 28px #06265008}
+.why-brand-page .management-coordinator:before{background:var(--brand-orange)}
+.why-brand-page .management-coordinator-mark{background:#fff0df;color:var(--brand-navy);border-radius:16px}
+.why-brand-page .management-coordinator h3{color:var(--brand-navy)}
+.why-brand-page .management-coordinator p,.why-brand-page .management-summary{color:var(--brand-text)}
+.why-brand-page .management-coordinator .management-coordinator-role{color:#a84a08}
+.why-brand-page .why-purpose{background:#fff;border-bottom:1px solid #f0f2f5}
+.why-brand-page .why-purpose h2,.why-brand-page .why-purpose h3{color:var(--brand-navy)}
+.why-brand-page .why-purpose p{color:var(--brand-text)}
+.why-brand-page .why-purpose .why-eyebrow{color:#b95008}
+.why-brand-page .why-purpose .why-text-link{color:var(--brand-navy)}
+.why-brand-page .why-purpose-details{padding:30px;border:1px solid var(--brand-border);border-radius:16px;background:#fff}
+.why-brand-page .why-purpose-details article+article{border-color:var(--brand-border)}
+.why-brand-page .why-steps span{color:#b95008;border-color:var(--brand-orange)}
+.why-brand-page .why-final{background:#fff;border:1px solid var(--brand-border);border-radius:16px;box-shadow:0 6px 24px #06265006;position:relative}
+.why-brand-page .why-final:before{content:"";position:absolute;top:0;left:32px;width:54px;height:3px;background:var(--brand-orange);border-radius:3px}
+@media(max-width:700px){.why-brand-page .why-reasons article{padding:24px}.why-brand-page .why-purpose-details{padding:24px}.why-brand-page .why-reasons{gap:18px}}
