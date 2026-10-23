@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ===============================
     const selectDistrito = document.getElementById("distrito");
 
-    if (selectDistrito) fetch("./static/data/distritos.json")
+    fetch("./static/data/distritos.json")
         .then(res => res.json())
         .then(data => {
             data.lima.forEach(dist => {
