@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solicita tu presupuesto | Adminio Perú</title>
+  <meta name="description" content="Cuéntanos las necesidades de tu edificio o condominio y solicita una cotización a Adminio Perú.">
+  <link rel="icon" type="image/png" href="./static/favicon-torres.png?v=3">
+  <link rel="stylesheet" href="./css/app.css">
+  <link rel="stylesheet" href="./css/index.css?v=3.13">
+  <link rel="stylesheet" href="./css/index.d790f8802cd7a090c6be.css">
+  <link rel="stylesheet" href="./css/contacto.css?v=2">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js" defer></script>
+  <script src="./js/contacto.js?v=5" defer></script>
+  <link rel="stylesheet" href="./css/site-theme.css?v=3">
+</head>
+<body class="quote-page">
+  <div id="site-header"></div>
+  <main class="site-dynamic-surface quote-layout">
+<div class="hero-network" aria-hidden="true">
+                <svg class="hero-network__svg" viewBox="0 0 1440 520" preserveAspectRatio="none" role="presentation">
+                    <defs>
+                        <linearGradient id="network-line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#55f3ff" stop-opacity="0"></stop>
+                            <stop offset="18%" stop-color="#55f3ff" stop-opacity="0.68"></stop>
+                            <stop offset="56%" stop-color="#ffffff" stop-opacity="0.9"></stop>
+                            <stop offset="100%" stop-color="#55f3ff" stop-opacity="0.08"></stop>
+                        </linearGradient>
+                    </defs>
+                    <g class="hero-network__lines">
+                        <path d="M86 142 H298 C348 142 348 104 398 104 H612 C662 104 662 154 712 154 H922 C972 154 972 116 1022 116 H1338"></path>
+                        <path d="M128 282 H286 C336 282 336 230 386 230 H584 C634 230 634 282 684 282 H874 C924 282 924 224 974 224 H1278"></path>
+                        <path d="M224 410 H438 C488 410 488 352 538 352 H746 C796 352 796 404 846 404 H1064 C1114 404 1114 346 1164 346 H1382"></path>
+                        <path d="M302 68 V180 C302 230 386 230 386 280 V430"></path>
+                        <path d="M622 104 V184 C622 234 684 234 684 284 V404"></path>
+                        <path d="M1014 116 V174 C1014 224 974 224 974 274 V404"></path>
+                    </g>
+                    <g class="hero-network__dots">
+                        <circle cx="298" cy="142" r="5"></circle>
+                        <circle cx="398" cy="104" r="6"></circle>
+                        <circle cx="712" cy="154" r="5"></circle>
+                        <circle cx="1022" cy="116" r="6"></circle>
+                        <circle cx="286" cy="282" r="5"></circle>
+                        <circle cx="584" cy="230" r="6"></circle>
+                        <circle cx="874" cy="282" r="5"></circle>
+                        <circle cx="1278" cy="224" r="6"></circle>
+                        <circle cx="438" cy="410" r="5"></circle>
+                        <circle cx="746" cy="352" r="6"></circle>
+                        <circle cx="1064" cy="404" r="5"></circle>
+                        <circle cx="1164" cy="346" r="6"></circle>
+                    </g>
+                </svg>
+                <div class="hero-network-icon hero-network-icon--analytics">
+                    <svg viewBox="0 0 64 64" role="presentation">
+                        <path d="M10 44h44"></path>
+                        <path d="M16 38l10-12 10 7 13-17"></path>
+                    </svg>
+                </div>
+                <div class="hero-network-icon hero-network-icon--screen">
+                    <svg viewBox="0 0 64 64" role="presentation">
+                        <rect x="12" y="15" width="40" height="28" rx="4"></rect>
+                        <path d="M24 50h16M32 43v7"></path>
+                    </svg>
+                </div>
+                <div class="hero-network-icon hero-network-icon--chart">
+                    <svg viewBox="0 0 64 64" role="presentation">
+                        <path d="M32 12v20l17 10"></path>
+                        <path d="M52 34a20 20 0 1 1-20-22"></path>
+                    </svg>
+                </div>
+            </div>
+    <section class="quote-intro" aria-labelledby="quote-title">
+      <h1 id="quote-title">Solicita Tu Presupuesto</h1>
+      <h2>Una mejor administración empieza aquí.</h2>
+      <p>Indícanos tus necesidades y nos pondremos en contacto contigo.</p>
+    </section>
+    <section class="quote-card" aria-label="Solicitud de cotización">
+      <ol class="quote-progress" aria-label="Pasos del formulario">
+        <li aria-current="step"><span>1</span>Información</li>
+        <li><span>2</span>Datos</li>
+      </ol>
+      <form id="quote-form" novalidate>
+        <div hidden aria-hidden="true"><label for="quote-website">Sitio web</label><input id="quote-website" name="website" tabindex="-1" autocomplete="off"></div>
+        <fieldset id="quote-step-1">
+          <legend id="information-heading" tabindex="-1">Cuéntanos sobre tu inmueble.</legend>
+          <div class="quote-grid">
+            <div class="quote-field quote-full"><label for="tipo">Necesito que administren un:</label><select id="tipo" name="tipo" required><option value="">Selecciona una opción</option><option>Condominio o Edificio Residencial - Departamentos</option><option>Condominio Residencial - Casas</option><option>Centro o Edificio Empresarial</option><option>Centro o Galería Comercial</option><option>Condominio de Campo o Playa</option><option>Lotización, Urbanización o Asociación de propietarios</option><option>Club</option></select></div>
+            <div class="quote-field quote-full"><label for="unidades">Cantidad de unidades</label><input id="unidades" name="unidades" type="number" min="1" max="100000" step="1" placeholder="Ingresa el número de unidades" required></div>
+            <div class="quote-field"><label for="pisos">Cantidad de pisos</label><input id="pisos" name="pisos" type="number" min="1" max="200" step="1" placeholder="Ingresa el número de pisos" required></div>
+            <div class="quote-field"><label for="sotanos">Cantidad de sótanos</label><input id="sotanos" name="sotanos" type="number" min="0" max="50" step="1" placeholder="Ingresa el número de sótanos" required></div>
+            <div class="quote-field quote-full"><label for="region">¿Dónde está ubicado? (Región)</label><select id="region" name="region" required><option value="">Selecciona una región</option><option>Amazonas</option><option>Áncash</option><option>Apurímac</option><option>Arequipa</option><option>Ayacucho</option><option>Cajamarca</option><option>Callao</option><option>Cusco</option><option>Huancavelica</option><option>Huánuco</option><option>Ica</option><option>Junín</option><option>La Libertad</option><option>Lambayeque</option><option selected>Lima</option><option>Loreto</option><option>Madre de Dios</option><option>Moquegua</option><option>Pasco</option><option>Piura</option><option>Puno</option><option>San Martín</option><option>Tacna</option><option>Tumbes</option><option>Ucayali</option></select></div>
+            <div class="quote-field"><label for="provincia">Provincia</label><select id="provincia" name="provincia" required disabled><option value="">Cargando provincias…</option></select></div>
+            <div class="quote-field"><label for="distrito">Distrito</label><select id="distrito" name="distrito" required disabled><option value="">Selecciona una provincia primero</option></select></div>
+            <p id="location-error" class="quote-error quote-full" role="alert" hidden>No pudimos cargar las ubicaciones. <button type="button" id="location-retry">Volver a intentar</button></p>
+            <div class="quote-field quote-full"><label for="edificio">Nombre del inmueble a cotizar</label><input id="edificio" name="edificio" maxlength="150" placeholder="Escribe el nombre" required></div>
+          </div>
+          <fieldset class="quote-services"><legend><strong>Servicios:</strong><br><span>Selecciona los servicios que necesita</span></legend>
+            <label><input type="checkbox" name="servicios" value="Sistema de administración integral de inmuebles (Administración, Conserjería y Limpieza)"> Sistema de administración integral de inmuebles (Administración, Conserjería y Limpieza).</label>
+            <label><input type="checkbox" name="servicios" value="Soporte Administrativo con IA"> Soporte Administrativo con IA</label>
+            <label><input type="checkbox" name="servicios" value="Servicio de recaudación Multibanca"> Servicio de recaudación Multibanca.</label>
+            <label><input type="checkbox" name="servicios" value="Servicio de Back Office (Soporte Administrativo para Autogestión)"> Servicio de Back Office (Soporte Administrativo para Autogestión).</label>
+            <label><input type="checkbox" name="servicios" value="Servicio de Administración de Mantenimiento"> Servicio de Administración de Mantenimiento.</label>
+            <label><input type="checkbox" name="servicios" value="Servicio de Administración de Personal"> Servicio de Administración de Personal.</label>
+            <p class="quote-note"><strong>*Algunos servicios no aplican fuera de Lima Metropolitana.</strong></p>
+            <p id="services-error" class="quote-error" hidden>Selecciona al menos un servicio.</p>
+          </fieldset>
+          <button class="quote-button v_gradient_primary" type="button" id="quote-next">Siguiente <span aria-hidden="true">→</span></button>
+        </fieldset>
+        <fieldset id="quote-step-2" hidden disabled>
+          <legend id="details-heading" tabindex="-1">Para finalizar es necesario ingresar tus datos.</legend>
+          <div class="quote-grid">
+            <div class="quote-field"><label for="nombre">Nombre y apellidos</label><input id="nombre" name="nombre" autocomplete="name" maxlength="120" required placeholder="Escribe tu nombre"></div>
+            <div class="quote-field"><label for="cargo">Cargo</label><select id="cargo" name="cargo" required><option value="">Selecciona una opción</option><option>Presidente de la junta de propietarios</option><option>Miembro de la junta de propietarios</option><option>Propietario</option><option>Administrador</option><option>Representante de la empresa</option><option>Otro</option></select></div>
+            <div class="quote-field"><label for="telefono">Teléfono</label><input id="telefono" name="telefono" type="tel" autocomplete="tel" maxlength="20" pattern="[+0-9() .\-]{7,20}" required placeholder="Escribe tu celular"></div>
+            <div class="quote-field"><label for="correo">Correo</label><input id="correo" name="correo" type="email" autocomplete="email" maxlength="254" required placeholder="Escribe tu correo"></div>
+          </div>
+          <p class="quote-note">Usaremos estos datos para atender tu solicitud de cotización.</p>
+          <div class="quote-actions"><button class="quote-button quote-back" type="button" id="quote-back">Volver</button><button class="quote-button v_gradient_primary" type="submit" id="quote-submit">Enviar</button></div>
+        </fieldset>
+        <p id="quote-status" role="status" aria-live="polite" tabindex="-1" hidden></p>
+      </form>
+      <noscript>Activa JavaScript para completar los dos pasos, o escríbenos a comercial@adminio-peru.com.</noscript>
+    </section>
+  </main>
+  <div id="site-footer" aria-label="Pie de página"></div>
+</body>
+</html>

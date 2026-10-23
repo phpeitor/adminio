@@ -1,0 +1,6 @@
+.quote-field textarea{width:100%;resize:vertical;min-height:112px;background:#f1f5f8;border:1px solid #dae1e7;border-radius:4px;padding:12px 14px;font:16px Helvetica,sans-serif;color:#4b5563}
+.quote-field input[type=file]{height:auto;white-space:normal;font-size:14px;padding:14px;max-width:100%}
+.quote-field input[type=file]::file-selector-button{background:#1d0e9e;color:white;border:0;border-radius:4px;padding:9px 12px;margin-right:12px;cursor:pointer}
+.quote-field #cv-help{margin-top:8px}
+.jobs-consent{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.6;margin:24px 0}
+.jobs-consent input{margin-top:4px;flex-shrink:0;width:17px;height:17px;accent-color:#1d0e9e}

@@ -1,0 +1,55 @@
+#home .hero-quote-actions {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 16px 0 28px;
+}
+#home .hero-quote-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  max-width: 100%;
+  min-height: 58px;
+  padding: 10px 12px 10px 24px;
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 999px;
+  background: linear-gradient(120deg, #fff, #fff6ed);
+  color: #092b51;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 12px 28px #24132b40, inset 0 1px 0 #fff;
+  animation: hero-quote-float 3.6s ease-in-out infinite;
+  transition: box-shadow .2s, background .2s;
+}
+#home .hero-quote-arrow {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(120deg, #b85812, #512268);
+  font-size: 22px;
+}
+#home .hero-quote-button:hover {
+  background: #fff;
+  box-shadow: 0 16px 34px #24132b55;
+  animation-play-state: paused;
+}
+#home .hero-quote-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 5px;
+  animation-play-state: paused;
+}
+@keyframes hero-quote-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #home .hero-quote-button { animation: none; transition: none; }
+}

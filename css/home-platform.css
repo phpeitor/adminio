@@ -1,0 +1,24 @@
+.home-platform{background:#fff;padding:80px 24px;scroll-margin-top:80px;color:#536175}
+.home-platform-inner{max-width:1180px;margin:auto;display:grid;grid-template-columns:1.25fr .75fr;gap:72px;align-items:center}
+.home-platform-eyebrow{font-size:12px;letter-spacing:.16em;font-weight:700;color:#b95008;margin:0 0 18px}
+.home-platform h2{font-size:clamp(30px,3.5vw,42px);line-height:1.2;color:#062650;letter-spacing:-.03em;font-weight:700;margin:0 0 22px}
+.home-platform-intro{font-size:17px;line-height:1.75;margin:0 0 28px}
+.home-platform-benefits{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px}
+.home-platform-benefits article{display:flex;align-items:flex-start;gap:12px}
+.home-platform-benefits article>span{color:#b95008;background:#fff4e8;border-radius:10px;padding:9px;font-size:12px;font-weight:700;flex-shrink:0}
+.home-platform h3{font-size:16px;font-weight:700;line-height:1.35;color:#062650;margin:0 0 8px}
+.home-platform-benefits p{font-size:14px;line-height:1.65;margin:0}
+.home-platform-stores{display:flex;gap:16px;flex-wrap:wrap;margin:24px 0}
+.platform-store{display:block;height:60px;background-image:url('../static/vecinos360-tiendas.png');background-repeat:no-repeat;background-size:377px 77px;border-radius:8px}
+.platform-store-android{width:167px;background-position:-9px -6px}.platform-store-ios{width:171px;background-position:-192px -6px}
+.home-platform-button{display:inline-flex;align-items:center;gap:24px;background:#062650;color:#fff;border-radius:999px;padding:15px 26px;text-decoration:none;font-weight:700;font-size:15px}
+.home-platform-button:hover{background:#103b6e}
+.home-platform a:focus-visible{outline:3px solid #ed7909;outline-offset:5px}
+.home-platform-device{margin:0;position:relative;text-align:center;border-radius:32px;background:radial-gradient(ellipse,#fff2df 0%,#f4f7fb 40%,#fff 72%);padding:24px}
+.home-platform-device img{display:block;width:100%;max-width:290px;height:auto;margin:auto;filter:drop-shadow(0 15px 20px #06265015)}
+.home-platform-device figcaption{font-size:11px;color:#67768a;line-height:1.6;margin-top:20px}
+@media(max-width:1000px){.home-platform-inner{gap:30px}.home-platform-benefits{grid-template-columns:1fr;gap:20px}}
+@media(max-width:700px){.home-platform{padding:52px 20px}.home-platform-inner{grid-template-columns:1fr;gap:28px}.home-platform-device img{max-width:240px}.home-platform-stores{gap:12px}.platform-store{transform-origin:left center}.home-platform-intro{font-size:16px}}
+.home-platform-stores .platform-store{animation:google-play-float 3s ease-in-out infinite}
+.home-platform-stores .platform-store:hover,.home-platform-stores .platform-store:focus-visible{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.home-platform-stores .platform-store{animation:none}}

@@ -22776,3 +22776,6 @@ footer {
     animation: none;
   }
 }
+
+/* New property-care hero photograph. */
+.hero-main-visual.hero-property-care { border-radius: 20px; aspect-ratio: 3 / 2; object-fit: contain; filter: none; box-shadow: none; }
