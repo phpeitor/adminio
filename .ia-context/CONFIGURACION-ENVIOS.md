@@ -19,7 +19,7 @@ Variables necesarias: `MAIL_HOST`, `MAIL_PORT`, `MAIL_SECURE` (`tls` o `ssl`), `
 
 PHP 8+, OpenSSL y Fileinfo para verificar PDF. Se reutiliza PHPMailer desde `vendor/autoload.php` raíz; `config/mail_config.php` también busca instalaciones en `cotizaciones/vendor` y `empleos/vendor`. Instalar dependencias ejecutando `composer install --no-dev --optimize-autoloader` en la raíz del proyecto.
 
-Integrar el bloque de .htaccess entregado con las reglas existentes (no reemplazar el .htaccess del hosting). En Apache impide descargar .env y sus variantes. Para Nginx u otro servidor, aplicar la regla equivalente. Confirmar que /.env no es accesible por HTTP.
+Configurar el servidor web para denegar el acceso HTTP a `.env` y sus variantes. No hay que asumir que el archivo `.htaccess` del repositorio contiene esa regla; verificar la configuración real de Apache o añadir la regla adecuada sin reemplazar reglas del hosting. Para Nginx, aplicar la regla equivalente. Confirmar que `/.env` no es accesible por HTTP.
 
 Para el CV: upload_max_filesize = 5M, post_max_size = 8M y límite de petición del servidor de al menos 8 MB. Los CV solo se adjuntan al correo; no se guardan en la web. Los contadores de intentos usan el directorio temporal de PHP, separado por sitio y formulario; debe estar fuera del directorio público y ser escribible por PHP. Limpiar periódicamente contadores antiguos.
 

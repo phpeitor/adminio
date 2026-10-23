@@ -78,6 +78,52 @@ Los endpoints de cotizaciones y empleos envían a `MAIL_TO` y, si es una direcci
 - El formulario de empleos envía `multipart/form-data` a `empleos/enviar.php`. Valida consentimiento, teléfono y CV PDF (máximo 5 MB), adjunta el archivo al correo y no lo almacena en el sitio. La plantilla es `empleos/template_mail.html`.
 - Ambos formularios nuevos comparten `config/mail_config.php`, PHPMailer y las variables SMTP de `.env`. Incorporan la imagen de cabecera correspondiente desde `static/`.
 
+#### Flujo de correo
+
+```mermaid
+flowchart TD
+    subgraph Cotizacion[Solicitud de cotización]
+        QF[contacto.html y js/contacto.js] -->|JSON| QE[cotizaciones/enviar.php]
+    end
+
+    subgraph Postulacion[Postulación laboral]
+        JF[trabaja-con-nosotros.html y js/empleos.js] -->|multipart/form-data + CV| JE[empleos/enviar.php]
+    end
+
+    QE --> QV{Validación del servidor}
+    JE --> JV{Validación del servidor}
+    QV -->|Válido| MC[config/mail_config.php]
+    JV -->|Válido| MC
+    QV -->|Inválido| QERR[Respuesta JSON de error]
+    JV -->|Inválido| JERR[Respuesta JSON de error]
+    MC --> PM[PHPMailer + configuración SMTP de .env]
+    PM --> MT[MAIL_TO]
+    PM --> MF[MAIL_FROM_EMAIL si es distinto de MAIL_TO]
+    PM --> RESP[Respuesta JSON: éxito o fallo SMTP]
+    RESP --> UI[Confirmación o error en el formulario]
+```
+
+#### Flujo de acceso a asistencias
+
+```mermaid
+flowchart TD
+    A[asistencias.html] --> B{Sesión autorizada?}
+    B -->|Sí| F[Filtros de fecha y paginación]
+    B -->|No| C[Ingresar token]
+    C --> D[controller/validar_acceso_asistencias.php]
+    D --> E{Token válido?}
+    E -->|Sí| S[Crear sesión autorizada]
+    S --> F
+    E -->|No: intentos agotados| L[Bloqueo de 5 minutos]
+    E -->|No| C
+    F --> G[controller/asistencia_administradores.php]
+    G --> H[AsistenciaAdministradoresModel + PDO]
+    H --> I[(MySQL: asistencia_administradores)]
+    I --> J[Filas, contadores y gráficos]
+    J --> K[Cerrar sesión]
+    K --> X[controller/cerrar_sesion_asistencias.php]
+```
+
 ### Asistencias
 
 - `asistencias.html` es un reporte protegido por sesión y por `ASISTENCIAS_TOKEN`.

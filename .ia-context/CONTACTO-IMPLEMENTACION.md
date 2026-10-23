@@ -11,6 +11,8 @@ Región, provincia y distrito son listas vinculadas. Cambiar la región limpia p
 - `contacto.html` (nuevo).
 - `css/contacto.css` (nuevo).
 - `js/contacto.js` (nuevo).
+- `cotizaciones/enviar.php` y `cotizaciones/template_mail.html` (endpoint y plantilla HTML).
+- `config/mail_config.php`, `css/template_mail.css` y `vendor/` con PHPMailer instalado por Composer.
 - `static/data/1_ubigeo_departamentos.json`, `2_ubigeo_provincias.json` y `3_ubigeo_distritos.json`.
 - `css/site-header.css` (cabecera compartida).
 - `head.html` (actualizado: Contacto abre la página nueva).
@@ -32,7 +34,7 @@ Se mantienen validación del servidor, campo trampa y límites de intentos en el
 
 1. Abrir Contacto desde el menú del inicio y de asistencias.
 2. Intentar avanzar con campos vacíos y sin servicios.
-3. Completar Información, avanzar y volver: los datos deben conservarse.
+3. Completar Información (incluido teléfono de 9 dígitos iniciado en 9 y al menos un servicio), avanzar y volver: los datos deben conservarse.
 4. Revisar la vista en celular y escritorio.
 5. Con PHP configurado, realizar un envío autorizado y confirmar recepción del correo con todos los detalles del inmueble.
 6. Comprobar que ante error de servidor no se muestra éxito y los datos se conservan.
