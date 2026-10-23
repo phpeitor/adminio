@@ -6,10 +6,12 @@ Guía de trabajo para Adminio Perú: una landing corporativa de administración 
 
 - La landing pública entra por `index.html`.
 - El módulo privado entra por `asistencias.html` y requiere un token configurado en `ASISTENCIAS_TOKEN`.
-- La interfaz pública usa `js/adminio.js`, `css/index.css` y `static/data/distritos.json`.
+- El inicio conserva un formulario legacy en `js/adminio.js`; la cotización dedicada usa `js/contacto.js` y catálogos `static/data/*_ubigeo_*.json`.
+- Las postulaciones usan `js/empleos.js`, AlertifyJS y un endpoint PHP que recibe el PDF.
+- El blog usa `js/blog.js` y `css/blog.css`.
 - La interfaz de asistencias usa `js/asistencias.js` y `css/asistencias.css`, con jQuery DataTables, Flatpickr, ApexCharts y AlertifyJS cargados desde CDN.
 - El backend PHP se divide entre `config/`, `controller/`, `model/` y `db/`.
-- El formulario de contacto envía JSON a `config/envio_correo.php`, que usa PHPMailer y `config/env.php` para leer `.env`.
+- El formulario legacy del inicio envía JSON a `config/envio_correo.php`; la página `contacto.html` usa `cotizaciones/enviar.php` y empleo usa `empleos/enviar.php`. Los dos formularios nuevos comparten `config/mail_config.php` y las variables SMTP de `.env`.
 - Las asistencias se consultan desde la tabla `asistencia_administradores` mediante `model/AsistenciaAdministradoresModel.php` y `db/connection.php`.
 
 ## Principios compartidos
@@ -35,8 +37,9 @@ Debe:
 
 - Mantener las secciones públicas, navegación, formulario de contacto y carga de distritos.
 - Validar campos en frontend sin sustituir la validación del backend.
-- Enviar el payload JSON esperado: `nombre`, `edificio`, `correo`, `telefono`, `distrito` y `mensaje`.
-- Mantener respuestas JSON con `ok` y `message` para no romper AlertifyJS.
+- Distinguir el formulario legacy en `index.html` del formulario de cotizaciones en `contacto.html`; no mezclar sus payloads o endpoints.
+- El formulario nuevo envía JSON con los campos de inmueble, ubicación, servicios y contacto a `cotizaciones/enviar.php`.
+- Mantener respuestas JSON con `ok` y `message`/`code` según el endpoint para no romper el frontend.
 - Leer la configuración SMTP mediante `env()` y mantener el correo HTML escapado.
 
 No debe:
@@ -88,6 +91,7 @@ Debe:
 - Mantener la conexión centralizada en `db/connection.php`.
 - Devolver JSON con `Content-Type` correcto y sin trazas internas al cliente.
 - Usar PHPMailer instalado por Composer para el envío SMTP.
+- Mantener las plantillas y recursos de correo de cotizaciones y empleos, incluida la validación backend de CV PDF.
 
 ## Agente Documentación y contexto
 

@@ -2,11 +2,12 @@
 
 ## Alcance
 
-- `index.html` es la landing pública.
-- `asistencias.html` es la vista privada de reportes de asistencia.
-- `js/adminio.js` controla navegación por secciones, carga de distritos, validación y envío del formulario.
-- `js/asistencias.js` controla autenticación, filtros, tabla, contadores, gráficos y cierre de sesión.
-- `css/index.css` y `css/asistencias.css` contienen los estilos específicos; `css/app.css` aporta estilos base.
+- `index.html` es la página de inicio y conserva un formulario legacy administrado por `js/adminio.js`.
+- `contacto.html` implementa la solicitud de cotización en dos pasos; `js/contacto.js` carga Ubigeo y envía a `cotizaciones/enviar.php`.
+- `trabaja-con-nosotros.html` contiene el formulario de postulación; `js/empleos.js` valida el CV, muestra confirmación y envía `multipart/form-data` a `empleos/enviar.php`.
+- `blog.html` y las páginas `blog-*.html` forman el blog; `js/blog.js` gestiona navegación, búsqueda, filtros y calculadora.
+- `asistencias.html` es la vista privada de reportes; `js/asistencias.js` controla acceso, filtros, tabla, gráficos y cierre de sesión.
+- `css/app.css` aporta estilos base y las páginas cargan hojas específicas como `css/index.css`, `css/contacto.css`, `css/blog.css` y `css/asistencias.css`.
 
 ## HTML y accesibilidad
 
@@ -28,8 +29,10 @@
 ## JavaScript
 
 - Usar el estilo y las dependencias ya presentes; no reemplazar los bundles ni añadir un framework sin necesidad.
-- Mantener la validación del formulario de contacto en `js/adminio.js` y limpiar errores al corregir cada campo.
-- Enviar el formulario como JSON a `./config/envio_correo.php` con las claves actuales.
+- Mantener la validación y el envío del formulario legacy en `js/adminio.js`; no confundirlo con `contacto.html`.
+- Para cotizaciones, mantener los campos, servicios, validación de teléfono peruano de 9 dígitos iniciado en 9 y payload JSON acordado con `cotizaciones/enviar.php`.
+- Para empleos, mantener validación del teléfono, consentimiento, PDF auténtico de hasta 5 MB y confirmaciones/avisos de AlertifyJS; conservar `multipart/form-data` y el campo CV `cv`.
+- Mantener la carga de las listas de Ubigeo desde `static/data/1_ubigeo_departamentos.json`, `2_ubigeo_provincias.json` y `3_ubigeo_distritos.json`.
 - Mantener en `js/asistencias.js` los endpoints `controller/`, la sesión, el token en `sessionStorage` y los filtros de fecha.
 - Escapar datos de asistencias antes de insertarlos en HTML.
 - Destruir instancias de gráficos antes de renderizarlas de nuevo y mantener el estado de la tabla sincronizado.

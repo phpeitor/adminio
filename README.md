@@ -4,139 +4,129 @@
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://www.linkedin.com/in/drphp/)
 
 <a href="https://www.instagram.com/amvsoft.tech/">
-  <img src="https://adminio.pe/static/main.png" alt="Adminio" width="600">
+  <img src="https://adminio.pe/static/adminio-pilares-tecnologia.webp?v=2" alt="Adminio" width="600">
 </a>
 
 ## Descripción
 
-Adminio es una landing corporativa para administración inmobiliaria con formulario de contacto y un módulo privado de reportes de asistencia. El frontend es HTML, CSS y JavaScript; el backend PHP gestiona correo SMTP, autenticación por token, sesiones y consultas MySQL.
+Sitio web corporativo de ADMINIO Perú para administración inmobiliaria. Incluye páginas públicas, formularios de cotización y postulación, un blog informativo y un panel de consulta de asistencias protegido por token.
+
+## Stack
+
+- Frontend: HTML, CSS y JavaScript sin framework.
+- Backend: PHP 8+, Composer y PHPMailer para correo SMTP.
+- Datos del panel: MySQL/MariaDB mediante PDO.
+- Dependencias del panel público: librerías cargadas desde CDN (DataTables, Flatpickr, ApexCharts y AlertifyJS).
 
 ## Requisitos
 
-- PHP 8.x o superior con extensiones PDO y OpenSSL.
-- Composer 2.x.
-- Apache, el servidor integrado de PHP u otro servidor web que ejecute PHP.
-- SMTP funcional para el formulario de contacto.
-- MySQL/MariaDB con la tabla `asistencia_administradores` para el módulo privado.
+- PHP 8 o superior con `openssl`, `fileinfo`, `pdo` y `pdo_mysql` habilitados.
+- Composer 2.
+- Apache u otro servidor web con soporte PHP. El servidor integrado de PHP sirve para desarrollo.
+- Acceso SMTP para los formularios.
+- MySQL/MariaDB y acceso a la tabla `asistencia_administradores` para usar Asistencias.
 
-## Instalación local
+## Puesta en marcha local
 
-1. Instalar dependencias:
+Desde la raíz del repositorio:
 
-```bash
+```sh
 composer install
-```
-
-2. Crear la configuración local a partir del ejemplo:
-
-```bash
-copy .env.example .env
-```
-
-En macOS/Linux, usar `cp .env.example .env`. Después completar `.env` con valores del entorno. Nunca usar credenciales reales en `.env.example`.
-
-3. Servir el proyecto desde su raíz. Con PHP:
-
-```bash
+cp .env.example .env
 php -S 127.0.0.1:8000
 ```
 
-Abrir `http://127.0.0.1:8000/`. En Apache, la URL puede ser `http://127.0.0.1/adminio/` si la carpeta está dentro del document root.
+En Windows PowerShell, copiar el archivo con:
 
-4. Verificar la conexión de base de datos en `db/connection.php` y que el usuario tenga permisos de lectura sobre `asistencia_administradores`.
+```powershell
+Copy-Item .env.example .env
+```
 
-## Configuración de entorno
+Completar `.env` con credenciales del entorno y abrir `http://127.0.0.1:8000/`. Para que funcionen correo y asistencias, configurar también SMTP y base de datos. Abrir las páginas con `file://` no ejecuta PHP ni permite que funcionen los endpoints.
 
-`.env` es local y está excluido del control de versiones. `.env.example` documenta todas las variables necesarias:
+## Configuración (`.env`)
+
+La aplicación lee `.env` desde la raíz. `.env` está excluido del control de versiones; `.env.example` contiene valores ficticios y no debe usarse como configuración productiva.
 
 | Variable | Uso |
 | --- | --- |
-| `MAIL_HOST` | Host del servidor SMTP. |
-| `MAIL_PORT` | Puerto SMTP, normalmente `587` o `465`. |
-| `MAIL_SECURE` | Cifrado SMTP: `tls` o `ssl`. |
-| `MAIL_USERNAME` | Usuario SMTP. |
-| `MAIL_PASSWORD` | Contraseña o token SMTP. |
-| `MAIL_FROM_EMAIL` | Dirección remitente. |
-| `MAIL_FROM_NAME` | Nombre visible del remitente. |
-| `MAIL_TO` | Dirección que recibe los leads. |
-| `DB_HOST` | Host de MySQL/MariaDB. |
-| `DB_PORT` | Puerto de base de datos. |
-| `DB_NAME` | Nombre de la base de datos. |
-| `DB_USERNAME` | Usuario de base de datos. |
-| `DB_PASSWORD` | Contraseña de base de datos. |
-| `DB_CHARSET` | Codificación, normalmente `utf8mb4`. |
-| `ASISTENCIAS_TOKEN` | Token requerido para acceder a asistencias. |
+| `MAIL_HOST` | Host SMTP. |
+| `MAIL_PORT` | Puerto SMTP, por ejemplo `465` o `587`. |
+| `MAIL_SECURE` | `ssl` para SMTPS o `tls` para STARTTLS. |
+| `MAIL_USERNAME` / `MAIL_PASSWORD` | Credenciales SMTP. |
+| `MAIL_FROM_EMAIL` / `MAIL_FROM_NAME` | Dirección y nombre remitente. |
+| `MAIL_TO` | Destinatario principal de los formularios nuevos. |
+| `DB_HOST`, `DB_PORT`, `DB_NAME` | Conexión MySQL/MariaDB. |
+| `DB_USERNAME`, `DB_PASSWORD`, `DB_CHARSET` | Credenciales y codificación de base de datos. |
+| `ASISTENCIAS_TOKEN` | Token de acceso al módulo de asistencias. |
 
-## Flujos de la aplicación
+Los endpoints de cotizaciones y empleos envían a `MAIL_TO` y, si es una dirección distinta, agregan copia a `MAIL_FROM_EMAIL`. La dirección proporcionada por la persona se utiliza como `Reply-To`. El formulario legacy del inicio mantiene el comportamiento de `config/envio_correo.php`.
 
-### Landing y contacto
+## Flujos principales
 
-- `index.html` carga `head.html` y `footer.html` mediante `js/adminio.js`.
-- `static/data/distritos.json` alimenta el selector de distritos.
-- El formulario envía JSON a `config/envio_correo.php`.
-- `config/env.php` lee `.env` y PHPMailer envía el correo mediante SMTP.
+### Páginas públicas y navegación
+
+- `index.html` es la página de inicio. `head.html` y `footer.html` se comparten como fragmentos.
+- `blog.html` y las páginas `blog-*.html` contienen los artículos; `js/blog.js` carga la navegación y controla búsqueda, filtros y calculadora.
+- `contacto.html` permite solicitar un presupuesto. Su JavaScript carga las listas vinculadas de región, provincia y distrito desde `static/data/1_ubigeo_departamentos.json`, `2_ubigeo_provincias.json` y `3_ubigeo_distritos.json`.
+- `trabaja-con-nosotros.html` recibe postulaciones y CV.
+
+### Correo y formularios
+
+- El formulario legacy de la página de inicio conserva el envío JSON a `config/envio_correo.php`, que usa `config/template_mail.html` y `css/template_mail.css`.
+- La página nueva de contacto envía JSON a `cotizaciones/enviar.php`. El endpoint valida los datos, servicios seleccionados, teléfono peruano de 9 dígitos que comienza con 9 y límites de envío; genera correo HTML desde `cotizaciones/template_mail.html`.
+- El formulario de empleos envía `multipart/form-data` a `empleos/enviar.php`. Valida consentimiento, teléfono y CV PDF (máximo 5 MB), adjunta el archivo al correo y no lo almacena en el sitio. La plantilla es `empleos/template_mail.html`.
+- Ambos formularios nuevos comparten `config/mail_config.php`, PHPMailer y las variables SMTP de `.env`. Incorporan la imagen de cabecera correspondiente desde `static/`.
 
 ### Asistencias
 
-- `asistencias.html` carga el header y footer compartidos.
-- `js/asistencias.js` valida el token, mantiene la sesión, filtra fechas, renderiza la tabla y genera gráficos.
-- `controller/validar_acceso_asistencias.php` compara el token con `hash_equals`, limita intentos y aplica bloqueo temporal.
-- `controller/estado_acceso_asistencias.php` informa el estado de la sesión.
-- `controller/asistencia_administradores.php` devuelve el reporte filtrado.
-- `controller/cerrar_sesion_asistencias.php` destruye la sesión.
-- `model/AsistenciaAdministradoresModel.php` consulta la tabla y `db/connection.php` centraliza PDO.
+- `asistencias.html` es un reporte protegido por sesión y por `ASISTENCIAS_TOKEN`.
+- `controller/validar_acceso_asistencias.php` valida el token y bloquea durante cinco minutos después de tres intentos fallidos. Los otros controladores consultan el estado, devuelven registros filtrados y cierran sesión.
+- `model/AsistenciaAdministradoresModel.php` consulta `asistencia_administradores` mediante `db/connection.php` y PDO. Los filtros de fecha y parámetros de paginación se envían como parámetros preparados.
 
-## Estructura relevante
+## Estructura del repositorio
 
 ```text
-adminio/
-├── index.html                  # Landing pública
-├── asistencias.html            # Reporte privado de asistencias
-├── head.html                   # Header compartido
-├── footer.html                 # Footer compartido
-├── .env.example                # Plantilla segura de configuración
-├── config/                     # Entorno, correo y plantilla HTML
-├── controller/                 # Endpoints de autenticación y reportes
-├── db/                         # Conexión PDO
-├── model/                      # Acceso a datos de asistencias
-├── css/                        # Estilos fuente y assets compilados
-├── js/                         # Lógica fuente y bundles
-├── static/                     # Imágenes, SVG y datos públicos
-└── .ia-context/                # Reglas y contexto para agentes
+.
+├── index.html, contacto.html, trabaja-con-nosotros.html, blog*.html
+├── head.html, footer.html
+├── css/                  # Estilos del sitio y de las páginas
+├── js/                   # Lógica del frontend
+├── static/               # Imágenes, logos y catálogos JSON
+├── config/               # Lectura de entorno, correo legacy y configuración compartida
+├── cotizaciones/         # Endpoint y plantilla del formulario de contacto nuevo
+├── empleos/              # Endpoint y plantilla de postulaciones
+├── controller/           # Endpoints de asistencias
+├── model/                # Consultas del reporte de asistencias
+├── db/                   # Conexión PDO
+├── .ia-context/          # Contexto y convenciones de desarrollo
+├── composer.json         # Dependencias PHP
+└── .env.example          # Referencia sin secretos
 ```
 
-## Validación y mantenimiento
+## Comprobaciones
 
-Después de modificar PHP:
+No hay un comando de pruebas automatizadas configurado en `package.json` o Composer. Para revisar cambios, ejecutar las comprobaciones pertinentes:
 
-```bash
-php -l config/env.php
-php -l config/envio_correo.php
-php -l controller/validar_acceso_asistencias.php
-php -l controller/asistencia_administradores.php
-php -l controller/estado_acceso_asistencias.php
-php -l controller/cerrar_sesion_asistencias.php
+```sh
+php -l cotizaciones/enviar.php
+php -l empleos/enviar.php
+php -l config/mail_config.php
+node --check js/contacto.js
+node --check js/empleos.js
 ```
 
-Después de modificar JavaScript:
+Las pruebas de integración requieren servidor PHP, credenciales SMTP válidas y, para Asistencias, conexión MySQL. Comprobar manualmente las respuestas de éxito y error de los formularios, CV válido/inválido y los filtros y sesión del reporte.
 
-```bash
-node --check js/adminio.js
-node --check js/asistencias.js
-```
+## Operación y seguridad
 
-Probar manualmente el formulario de contacto, el acceso con token válido e inválido, el bloqueo tras intentos fallidos, los filtros, la tabla, los gráficos y el cierre de sesión.
-
-## Despliegue y seguridad
-
-- Usar `composer install --no-dev --optimize-autoloader` en producción.
-- Mantener `.env` fuera del repositorio y protegerlo de servirlo públicamente.
-- Usar HTTPS y un token largo, aleatorio y exclusivo para asistencias.
-- Rotar inmediatamente cualquier credencial que haya sido expuesta.
-- No devolver secretos, trazas ni credenciales en respuestas JSON.
-- Mantener Composer y PHPMailer actualizados.
-- No editar `vendor/` manualmente ni modificar bundles compilados sin actualizar su fuente.
+- No subir `.env`, contraseñas, tokens ni archivos con datos personales al repositorio.
+- Proteger `.env` contra acceso HTTP y servir el sitio mediante HTTPS en producción.
+- Configurar `upload_max_filesize` y `post_max_size` para aceptar el CV limitado a 5 MB.
+- Los endpoints de cotizaciones y empleos aplican validación backend, campo honeypot y límites de frecuencia; los archivos temporales de control deben ser escribibles por PHP.
+- Instalar dependencias con `composer install --no-dev --optimize-autoloader` en producción. No editar `vendor/` manualmente.
+- Revisar la compatibilidad antes de cambiar nombres de campos, endpoints o estructura de respuestas consumida por JavaScript.
 
 ## Licencia
 
-Proyecto de uso privado/comercial según las políticas del propietario del repositorio.
+Uso privado/comercial según las políticas del propietario del repositorio.

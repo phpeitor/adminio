@@ -2,10 +2,10 @@
 
 ## Alcance
 
-- El backend gestiona el envío de contacto desde `config/envio_correo.php`.
+- El formulario legacy de inicio envía a `config/envio_correo.php`; las cotizaciones y postulaciones tienen endpoints propios en `cotizaciones/enviar.php` y `empleos/enviar.php`.
 - Los endpoints de asistencias viven en `controller/`.
 - La conexión se centraliza en `db/connection.php` y el acceso a datos en `model/`.
-- Las respuestas consumidas por JavaScript deben conservar el formato JSON.
+- Los endpoints de formularios nuevos responden JSON; las postulaciones aceptan `multipart/form-data` para recibir el CV.
 
 ## Configuración
 
@@ -19,9 +19,10 @@
 
 - Usar PHPMailer instalado por Composer.
 - Conservar el flujo JSON de entrada, PHPMailer y respuesta JSON.
-- Escapar los valores antes de insertarlos en `config/template_mail.html`.
-- Mantener los estilos de correo en `css/template_mail.css` y las imágenes embebidas existentes.
-- No cambiar la ruta `config/envio_correo.php` sin actualizar `js/adminio.js`.
+- Escapar todos los valores dinámicos en las plantillas HTML: `config/template_mail.html`, `cotizaciones/template_mail.html` y `empleos/template_mail.html`.
+- Mantener los estilos comunes de correo en `css/template_mail.css` y las imágenes CID usadas por cada plantilla.
+- Los endpoints nuevos comparten `config/mail_config.php`, usan las variables `MAIL_*`, responden `ok/message` o códigos JSON y tienen límites de frecuencia propios.
+- No cambiar la ruta `config/envio_correo.php` sin actualizar `js/adminio.js`; tampoco cambiar los endpoints nuevos sin actualizar sus respectivos formularios.
 
 ## Asistencias y base de datos
 
@@ -36,8 +37,8 @@
 - No confiar solo en la validación del frontend.
 - Validar y sanear los datos recibidos antes de usarlos en consultas o correos.
 - Enviar `Content-Type: application/json` en los endpoints JSON.
-- Responder con `ok: true` y `message` en operaciones exitosas.
-- Responder con `ok: false` y mensajes breves sin trazas ni secretos cuando ocurra un error.
+- Responder con `ok: true` y mensajes breves en operaciones exitosas.
+- Responder con `ok: false` y mensajes sin trazas ni secretos cuando ocurra un error; nunca exponer datos SMTP ni cuerpos de correo.
 
 ## Verificación
 

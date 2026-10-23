@@ -1,23 +1,23 @@
 # Entrega al administrador: envío de formularios
 
-Contacto (contacto.html) y Trabaja con nosotros (trabaja-con-nosotros.html) usan las mismas variables MAIL_* del .env ubicado en la raíz del sitio. No se ha configurado ninguna cuenta ni contraseña propia. Ambos envían al destinatario MAIL_TO; el correo del visitante se usa únicamente para responder (Reply-To).
+`contacto.html` y `trabaja-con-nosotros.html` usan las variables `MAIL_*` del `.env` ubicado en la raíz. Cotizaciones y empleos envían a `MAIL_TO` y agregan copia a `MAIL_FROM_EMAIL` si es distinta; el correo del visitante solo se establece como `Reply-To`. Los secretos reales pertenecen al administrador y no deben incorporarse a este archivo.
 
 ## Subir y conservar
 
-Confirmación del propietario (22 de octubre de 2026): el proyecto desplegado cuenta con las funciones de correo y el .env existentes. Su ausencia en esta copia local no implica que falten en el servidor. Mantener `sendEmail(data, { onError } = {})` en `js/adminio.js`, con POST JSON a `./config/envio_correo.php`, respuesta `ok/message`, avisos mediante Alertify, recarga tras 1500 ms al tener éxito y callback `onError` ante fallo. No sustituir esa ruta por los controladores nuevos ni crear o sobrescribir el endpoint existente por su ausencia local.
+El formulario legacy del inicio mantiene `sendEmail(data, { onError } = {})` en `js/adminio.js`, POST JSON a `./config/envio_correo.php`, respuesta `ok/message`, avisos mediante Alertify y callback `onError` ante fallo. No cambiar ese flujo al modificar los formularios nuevos.
 
-- Subir las páginas y sus CSS/JS, head.html, footer.html, cotizaciones/enviar.php, empleos/enviar.php y config/mail_config.php.
-- Conservar el .env del administrador, config/env.php (si existe), config/envio_correo.php y vendor del sitio anterior. No sobrescribirlos. La plantilla .env.example es solo una referencia sin credenciales.
-- El formulario antiguo del inicio conserva su controlador config/envio_correo.php. Los formularios nuevos comparten su configuración de correo, pero tienen controladores propios para validar sus campos y adjuntar el CV.
-- Si existe config/env.php y define env(), se utiliza esa función. De lo contrario, el módulo lee el .env directamente con el mismo formato clave=valor del código facilitado. No incluye config/envio_correo.php, porque podría ejecutar un envío al cargarlo.
+- Desplegar los archivos de cada formulario, sus hojas y scripts, plantillas, `config/mail_config.php` y `vendor/` generado por Composer.
+- Conservar el `.env` del administrador y no sobrescribir configuración SMTP existente. `.env.example` solo documenta nombres de variables y contiene placeholders.
+- El formulario legacy del inicio conserva `config/envio_correo.php`; los formularios nuevos usan controladores propios para validación y envío, incluido el adjunto CV.
+- `config/mail_config.php` reutiliza `config/env.php`/`env()` cuando está disponible y, si no, lee las variables desde el `.env` raíz. No incluir el endpoint legacy para cargar su configuración, porque ejecuta un envío.
 
 ## Variables existentes
 
-MAIL_HOST, MAIL_PORT, MAIL_SECURE (tls o ssl), MAIL_USERNAME, MAIL_PASSWORD, MAIL_FROM_EMAIL, MAIL_FROM_NAME y MAIL_TO. Ambos formularios usan exactamente el mismo remitente, servidor y destinatario. Completar o revisar estos valores en el hosting; no hacen falta ADMINIO_COTIZACIONES_CONFIG, ADMINIO_EMPLEOS_ENV, MAIL_JOBS_TO ni archivos privados adicionales de configuración.
+Variables necesarias: `MAIL_HOST`, `MAIL_PORT`, `MAIL_SECURE` (`tls` o `ssl`), `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM_EMAIL`, `MAIL_FROM_NAME` y `MAIL_TO`. Ambos formularios nuevos comparten estos valores; no requieren variables privadas adicionales por formulario.
 
 ## Dependencias y servidor
 
-PHP 8.x, OpenSSL y Fileinfo para verificar PDF. Se reutiliza PHPMailer de vendor/autoload.php en la raíz; también se admite la instalación en cotizaciones/vendor o empleos/vendor. Si no existe, ejecutar composer install --no-dev --optimize-autoloader dentro de empleos; ambos formularios podrán usar esa instalación. No hace falta phpdotenv.
+PHP 8+, OpenSSL y Fileinfo para verificar PDF. Se reutiliza PHPMailer desde `vendor/autoload.php` raíz; `config/mail_config.php` también busca instalaciones en `cotizaciones/vendor` y `empleos/vendor`. Instalar dependencias ejecutando `composer install --no-dev --optimize-autoloader` en la raíz del proyecto.
 
 Integrar el bloque de .htaccess entregado con las reglas existentes (no reemplazar el .htaccess del hosting). En Apache impide descargar .env y sus variantes. Para Nginx u otro servidor, aplicar la regla equivalente. Confirmar que /.env no es accesible por HTTP.
 
@@ -25,9 +25,8 @@ Para el CV: upload_max_filesize = 5M, post_max_size = 8M y límite de petición 
 
 ## Verificar después de subir
 
-1. Ejecutar php -l config/mail_config.php, php -l cotizaciones/enviar.php y php -l empleos/enviar.php.
-2. Probar contacto y comprobar recepción en MAIL_TO.
-3. Probar una postulación con PDF y comprobar recepción del adjunto CV.pdf.
+1. Ejecutar `php -l config/mail_config.php`, `php -l cotizaciones/enviar.php` y `php -l empleos/enviar.php`.
+2. Probar contacto y comprobar recepción en `MAIL_TO` y, si es distinto, `MAIL_FROM_EMAIL`.
+3. Probar una postulación con PDF y comprobar recepción del adjunto `CV.pdf` en los destinatarios configurados.
 4. Comprobar rechazo de archivos que no sean PDF o superen 5 MB y que un fallo no borre los datos.
 
-No se han enviado correos ni publicado cambios. Esta máquina no tiene PHP ni Composer: la ejecución PHP y la prueba SMTP quedan para el administrador.
