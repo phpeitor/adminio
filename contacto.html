@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js" defer></script>
-  <script src="./js/contacto.js?v=5" defer></script>
+  <script src="./js/contacto.js?v=7" defer></script>
   <link rel="stylesheet" href="./css/site-theme.css?v=3">
 </head>
 <body class="quote-page">
@@ -90,7 +90,7 @@
             <div class="quote-field quote-full"><label for="unidades">Cantidad de unidades</label><input id="unidades" name="unidades" type="number" min="1" max="100000" step="1" placeholder="Ingresa el número de unidades" required></div>
             <div class="quote-field"><label for="pisos">Cantidad de pisos</label><input id="pisos" name="pisos" type="number" min="1" max="200" step="1" placeholder="Ingresa el número de pisos" required></div>
             <div class="quote-field"><label for="sotanos">Cantidad de sótanos</label><input id="sotanos" name="sotanos" type="number" min="0" max="50" step="1" placeholder="Ingresa el número de sótanos" required></div>
-            <div class="quote-field quote-full"><label for="region">¿Dónde está ubicado? (Región)</label><select id="region" name="region" required><option value="">Selecciona una región</option><option>Amazonas</option><option>Áncash</option><option>Apurímac</option><option>Arequipa</option><option>Ayacucho</option><option>Cajamarca</option><option>Callao</option><option>Cusco</option><option>Huancavelica</option><option>Huánuco</option><option>Ica</option><option>Junín</option><option>La Libertad</option><option>Lambayeque</option><option selected>Lima</option><option>Loreto</option><option>Madre de Dios</option><option>Moquegua</option><option>Pasco</option><option>Piura</option><option>Puno</option><option>San Martín</option><option>Tacna</option><option>Tumbes</option><option>Ucayali</option></select></div>
+            <div class="quote-field quote-full"><label for="region">¿Dónde está ubicado? (Región)</label><select id="region" name="region" required><option value="">Selecciona una región</option></select></div>
             <div class="quote-field"><label for="provincia">Provincia</label><select id="provincia" name="provincia" required disabled><option value="">Cargando provincias…</option></select></div>
             <div class="quote-field"><label for="distrito">Distrito</label><select id="distrito" name="distrito" required disabled><option value="">Selecciona una provincia primero</option></select></div>
             <p id="location-error" class="quote-error quote-full" role="alert" hidden>No pudimos cargar las ubicaciones. <button type="button" id="location-retry">Volver a intentar</button></p>
@@ -113,7 +113,7 @@
           <div class="quote-grid">
             <div class="quote-field"><label for="nombre">Nombre y apellidos</label><input id="nombre" name="nombre" autocomplete="name" maxlength="120" required placeholder="Escribe tu nombre"></div>
             <div class="quote-field"><label for="cargo">Cargo</label><select id="cargo" name="cargo" required><option value="">Selecciona una opción</option><option>Presidente de la junta de propietarios</option><option>Miembro de la junta de propietarios</option><option>Propietario</option><option>Administrador</option><option>Representante de la empresa</option><option>Otro</option></select></div>
-            <div class="quote-field"><label for="telefono">Teléfono</label><input id="telefono" name="telefono" type="tel" autocomplete="tel" maxlength="20" pattern="[+0-9() .\-]{7,20}" required placeholder="Escribe tu celular"></div>
+            <div class="quote-field"><label for="telefono">Teléfono</label><input id="telefono" name="telefono" type="tel" autocomplete="tel" maxlength="20" pattern="[+0-9() .-]{7,20}" required placeholder="Escribe tu celular"></div>
             <div class="quote-field"><label for="correo">Correo</label><input id="correo" name="correo" type="email" autocomplete="email" maxlength="254" required placeholder="Escribe tu correo"></div>
           </div>
           <p class="quote-note">Usaremos estos datos para atender tu solicitud de cotización.</p>

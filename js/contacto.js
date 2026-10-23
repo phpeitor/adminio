@@ -140,8 +140,7 @@ form.addEventListener("submit", async event => {
   if (!confirmed) return;
   const value = name => form.elements[name].value.trim();
   const services = [...form.querySelectorAll('input[name="servicios"]:checked')].map(input => input.value);
-  const mensaje = ["Solicitud de cotización", `Inmueble: ${value("tipo")}`, `Unidades: ${value("unidades")}`, `Pisos: ${value("pisos")}`, `Sótanos: ${value("sotanos")}`, `Ubicación: ${value("region")} / ${value("provincia")} / ${value("distrito")}`, `Servicios: ${services.join(", ")}`, `Cargo: ${value("cargo")}`].join("\n");
-  const payload = { nombre:value("nombre"), edificio:value("edificio"), correo:value("correo"), telefono:value("telefono"), distrito:value("distrito"), mensaje, website:value("website") };
+   const payload = { nombre:value("nombre"), edificio:value("edificio"), correo:value("correo"), telefono:value("telefono"), tipo:value("tipo"), unidades:value("unidades"), pisos:value("pisos"), sotanos:value("sotanos"), region:value("region"), provincia:value("provincia"), distrito:value("distrito"), servicios:services, cargo:value("cargo"), website:value("website") };
   sending = true;
   const submit = document.getElementById("quote-submit");
   submit.textContent = "Enviando…";

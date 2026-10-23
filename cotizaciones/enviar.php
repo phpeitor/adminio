@@ -32,7 +32,7 @@ $input = json_decode($raw, true);
 if (!is_array($input)) respond(400, 'invalid_json', 'Solicitud no válida.');
 if (!empty($input['website'])) respond(400, 'invalid_request', 'Solicitud no válida.');
 
-$limits = ['nombre' => 240, 'edificio' => 300, 'correo' => 254, 'telefono' => 20, 'distrito' => 200, 'mensaje' => 8000];
+$limits = ['nombre' => 240, 'edificio' => 300, 'correo' => 254, 'telefono' => 20, 'tipo' => 200, 'unidades' => 6, 'pisos' => 3, 'sotanos' => 2, 'region' => 100, 'provincia' => 150, 'distrito' => 200, 'cargo' => 100];
 $data = [];
 foreach ($limits as $field => $limit) {
     if (!isset($input[$field]) || !is_string($input[$field])) {
@@ -47,9 +47,14 @@ foreach ($limits as $field => $limit) {
     }
     $data[$field] = $value;
 }
-if (!filter_var($data['correo'], FILTER_VALIDATE_EMAIL) || !preg_match('/^[+0-9() .\-]{7,20}$/', $data['telefono'])) {
+if (!filter_var($data['correo'], FILTER_VALIDATE_EMAIL) || !preg_match('/^[+0-9() .\-]{7,20}$/', $data['telefono']) || !ctype_digit($data['unidades']) || !ctype_digit($data['pisos']) || !ctype_digit($data['sotanos'])) {
     respond(422, 'invalid_fields', 'Revisa el correo y el teléfono.');
 }
+$services = $input['servicios'] ?? null;
+if (!is_array($services) || !$services || count($services) > 6) respond(422, 'invalid_fields', 'Selecciona al menos un servicio.');
+$allowedServices = ['Sistema de administración integral de inmuebles (Administración, Conserjería y Limpieza)', 'Soporte Administrativo con IA', 'Servicio de recaudación Multibanca', 'Servicio de Back Office (Soporte Administrativo para Autogestión)', 'Servicio de Administración de Mantenimiento', 'Servicio de Administración de Personal'];
+foreach ($services as $service) if (!is_string($service) || !in_array($service, $allowedServices, true)) respond(422, 'invalid_fields', 'Selecciona servicios válidos.');
+$data['servicios'] = implode(', ', $services);
 
 try {
     require_once dirname(__DIR__) . '/config/mail_config.php';
@@ -95,10 +100,40 @@ try {
     $mail->CharSet = 'UTF-8';
     $mail->setFrom($config['from_email'], $config['from_name'] ?? 'ADMINIO Perú');
     $mail->addAddress($config['to_email']);
+    // Igual que el envío anterior: copiar también a la cuenta remitente.
+    if (strcasecmp($config['from_email'], $config['to_email']) !== 0) $mail->addAddress($config['from_email']);
     $mail->addReplyTo($data['correo'], $data['nombre']);
     $mail->Subject = 'Nueva solicitud de presupuesto — ADMINIO';
-    $mail->isHTML(false);
-    $mail->Body = "SOLICITUD DE PRESUPUESTO\n\nNombre: {$data['nombre']}\nCorreo: {$data['correo']}\nTeléfono: {$data['telefono']}\nInmueble: {$data['edificio']}\nDistrito: {$data['distrito']}\n\n{$data['mensaje']}";
+    date_default_timezone_set('America/Lima');
+    $headImage = dirname(__DIR__) . '/static/head_adminio.webp';
+    if (is_readable($headImage)) $mail->addEmbeddedImage($headImage, 'head_adminio', 'head_adminio.webp', 'base64', 'image/webp');
+    $templatePath = __DIR__ . '/template_mail.html';
+    if (!is_readable($templatePath)) throw new RuntimeException('mail_template_unavailable');
+    $template = file_get_contents($templatePath);
+    if ($template === false) throw new RuntimeException('mail_template_unavailable');
+    $stylesPath = dirname(__DIR__) . '/css/template_mail.css';
+    $styles = is_readable($stylesPath) ? file_get_contents($stylesPath) : '';
+    if ($styles === false) $styles = '';
+    $escape = static fn(string $value): string => htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $mail->isHTML(true);
+    $mail->Body = strtr($template, [
+        '<!-- MAIL_STYLES -->' => '<style>' . $styles . '</style>',
+        '{{fecha}}' => date('d/m/Y H:i:s'),
+        '{{nombre}}' => $escape($data['nombre']),
+        '{{correo}}' => $escape($data['correo']),
+        '{{telefono}}' => $escape($data['telefono']),
+        '{{edificio}}' => $escape($data['edificio']),
+        '{{tipo}}' => $escape($data['tipo']),
+        '{{unidades}}' => $escape($data['unidades']),
+        '{{pisos}}' => $escape($data['pisos']),
+        '{{sotanos}}' => $escape($data['sotanos']),
+        '{{region}}' => $escape($data['region']),
+        '{{provincia}}' => $escape($data['provincia']),
+        '{{distrito}}' => $escape($data['distrito']),
+        '{{servicios}}' => $escape($data['servicios']),
+        '{{cargo}}' => $escape($data['cargo']),
+    ]);
+    $mail->AltBody = "SOLICITUD DE PRESUPUESTO\n\nNombre: {$data['nombre']}\nCorreo: {$data['correo']}\nTeléfono: {$data['telefono']}\nTipo de inmueble: {$data['tipo']}\nNombre del inmueble: {$data['edificio']}\nUnidades: {$data['unidades']}\nPisos: {$data['pisos']}\nSótanos: {$data['sotanos']}\nUbicación: {$data['region']} / {$data['provincia']} / {$data['distrito']}\nServicios: {$data['servicios']}\nCargo: {$data['cargo']}";
     $mail->send();
     respond(200, 'sent', 'Solicitud enviada correctamente.');
 } catch (\Throwable $error) {
