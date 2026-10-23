@@ -45,6 +45,9 @@
 #v360-header > ul > li > a[aria-current='page'] { font-weight: 700; }
 #v360-header > ul > li.item-nav > a[aria-current='page']:not(.adminia-nav-button) { color: #ad4b09; font-weight: 700; }
 
+/* Blog page sets all anchor text to inherit; preserve the shared header button colors. */
+.blog-page #site-header #v360-header > ul > li > a.header-action { color: #fff; }
+
 /* Water-drop ripple shared by every menu link, including both action buttons. */
 #v360-header #v360-awesome-nav > li > a {
   position: relative;
