@@ -99,13 +99,20 @@ function validate(step) {
     if (!input.value.trim()) input.setCustomValidity("Completa este campo.");
     const valid = input.checkValidity();
     input.setAttribute("aria-invalid", String(!valid));
+    input.classList.toggle("input-error", !valid);
     if (!valid && !firstInvalid) firstInvalid = input;
   });
-  if (firstInvalid) { firstInvalid.reportValidity(); return false; }
+  if (firstInvalid) {
+    if (window.alertify) window.alertify.error(firstInvalid.validationMessage || "Revisa los campos obligatorios.");
+    firstInvalid.focus();
+    return false;
+  }
   if (step === steps[0]) {
     const selected = form.querySelector('input[name="servicios"]:checked');
     document.getElementById("services-error").hidden = Boolean(selected);
-    if (!selected) { form.querySelector('input[name="servicios"]').focus(); return false; }
+    const firstService = form.querySelector('input[name="servicios"]');
+    firstService.classList.toggle("input-error", !selected);
+    if (!selected) { firstService.focus(); return false; }
   }
   return true;
 }
@@ -123,8 +130,12 @@ form.addEventListener("input", event => {
   if (event.target.matches("input,select")) {
     event.target.setCustomValidity("");
     event.target.removeAttribute("aria-invalid");
+    event.target.classList.remove("input-error");
   }
-  if (event.target.name === "servicios") document.getElementById("services-error").hidden = true;
+  if (event.target.name === "servicios") {
+    document.getElementById("services-error").hidden = true;
+    event.target.classList.remove("input-error");
+  }
 });
 document.getElementById("quote-next").addEventListener("click", () => { if (validate(steps[0])) showStep(1); });
 document.getElementById("quote-back").addEventListener("click", () => { statusBox.hidden = true; showStep(0); });
