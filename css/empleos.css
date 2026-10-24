@@ -4,3 +4,5 @@
 .quote-field #cv-help{margin-top:8px}
 .jobs-consent{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.6;margin:24px 0}
 .jobs-consent input{margin-top:4px;flex-shrink:0;width:17px;height:17px;accent-color:#1d0e9e}
+.quote-page .quote-field input[aria-invalid="true"],.quote-page .quote-field select[aria-invalid="true"],.quote-page .quote-field textarea[aria-invalid="true"]{border:1px solid #b42318}
+.quote-page .jobs-consent input[aria-invalid="true"]{outline:2px solid #b42318;outline-offset:2px}

@@ -20,6 +20,8 @@ async function validateCV() {
   const file = cvInput.files[0];
   if (!file) {
     cvInput.setCustomValidity('Adjunta tu CV en formato PDF.');
+    cvInput.setAttribute('aria-invalid', 'true');
+    cvInput.classList.add('input-error');
     return false;
   }
   let isPdf = false;
@@ -33,13 +35,25 @@ async function validateCV() {
     && file.size > 0
     && file.size <= 5 * 1024 * 1024;
   cvInput.setCustomValidity(valid ? '' : 'Adjunta un archivo PDF válido de hasta 5 MB.');
+  cvInput.toggleAttribute('aria-invalid', !valid);
+  cvInput.classList.toggle('input-error', !valid);
   return valid;
 }
 cvInput.addEventListener('change', async () => {
   if (!await validateCV()) window.alertify?.error(cvInput.validationMessage);
 });
 const jobPhoneInput = jobsForm.elements.telefono;
-jobPhoneInput.addEventListener('input', () => jobPhoneInput.setCustomValidity(''));
+function clearResolvedFieldError(event) {
+  const field = event.target;
+  if (!field.matches('input,select,textarea')) return;
+  if (field === jobPhoneInput) jobPhoneInput.setCustomValidity('');
+  if (field.checkValidity()) {
+    field.removeAttribute('aria-invalid');
+    field.classList.remove('input-error');
+  }
+}
+jobsForm.addEventListener('input', clearResolvedFieldError);
+jobsForm.addEventListener('change', clearResolvedFieldError);
 function confirmJobSend() {
   return new Promise(resolve => {
     if (!window.alertify) { resolve(false); return; }
@@ -50,13 +64,15 @@ function confirmJobSend() {
 jobsForm.addEventListener('submit', async event => {
   event.preventDefault();
   if (jobsSending) return;
-  if (!await validateCV()) {
-    window.alertify?.error(cvInput.validationMessage);
-    cvInput.focus();
-    return;
-  }
+  await validateCV();
   jobPhoneInput.setCustomValidity(/^9[0-9]{8}$/.test(jobPhoneInput.value) ? '' : 'Ingresa un celular peruano de 9 dígitos que empiece con 9.');
-  if (!jobsForm.checkValidity()) {
+  const fieldsToValidate = [...jobsForm.querySelectorAll('input,select,textarea')];
+  fieldsToValidate.forEach(field => {
+    const invalid = !field.checkValidity();
+    field.toggleAttribute('aria-invalid', invalid);
+    field.classList.toggle('input-error', invalid);
+  });
+  if (fieldsToValidate.some(field => !field.checkValidity())) {
     const invalid = jobsForm.querySelector(':invalid');
     window.alertify?.error(invalid.validationMessage || 'Revisa los campos obligatorios del formulario.');
     invalid.focus();

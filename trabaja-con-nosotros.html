@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Trabaja con nosotros | ADMINIO Perú</title>
   <meta name="description" content="Forma parte de ADMINIO. Envíanos tus datos y tu CV para postular a nuestro equipo.">
-  <link rel="icon" href="./static/favicon-adminio.png">
+  <link rel="icon" type="image/png" href="./static/favicon-torres.png?v=3">
   <link rel="stylesheet" href="./css/app.css">
   <link rel="stylesheet" href="./css/index.css?v=3.13">
   <link rel="stylesheet" href="./css/index.d790f8802cd7a090c6be.css">
   <link rel="stylesheet" href="./css/contacto.css?v=2">
-  <link rel="stylesheet" href="./css/empleos.css">
+  <link rel="stylesheet" href="./css/empleos.css?v=3">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js" defer></script>
-  <script src="./js/empleos.js?v=3" defer></script>
+  <script src="./js/empleos.js?v=5" defer></script>
   <link rel="stylesheet" href="./css/site-theme.css?v=3">
 </head>
 <body class="quote-page">
@@ -79,7 +79,7 @@
       <p>Completa tus datos y adjunta tu CV para enviar tu postulación.</p>
     </section>
     <section class="quote-card" aria-label="Formulario de postulación">
-      <form id="jobs-form" action="./empleos/enviar.php" method="post" enctype="multipart/form-data">
+      <form id="jobs-form" action="./empleos/enviar.php" method="post" enctype="multipart/form-data" novalidate>
         <div hidden aria-hidden="true"><label for="website">Sitio web</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
         <fieldset id="jobs-fields">
           <legend>Postula a nuestro equipo</legend>

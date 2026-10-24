@@ -37,9 +37,57 @@
 @media(prefers-reduced-motion:reduce){#v360-header .adminia-nav-button:before{animation:none;content:none}}
 /* Separate quotation and customer access actions. */
 #v360-header{max-width:1440px}
-@media(min-width:993px) and (max-width:1279px){#v360-header{padding-left:12px;padding-right:12px}#v360-header>a img{height:32px}#v360-header>ul>li>a{font-size:12px!important;margin-left:2px!important;margin-right:2px!important;padding-left:6px!important;padding-right:6px!important}#v360-header>a{margin-right:6px}}
+@media(min-width:993px) and (max-width:1279px){#v360-header{padding-left:12px;padding-right:12px}#v360-header>a img{height:32px}#v360-header>ul>li>a:not(.header-action):not(.adminia-nav-button){font-size:12px!important;margin-left:2px!important;margin-right:2px!important;padding-left:6px!important;padding-right:6px!important}#v360-header>a{margin-right:6px}}
 #v360-header>ul>li>a.header-action{border-radius:10px;margin-left:12px}
 @media(max-width:992px){#v360-header>ul>li>a.header-action{margin:6px 12px}}
+
+/* Keep the three shared header actions visually identical across page styles. */
+#v360-header #v360-awesome-nav > li > a.header-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 22px;
+  border: 0;
+  border-radius: 14px;
+  color: #fff;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  opacity: 1;
+  filter: none;
+}
+#v360-header #v360-awesome-nav > li > a.header-action.v_gradient_primary {
+  background-image: linear-gradient(110deg, #c45114, #692858);
+  background-color: #8d3d3c;
+}
+#v360-header #v360-awesome-nav > li > a#sign-up-btn {
+  background-image: none;
+  background-color: #2535b5;
+}
+#v360-header #v360-awesome-nav > li.item-nav > a.adminia-nav-button {
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+}
+@media (min-width: 993px) and (max-width: 1279px) {
+  #v360-header #v360-awesome-nav > li > a.header-action {
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+  #v360-header #v360-awesome-nav > li.item-nav > a.adminia-nav-button {
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
 
 /* Consistent active-page color and weight for standard navigation links. */
 #v360-header > ul > li > a[aria-current='page'] { font-weight: 700; }

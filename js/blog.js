@@ -1,4 +1,7 @@
 "use strict";
+const blogFavicon = document.querySelector('link[rel~="icon"]') || document.head.appendChild(Object.assign(document.createElement('link'), { rel: 'icon' }));
+blogFavicon.type = 'image/png';
+blogFavicon.href = './static/favicon-torres.png?v=3';
 Promise.all(['head','footer'].map(async name=>{
  const target=document.getElementById(`site-${name==='head'?'header':'footer'}`);
  try{const response=await fetch(`./${name}.html`);if(!response.ok)throw Error(response.status);target.innerHTML=await response.text();if(name==='head')target.querySelector('a[href="./blog.html"]')?.setAttribute('aria-current','page');}
