@@ -82,6 +82,7 @@ jobsForm.addEventListener('submit', async event => {
     if (!await confirmJobSend()) return;
   } finally {
     jobsPreparing = false;
+  }
   if (jobsSending) return;
   await validateCV();
   jobPhoneInput.setCustomValidity(/^9[0-9]{8}$/.test(jobPhoneInput.value) ? '' : 'Ingresa un celular peruano de 9 dígitos que empiece con 9.');
