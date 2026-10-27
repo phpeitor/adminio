@@ -7,171 +7,170 @@
   <img src="https://adminio.pe/static/adminio-pilares-tecnologia.webp?v=2" alt="Adminio" width="600">
 </a>
 
-## Descripción
+Sitio corporativo de **ADMINIO Perú** (administración de edificios y condominios). Es un sitio HTML/CSS/JS sin framework con pocos endpoints PHP:
 
-Sitio web corporativo de ADMINIO Perú para administración inmobiliaria. Incluye páginas públicas, formularios de cotización y postulación, un blog informativo y un panel de consulta de asistencias protegido por token.
+| Módulo | Entrada | Backend | Persistencia |
+| --- | --- | --- | --- |
+| Landing y páginas institucionales | `index.html`, `nosotros.html`, `servicios.html`… | — | — |
+| Cotización | `contacto.html` + `js/contacto.js` | `cotizaciones/enviar.php` | Correo SMTP |
+| Formulario legacy del inicio | `index.html` + `js/adminio.js` | `config/envio_correo.php` | Correo SMTP |
+| Postulaciones | `trabaja-con-nosotros.html` + `js/empleos.js` | `empleos/enviar.php` | Correo SMTP (CV adjunto, no se almacena) |
+| Blog dinámico | `/blog`, `/blog/<slug>`, `/blog/tag/<tag>`, `/blog/sitemap.xml` | `blog/index.php` → API Bunzy | Bunzy (headless CMS) |
+| Blog estático (legacy) | `blog-*.html` | — | Archivos HTML |
+| Asistencias (privado) | `asistencias.html` | `controller/*.php` → `model/` → `db/` | MySQL/MariaDB |
 
 ## Stack
 
-- Frontend: HTML, CSS y JavaScript sin framework.
-- Backend: PHP 8+, Composer y PHPMailer para correo SMTP.
-- Datos del panel: MySQL/MariaDB mediante PDO.
-- Dependencias del panel público: librerías cargadas desde CDN (DataTables, Flatpickr, ApexCharts y AlertifyJS).
+- **Frontend:** HTML5, CSS y JavaScript vanilla. Librerías por CDN solo en Asistencias (DataTables, Flatpickr, ApexCharts, AlertifyJS).
+- **Backend:** PHP 8.2 (FPM) y Composer con `phpmailer/phpmailer` ^7 y `league/commonmark` ^2.7. Requiere `ext-curl`.
+- **Datos:** MySQL/MariaDB mediante PDO con consultas preparadas.
+- **Contenido del blog:** API REST de Bunzy (`/api/v1`), consumida desde el servidor con Bearer token.
+- **Producción:** VPS Ubuntu con nginx, PHP 8.2-FPM y TLS de Let's Encrypt.
+
+## Arquitectura
+
+```mermaid
+flowchart LR
+    U[Navegador] -->|HTTPS| N[nginx]
+    N -->|archivos estáticos| S[HTML / CSS / JS / static]
+    N -->|FastCGI| P[PHP 8.2-FPM]
+    P --> F[cotizaciones · empleos · config/envio_correo.php]
+    P --> B[blog/index.php]
+    P --> A[controller/ → model/ → db/]
+    F -->|PHPMailer| SMTP[(SMTP)]
+    B -->|cURL + Bearer| BZ[(API Bunzy)]
+    A -->|PDO| DB[(MySQL)]
+```
+
+Decisiones de diseño:
+
+- **Sin build step.** Lo que está en el repositorio es lo que se sirve. Los scripts de `scripts/` generan contenido una sola vez y no son parte del despliegue.
+- **Secretos solo en el servidor.** `config/env.php` lee `.env`. En el blog, `getenv()` tiene prioridad sobre `.env`, así que se pueden usar variables de entorno de FPM. La API key de Bunzy nunca llega al navegador.
+- **Fallo explícito.** Si Bunzy no está disponible o rechaza la autenticación, el blog responde 503. Un slug inexistente devuelve 404 y un listado vacío, 200. Las respuestas del blog llevan `Cache-Control: no-store`.
 
 ## Requisitos
 
-- PHP 8 o superior con `openssl`, `fileinfo`, `pdo` y `pdo_mysql` habilitados.
+- PHP ≥ 8.2 con `curl`, `mbstring`, `openssl`, `fileinfo`, `pdo` y `pdo_mysql`.
 - Composer 2.
-- Apache u otro servidor web con soporte PHP. El servidor integrado de PHP sirve para desarrollo.
-- Acceso SMTP para los formularios.
-- MySQL/MariaDB y acceso a la tabla `asistencia_administradores` para usar Asistencias.
+- Node.js ≥ 20, solo para pruebas y scripts auxiliares.
+- Credenciales SMTP, base de datos MySQL con la tabla `asistencia_administradores` y API key de Bunzy, según el módulo que se vaya a usar.
 
-## Puesta en marcha local
-
-Desde la raíz del repositorio:
+## Desarrollo local
 
 ```sh
 composer install
-cp .env.example .env
-php -S 127.0.0.1:8000
+cp .env.example .env          # PowerShell: Copy-Item .env.example .env
+php -S 127.0.0.1:8000 tools/blog-router.php
 ```
 
-En Windows PowerShell, copiar el archivo con:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Completar `.env` con credenciales del entorno y abrir `http://127.0.0.1:8000/`. Para que funcionen correo y asistencias, configurar también SMTP y base de datos. Abrir las páginas con `file://` no ejecuta PHP ni permite que funcionen los endpoints.
+`tools/blog-router.php` imita las reglas de producción: enruta `/blog` y bloquea `config/`, `tools/`, `vendor/`, archivos ocultos y archivos de Composer. Abrir `http://127.0.0.1:8000/`. Abrir los HTML con `file://` no ejecuta PHP.
 
 ## Configuración (`.env`)
 
-La aplicación lee `.env` desde la raíz. `.env` está excluido del control de versiones; `.env.example` contiene valores ficticios y no debe usarse como configuración productiva.
+`.env` vive en la raíz y no se versiona. `.env.example` es la plantilla de referencia y solo contiene valores ficticios.
 
 | Variable | Uso |
 | --- | --- |
-| `MAIL_HOST` | Host SMTP. |
-| `MAIL_PORT` | Puerto SMTP, por ejemplo `465` o `587`. |
-| `MAIL_SECURE` | `ssl` para SMTPS o `tls` para STARTTLS. |
-| `MAIL_USERNAME` / `MAIL_PASSWORD` | Credenciales SMTP. |
-| `MAIL_FROM_EMAIL` / `MAIL_FROM_NAME` | Dirección y nombre remitente. |
-| `MAIL_TO` | Destinatario principal de los formularios nuevos. |
-| `DB_HOST`, `DB_PORT`, `DB_NAME` | Conexión MySQL/MariaDB. |
-| `DB_USERNAME`, `DB_PASSWORD`, `DB_CHARSET` | Credenciales y codificación de base de datos. |
-| `ASISTENCIAS_TOKEN` | Token de acceso al módulo de asistencias. |
+| `MAIL_HOST`, `MAIL_PORT`, `MAIL_SECURE` | Servidor SMTP (`ssl` → 465, `tls` → 587). |
+| `MAIL_USERNAME`, `MAIL_PASSWORD` | Credenciales SMTP. |
+| `MAIL_FROM_EMAIL`, `MAIL_FROM_NAME` | Remitente. |
+| `MAIL_TO` | Destinatario de los formularios. Si `MAIL_FROM_EMAIL` es distinto, recibe copia. |
+| `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USERNAME`, `DB_PASSWORD`, `DB_CHARSET` | Conexión MySQL del módulo Asistencias. |
+| `ASISTENCIAS_TOKEN` | Token de acceso a Asistencias. Debe ser largo y aleatorio. |
+| `BUNZY_BLOG_API_URL` | Base de la API de Bunzy (`https://app.bunzy.io`). Debe ser HTTPS. |
+| `BUNZY_BLOG_API_KEY` | API key de Bunzy. Solo se usa en el servidor. |
 
-Los endpoints de cotizaciones y empleos envían a `MAIL_TO` y, si es una dirección distinta, agregan copia a `MAIL_FROM_EMAIL`. La dirección proporcionada por la persona se utiliza como `Reply-To`. El formulario legacy del inicio mantiene el comportamiento de `config/envio_correo.php`.
+## Módulos
 
-## Flujos principales
+### Formularios y correo
 
-### Páginas públicas y navegación
+- **Cotización:** `contacto.html` envía JSON a `cotizaciones/enviar.php`, que valida servicios, teléfono peruano (9 dígitos, empieza en 9), honeypot y límite de frecuencia. Usa la plantilla `cotizaciones/template_mail.html`. Región, provincia y distrito se cargan desde `static/data/*_ubigeo_*.json`.
+- **Postulaciones:** `trabaja-con-nosotros.html` envía `multipart/form-data` a `empleos/enviar.php`, que valida consentimiento, teléfono y CV en PDF de hasta 5 MB. El CV se adjunta al correo y no se guarda en disco.
+- **Legacy:** el formulario del inicio (`sendEmail()` en `js/adminio.js`) envía a `config/envio_correo.php` y espera `ok/message`. Este contrato no debe cambiarse.
+- Los dos endpoints nuevos comparten `config/mail_config.php`. La dirección del visitante va solo en `Reply-To`.
 
-- `index.html` es la página de inicio. `head.html` y `footer.html` se comparten como fragmentos.
-- `blog.html` y las páginas `blog-*.html` contienen los artículos; `js/blog.js` carga la navegación y controla búsqueda, filtros y calculadora.
-- `contacto.html` permite solicitar un presupuesto. Su JavaScript carga las listas vinculadas de región, provincia y distrito desde `static/data/1_ubigeo_departamentos.json`, `2_ubigeo_provincias.json` y `3_ubigeo_distritos.json`.
-- `trabaja-con-nosotros.html` recibe postulaciones y CV.
+### Blog
 
-### Correo y formularios
-
-- El formulario legacy de la página de inicio conserva el envío JSON a `config/envio_correo.php`, que usa `config/template_mail.html` y `css/template_mail.css`.
-- La página nueva de contacto envía JSON a `cotizaciones/enviar.php`. El endpoint valida los datos, servicios seleccionados, teléfono peruano de 9 dígitos que comienza con 9 y límites de envío; genera correo HTML desde `cotizaciones/template_mail.html`.
-- El formulario de empleos envía `multipart/form-data` a `empleos/enviar.php`. Valida consentimiento, teléfono y CV PDF (máximo 5 MB), adjunta el archivo al correo y no lo almacena en el sitio. La plantilla es `empleos/template_mail.html`.
-- Ambos formularios nuevos comparten `config/mail_config.php`, PHPMailer y las variables SMTP de `.env`. Incorporan la imagen de cabecera correspondiente desde `static/`.
-
-#### Flujo de correo
-
-```mermaid
-flowchart TD
-    subgraph Cotizacion[Solicitud de cotización]
-        QF[contacto.html y js/contacto.js] -->|JSON| QE[cotizaciones/enviar.php]
-    end
-
-    subgraph Postulacion[Postulación laboral]
-        JF[trabaja-con-nosotros.html y js/empleos.js] -->|multipart/form-data + CV| JE[empleos/enviar.php]
-    end
-
-    QE --> QV{Validación del servidor}
-    JE --> JV{Validación del servidor}
-    QV -->|Válido| MC[config/mail_config.php]
-    JV -->|Válido| MC
-    QV -->|Inválido| QERR[Respuesta JSON de error]
-    JV -->|Inválido| JERR[Respuesta JSON de error]
-    MC --> PM[PHPMailer + configuración SMTP de .env]
-    PM --> MT[MAIL_TO]
-    PM --> MF[MAIL_FROM_EMAIL si es distinto de MAIL_TO]
-    PM --> RESP[Respuesta JSON: éxito o fallo SMTP]
-    RESP --> UI[Confirmación o error en el formulario]
-```
-
-#### Flujo de acceso a asistencias
-
-```mermaid
-flowchart TD
-    A[asistencias.html] --> B{Sesión autorizada?}
-    B -->|Sí| F[Filtros de fecha y paginación]
-    B -->|No| C[Ingresar token]
-    C --> D[controller/validar_acceso_asistencias.php]
-    D --> E{Token válido?}
-    E -->|Sí| S[Crear sesión autorizada]
-    S --> F
-    E -->|No: intentos agotados| L[Bloqueo de 5 minutos]
-    E -->|No| C
-    F --> G[controller/asistencia_administradores.php]
-    G --> H[AsistenciaAdministradoresModel + PDO]
-    H --> I[(MySQL: asistencia_administradores)]
-    I --> J[Filas, contadores y gráficos]
-    J --> K[Cerrar sesión]
-    K --> X[controller/cerrar_sesion_asistencias.php]
-```
+- **Dinámico:** `blog/index.php` resuelve la ruta, `config/bunzy.php` es el cliente HTTP (`getPosts`, `getPost`, `getTags`), `blog/render.php` convierte Markdown con CommonMark y arma SEO, Open Graph y JSON-LD, y `blog/view.php` renderiza la vista con `head.html` y `footer.html`. Los artículos aparecen solo cuando están **publicados** en Bunzy.
+- **Estático (legacy):** los `blog-*.html` de la raíz se mantienen para no romper URLs indexadas. `blog.html` redirige con 301 a `/blog`.
+- Detalle de la integración: [`.ia-context/BUNZY-BLOG.md`](.ia-context/BUNZY-BLOG.md).
 
 ### Asistencias
 
-- `asistencias.html` es un reporte protegido por sesión y por `ASISTENCIAS_TOKEN`.
-- `controller/validar_acceso_asistencias.php` valida el token y bloquea durante cinco minutos después de tres intentos fallidos. Los otros controladores consultan el estado, devuelven registros filtrados y cierran sesión.
-- `model/AsistenciaAdministradoresModel.php` consulta `asistencia_administradores` mediante `db/connection.php` y PDO. Los filtros de fecha y parámetros de paginación se envían como parámetros preparados.
+- `asistencias.html` requiere sesión y `ASISTENCIAS_TOKEN`. El token se compara con `hash_equals` y, tras 3 intentos fallidos, el acceso se bloquea 5 minutos.
+- `controller/` expone validar, estado, consulta y cierre de sesión. `model/AsistenciaAdministradoresModel.php` consulta mediante `db/connection.php` con parámetros preparados para fechas y paginación.
 
 ## Estructura del repositorio
 
 ```text
 .
-├── index.html, contacto.html, trabaja-con-nosotros.html, blog*.html
-├── head.html, footer.html
-├── css/                  # Estilos del sitio y de las páginas
-├── js/                   # Lógica del frontend
-├── static/               # Imágenes, logos y catálogos JSON
-├── config/               # Lectura de entorno, correo legacy y configuración compartida
-├── cotizaciones/         # Endpoint y plantilla del formulario de contacto nuevo
-├── empleos/              # Endpoint y plantilla de postulaciones
-├── controller/           # Endpoints de asistencias
-├── model/                # Consultas del reporte de asistencias
-├── db/                   # Conexión PDO
-├── .ia-context/          # Contexto y convenciones de desarrollo
-├── composer.json         # Dependencias PHP
-└── .env.example          # Referencia sin secretos
+├── *.html                 # Páginas públicas (index, contacto, servicios, blog-*.html legacy…)
+├── head.html, footer.html # Fragmentos compartidos (también se usan en las vistas PHP del blog)
+├── blog/                  # Blog dinámico Bunzy: router, render y vista
+├── cotizaciones/          # Endpoint + plantilla del formulario de cotización
+├── empleos/               # Endpoint + plantilla de postulaciones
+├── controller/            # Endpoints de Asistencias
+├── model/                 # Acceso a datos de Asistencias
+├── db/                    # Conexión PDO
+├── config/                # env(), cliente Bunzy, configuración de correo y endpoint legacy
+├── css/, js/              # Estilos y lógica del frontend, un archivo por página o módulo
+├── static/                # Imágenes, logos y catálogos JSON (ubigeo)
+├── brand-reference/       # Identidad de marca y fuentes de los assets (no se usa en runtime)
+├── deploy/nginx/          # Configuración nginx de producción
+├── scripts/               # Generadores puntuales de contenido o assets (Node)
+├── tools/                 # Router de desarrollo, servidor de vista previa y check del blog
+├── tests/                 # Pruebas con node:test
+├── .ia-context/           # Reglas, roles y documentación técnica para desarrollo asistido
+├── composer.json/.lock    # Dependencias PHP
+└── .env.example           # Plantilla de configuración sin secretos
 ```
 
-## Comprobaciones
-
-No hay un comando de pruebas automatizadas configurado en `package.json` o Composer. Para revisar cambios, ejecutar las comprobaciones pertinentes:
+## Calidad y pruebas
 
 ```sh
-php -l cotizaciones/enviar.php
-php -l empleos/enviar.php
-php -l config/mail_config.php
-node --check js/contacto.js
-node --check js/empleos.js
+# Pruebas de frontend (node:test)
+node --test tests/*.test.cjs
+
+# Render del blog con datos sintéticos (requiere vendor/)
+php tools/check-bunzy-render.php
+
+# Lint
+for f in blog/*.php config/*.php cotizaciones/*.php empleos/*.php controller/*.php model/*.php db/*.php; do php -l "$f"; done
+node --check js/contacto.js && node --check js/empleos.js
 ```
 
-Las pruebas de integración requieren servidor PHP, credenciales SMTP válidas y, para Asistencias, conexión MySQL. Comprobar manualmente las respuestas de éxito y error de los formularios, CV válido/inválido y los filtros y sesión del reporte.
+No hay CI configurado. Antes de abrir un PR, ejecutar lo anterior y probar a mano los flujos afectados: envío correcto y con error de cada formulario, CV válido e inválido, `/blog` con y sin artículos, y el login y los filtros de Asistencias.
 
-## Operación y seguridad
+## Despliegue
 
-- No subir `.env`, contraseñas, tokens ni archivos con datos personales al repositorio.
-- Proteger `.env` contra acceso HTTP y servir el sitio mediante HTTPS en producción.
-- Configurar `upload_max_filesize` y `post_max_size` para aceptar el CV limitado a 5 MB.
-- Los endpoints de cotizaciones y empleos aplican validación backend, campo honeypot y límites de frecuencia; los archivos temporales de control deben ser escribibles por PHP.
-- Instalar dependencias con `composer install --no-dev --optimize-autoloader` en producción. No editar `vendor/` manualmente.
-- Revisar la compatibilidad antes de cambiar nombres de campos, endpoints o estructura de respuestas consumida por JavaScript.
+Producción: VPS Ubuntu, `root /var/www/adminio.pe`, nginx y PHP 8.2-FPM.
+
+1. Actualizar el código en el servidor y ejecutar `composer install --no-dev --optimize-autoloader`. No editar `vendor/`.
+2. Mantener el `.env` del servidor. No sobrescribirlo con `.env.example`.
+3. Si cambian las rutas o los bloqueos, aplicar `deploy/nginx/adminio.pe.conf` en `/etc/nginx/sites-available/adminio.pe` y ejecutar `nginx -t && systemctl reload nginx`.
+4. Verificación rápida: `/blog` → 200, `/blog.html` → 301, `/.env` y `/config/env.php` → 403 o 404, y un envío de prueba de cada formulario.
+
+nginx no lee `.htaccess`. Si el sitio se moviera a Apache, habría que replicar las reglas de `deploy/nginx/` con `mod_rewrite`.
+
+## Seguridad
+
+- No versionar `.env`, credenciales, tokens, CVs ni datos personales.
+- nginx bloquea los archivos ocultos y `config/`, `tools/`, `vendor/`, `model/` y `db/`. La única excepción es `config/envio_correo.php`. Cualquier carpeta nueva con código interno debe agregarse a ese bloqueo.
+- En producción, `.env` debe tener permisos `640`, legible solo por el usuario de PHP-FPM.
+- Ajustar `upload_max_filesize` y `post_max_size` a 5 MB o más para los CV.
+- Los endpoints de formularios aplican validación en el servidor, honeypot y límite de frecuencia. Los archivos temporales de control deben poder ser escritos por PHP.
+- Cambiar nombres de campos, endpoints o la forma de las respuestas JSON rompe el frontend. Hay que actualizar ambos lados en el mismo PR.
+
+## Documentación interna
+
+| Documento | Contenido |
+| --- | --- |
+| [`.ia-context/AGENTS_ROLES.md`](.ia-context/AGENTS_ROLES.md) | Roles y alcance por área |
+| [`.ia-context/FRONTEND_RULES.md`](.ia-context/FRONTEND_RULES.md) | Convenciones de frontend |
+| [`.ia-context/BACKEND_RULES.md`](.ia-context/BACKEND_RULES.md) | Convenciones de backend |
+| [`.ia-context/CONFIGURACION-ENVIOS.md`](.ia-context/CONFIGURACION-ENVIOS.md) | Entrega y configuración de formularios |
+| [`.ia-context/CONTACTO-IMPLEMENTACION.md`](.ia-context/CONTACTO-IMPLEMENTACION.md) | Implementación de la página de contacto |
+| [`.ia-context/BUNZY-BLOG.md`](.ia-context/BUNZY-BLOG.md) | Integración del blog con Bunzy |
 
 ## Licencia
 
