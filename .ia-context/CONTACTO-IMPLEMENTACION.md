@@ -40,3 +40,27 @@ Se mantienen validación del servidor, campo trampa y límites de intentos en el
 6. Comprobar que ante error de servidor no se muestra éxito y los datos se conservan.
 
 Realizar la prueba de correo solo con autorización y una cuenta de prueba para evitar enviar datos personales reales.
+
+## 6. Conversión de cotización en Google Ads
+
+`contacto.html` carga la etiqueta `AW-18370877112`. `js/contacto.js` envía el evento
+`AW-18370877112/jcRjCP-8n6QdELit9bdE` únicamente tras una respuesta HTTP correcta
+y `result.ok === true` de `cotizaciones/enviar.php`. No se incluyen datos del formulario
+en el evento. Se conserva la confirmación de éxito sin recarga automática y se bloquea
+un segundo envío en la misma página. Un fallo de analítica no invalida el envío del correo.
+
+Ejecutar `node --test tests/quote-conversion.test.cjs` para probar éxito, duplicados,
+cancelación, validación y errores sin enviar correos ni eventos reales.
+
+Para desplegar esta corrección, publicar juntos `contacto.html` y `js/contacto.js`
+(versión de caché 10), conservando la configuración privada del hosting. Después:
+
+1. Conectar Tag Assistant a `/contacto.html` y verificar la etiqueta de Ads.
+2. Comprobar que abrir la página, avanzar o cancelar no dispara la conversión.
+3. Realizar un único envío autorizado de prueba y verificar la recepción del correo.
+4. Verificar en Tag Assistant un único evento con el destino indicado después del éxito.
+5. Comprobar la confirmación persistente en escritorio y móvil.
+
+Una prueba con acceso directo valida la etiqueta, pero no implica una conversión
+atribuida a anuncios: esta requiere una interacción publicitaria elegible y el
+procesamiento de Google Ads. No hacer clic en anuncios propios para probarla.
