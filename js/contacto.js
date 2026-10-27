@@ -7,6 +7,22 @@ const statusBox = document.getElementById("quote-status");
 let currentStep = 0;
 let sending = false;
 let confirming = false;
+let submitted = false;
+
+function trackQuoteConversion() {
+  // Analytics failure must never turn a successful email into a retryable error.
+  try {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "conversion", {
+        send_to: "AW-18370877112/jcRjCP-8n6QdELit9bdE",
+        value: 1.0,
+        currency: "PEN"
+      });
+    }
+  } catch (error) {
+    console.warn("No se pudo registrar la conversión de cotización.");
+  }
+}
 
 function confirmContactSend() {
   if (!window.alertify) return Promise.resolve(window.confirm("¿Desea enviar el mensaje?"));
@@ -99,13 +115,20 @@ function validate(step) {
     if (!input.value.trim()) input.setCustomValidity("Completa este campo.");
     const valid = input.checkValidity();
     input.setAttribute("aria-invalid", String(!valid));
+    input.classList.toggle("input-error", !valid);
     if (!valid && !firstInvalid) firstInvalid = input;
   });
-  if (firstInvalid) { firstInvalid.reportValidity(); return false; }
+  if (firstInvalid) {
+    if (window.alertify) window.alertify.error(firstInvalid.validationMessage || "Revisa los campos obligatorios.");
+    firstInvalid.focus();
+    return false;
+  }
   if (step === steps[0]) {
     const selected = form.querySelector('input[name="servicios"]:checked');
     document.getElementById("services-error").hidden = Boolean(selected);
-    if (!selected) { form.querySelector('input[name="servicios"]').focus(); return false; }
+    const firstService = form.querySelector('input[name="servicios"]');
+    firstService.classList.toggle("input-error", !selected);
+    if (!selected) { firstService.focus(); return false; }
   }
   return true;
 }
@@ -123,14 +146,18 @@ form.addEventListener("input", event => {
   if (event.target.matches("input,select")) {
     event.target.setCustomValidity("");
     event.target.removeAttribute("aria-invalid");
+    event.target.classList.remove("input-error");
   }
-  if (event.target.name === "servicios") document.getElementById("services-error").hidden = true;
+  if (event.target.name === "servicios") {
+    document.getElementById("services-error").hidden = true;
+    event.target.classList.remove("input-error");
+  }
 });
 document.getElementById("quote-next").addEventListener("click", () => { if (validate(steps[0])) showStep(1); });
 document.getElementById("quote-back").addEventListener("click", () => { statusBox.hidden = true; showStep(0); });
 form.addEventListener("submit", async event => {
   event.preventDefault();
-  if (sending || confirming) return;
+  if (sending || confirming || submitted) return;
   if (currentStep === 0) { if (validate(steps[0])) showStep(1); return; }
   if (!validate(steps[1])) return;
   confirming = true;
@@ -154,11 +181,13 @@ form.addEventListener("submit", async event => {
     const result = await response.json();
     if (!response.ok) throw Object.assign(new Error("El servidor no pudo procesar la solicitud"), { code:result.code });
     if (result.ok !== true) throw new Error("El servidor no confirmó el envío");
+    submitted = true;
+    trackQuoteConversion();
     statusBox.className = "";
     statusBox.textContent = "¡Gracias! Tu solicitud fue enviada. Nos pondremos en contacto contigo para preparar tu cotización.";
     steps[1].hidden = true;
     if (window.alertify) window.alertify.success("Mensaje enviado correctamente");
-    setTimeout(() => location.reload(), 1500);
+    // Keep confirmation visible and let the asynchronous Google tag finish.
   } catch (error) {
     steps[1].disabled = false;
     statusBox.className = "error";

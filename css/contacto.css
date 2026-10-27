@@ -24,3 +24,4 @@
 .quote-note{color:#606f7b}
 @media(max-width:1000px){.quote-layout{gap:24px}.quote-card{padding:28px}.quote-intro h2{font-size:24px}}
 @media(max-width:700px){.quote-layout{display:block}.quote-intro{padding:18px 0 32px}.quote-card{padding:26px 20px}.quote-intro h1{font-size:32px;margin-bottom:20px}}
+.quote-services input.input-error{outline:2px solid #e3342f;outline-offset:2px}
