@@ -12,7 +12,7 @@ En Bunzy, usar `https://adminio.pe/blog` como URL base del blog, español como i
 
 ## Prueba local
 
-Desde `.repo-adminio`:
+Desde la raíz del repositorio:
 
 ```powershell
 php -S 127.0.0.1:8000 tools/blog-router.php
