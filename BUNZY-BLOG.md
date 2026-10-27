@@ -30,6 +30,15 @@ Abrir `http://127.0.0.1:8000/blog`. Rutas adicionales: `/blog/<slug>`, `/blog/ta
 
 Las reglas de `.htaccess` requieren Apache 2.4, `mod_rewrite` y AllowOverride habilitado. Esta integración se publica en la raíz del dominio. Para nginx se deben replicar las reglas de rutas y la denegación de acceso a `.env`, `config/`, `vendor/`, `tools/` y los archivos Composer; nginx no interpreta `.htaccess`.
 
+En producción (VPS Ubuntu con nginx y PHP 8.2-FPM) la configuración aplicada está en `deploy/nginx/adminio.pe.conf`, copia de `/etc/nginx/sites-available/adminio.pe`:
+
+- `/blog` y `/blog/...` se envían a `blog/index.php` mediante FastCGI. Los artículos estáticos `blog-*.html` siguen sirviéndose como archivos.
+- `/blog.html` redirige con 301 a `/blog`.
+- `config/`, `tools/`, `vendor/`, `model/` y `db/` responden 403. La única excepción es `config/envio_correo.php`, que usa el formulario de contacto. Estos bloqueos van antes de la regla general `\.php$`, porque nginx evalúa las expresiones regulares en orden.
+- `BUNZY_BLOG_API_URL` y `BUNZY_BLOG_API_KEY` se leen del `.env` privado del servidor.
+
+Para aplicarla: copiar el archivo a `/etc/nginx/sites-available/adminio.pe` y ejecutar `nginx -t && systemctl reload nginx`.
+
 El sitemap usa el dominio de producción `https://adminio.pe`. Una caída o fallo de autenticación de Bunzy produce HTTP 503; un artículo inexistente, HTTP 404. El listado vacío devuelve 200. Las cabeceras y el pie se renderizan en PHP reutilizando los fragmentos del sitio.
 
 ## Archivos
