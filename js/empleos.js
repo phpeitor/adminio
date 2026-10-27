@@ -16,6 +16,7 @@ const jobsForm = document.getElementById('jobs-form');
 const cvInput = document.getElementById('cv');
 const jobsStatus = document.getElementById('quote-status');
 let jobsSending = false;
+let jobsPreparing = false;
 async function validateCV() {
   const file = cvInput.files[0];
   if (!file) {
@@ -63,6 +64,24 @@ function confirmJobSend() {
 }
 jobsForm.addEventListener('submit', async event => {
   event.preventDefault();
+  if (jobsSending || jobsPreparing) return;
+  jobsPreparing = true;
+  try {
+    if (!await validateCV()) {
+      window.alertify?.error(cvInput.validationMessage);
+      cvInput.focus();
+      return;
+    }
+    jobPhoneInput.setCustomValidity(/^9[0-9]{8}$/.test(jobPhoneInput.value) ? '' : 'Ingresa un celular peruano de 9 dígitos que empiece con 9.');
+    if (!jobsForm.checkValidity()) {
+      const invalid = jobsForm.querySelector(':invalid');
+      window.alertify?.error(invalid.validationMessage || 'Revisa los campos obligatorios del formulario.');
+      invalid.focus();
+      return;
+    }
+    if (!await confirmJobSend()) return;
+  } finally {
+    jobsPreparing = false;
   if (jobsSending) return;
   await validateCV();
   jobPhoneInput.setCustomValidity(/^9[0-9]{8}$/.test(jobPhoneInput.value) ? '' : 'Ingresa un celular peruano de 9 dígitos que empiece con 9.');
@@ -78,7 +97,6 @@ jobsForm.addEventListener('submit', async event => {
     invalid.focus();
     return;
   }
-  if (!await confirmJobSend()) return;
   const payload = new FormData(jobsForm);
   const fields = document.getElementById('jobs-fields');
   const button = document.getElementById('jobs-submit');

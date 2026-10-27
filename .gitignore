@@ -3,4 +3,5 @@
 /360pay
 /vendor
 /node_modules
+!/.htaccess
 *.zip
